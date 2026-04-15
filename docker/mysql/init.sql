@@ -424,3 +424,63 @@ CREATE TABLE IF NOT EXISTS inv_check_order_item (
     deleted BIT(1) NOT NULL DEFAULT 0,
     INDEX idx_order (order_id)
 ) COMMENT 'Check order item table';
+
+-- ==================== Purchase Tables ====================
+
+CREATE TABLE IF NOT EXISTS pur_purchase_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_no VARCHAR(50) NOT NULL,
+    type TINYINT NOT NULL COMMENT '1=centralized, 2=direct, 3=self-purchase',
+    supplier_id BIGINT,
+    store_id BIGINT,
+    warehouse_id BIGINT,
+    total_amount DECIMAL(12,2) DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=draft,1=pending_review,2=approved,3=shipped,4=partially_received,5=completed,6=closed',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_order_no (order_no, tenant_id)
+) COMMENT 'Purchase order';
+
+CREATE TABLE IF NOT EXISTS pur_purchase_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity DECIMAL(12,2) NOT NULL,
+    received_quantity DECIMAL(12,2) NOT NULL DEFAULT 0,
+    cost_price DECIMAL(12,2),
+    amount DECIMAL(12,2),
+    remark VARCHAR(200),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Purchase order line items';
+
+CREATE TABLE IF NOT EXISTS pur_replenish_plan (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    current_stock DECIMAL(12,2),
+    min_stock DECIMAL(12,2),
+    suggest_quantity DECIMAL(12,2),
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=pending, 1=approved, 2=converted',
+    purchase_order_id BIGINT,
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_store (store_id)
+) COMMENT 'Replenishment plan';

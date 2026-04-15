@@ -21,3 +21,7 @@ spring:
           uri: lb://erp-inventory
           predicates:
             - Path=/api/v1/admin/inventory/**
+        - id: erp-purchase
+          uri: lb://erp-purchase
+          predicates:
+            - Path=/api/v1/admin/purchase/**
