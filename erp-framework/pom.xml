@@ -17,5 +17,10 @@
 
     <modules>
         <module>erp-common</module>
+        <module>erp-spring-boot-starter-mybatis</module>
+        <module>erp-spring-boot-starter-redis</module>
+        <module>erp-spring-boot-starter-web</module>
+        <module>erp-spring-boot-starter-tenant</module>
+        <module>erp-spring-boot-starter-security</module>
     </modules>
 </project>
