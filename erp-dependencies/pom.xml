@@ -177,6 +177,16 @@
                 <artifactId>erp-module-online-api</artifactId>
                 <version>${erp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.supermarket</groupId>
+                <artifactId>erp-module-analytics-api</artifactId>
+                <version>${erp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.supermarket</groupId>
+                <artifactId>erp-module-finance-api</artifactId>
+                <version>${erp.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

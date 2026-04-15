@@ -41,3 +41,11 @@ spring:
           uri: lb://erp-online
           predicates:
             - Path=/api/v1/app/online/**
+        - id: erp-analytics
+          uri: lb://erp-analytics
+          predicates:
+            - Path=/api/v1/admin/analytics/**
+        - id: erp-finance
+          uri: lb://erp-finance
+          predicates:
+            - Path=/api/v1/admin/finance/**

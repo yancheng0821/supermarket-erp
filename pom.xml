@@ -22,6 +22,8 @@
         <module>erp-module-operation</module>
         <module>erp-module-member</module>
         <module>erp-module-online</module>
+        <module>erp-module-analytics</module>
+        <module>erp-module-finance</module>
     </modules>
 
     <properties>

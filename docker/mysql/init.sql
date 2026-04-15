@@ -788,3 +788,141 @@ CREATE TABLE IF NOT EXISTS onl_store_config (
     INDEX idx_tenant (tenant_id),
     UNIQUE INDEX uk_store (store_id, tenant_id)
 ) COMMENT 'Store online configuration';
+
+-- ==================== Finance Tables ====================
+
+CREATE TABLE IF NOT EXISTS fin_supplier_settlement (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    settlement_no VARCHAR(50) NOT NULL,
+    supplier_id BIGINT NOT NULL,
+    period_start DATE NOT NULL,
+    period_end DATE NOT NULL,
+    total_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    paid_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=draft, 1=confirmed, 2=paid, 3=cancelled',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_settlement_no (settlement_no, tenant_id),
+    INDEX idx_supplier (supplier_id)
+) COMMENT 'Supplier settlement';
+
+CREATE TABLE IF NOT EXISTS fin_store_settlement (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    settlement_no VARCHAR(50) NOT NULL,
+    store_id BIGINT NOT NULL,
+    period_start DATE NOT NULL,
+    period_end DATE NOT NULL,
+    sales_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    commission_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    net_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=draft, 1=confirmed, 2=paid, 3=cancelled',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_settlement_no (settlement_no, tenant_id),
+    INDEX idx_store (store_id)
+) COMMENT 'Store (franchise) settlement';
+
+CREATE TABLE IF NOT EXISTS fin_fee_record (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    fee_no VARCHAR(50) NOT NULL,
+    type TINYINT NOT NULL COMMENT '1=manual, 2=promo_compensation, 3=rebate',
+    target_type TINYINT NOT NULL COMMENT '1=supplier, 2=store',
+    target_id BIGINT NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=draft, 1=confirmed',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_fee_no (fee_no, tenant_id)
+) COMMENT 'Fee record';
+
+CREATE TABLE IF NOT EXISTS fin_voucher (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    voucher_no VARCHAR(50) NOT NULL,
+    biz_type VARCHAR(50) NOT NULL COMMENT 'e.g. purchase_receipt, sales, settlement',
+    biz_id BIGINT,
+    debit_account VARCHAR(100) NOT NULL,
+    credit_account VARCHAR(100) NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
+    period VARCHAR(10) COMMENT 'Accounting period e.g. 2026-04',
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=draft, 1=posted',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_voucher_no (voucher_no, tenant_id),
+    INDEX idx_biz (biz_type, biz_id)
+) COMMENT 'Financial voucher';
+
+-- ==================== Analytics Tables ====================
+
+CREATE TABLE IF NOT EXISTS rpt_daily_sales (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    report_date DATE NOT NULL,
+    sales_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    cost_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    profit_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    order_count INT NOT NULL DEFAULT 0,
+    customer_count INT NOT NULL DEFAULT 0,
+    avg_order_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_store_date (store_id, report_date, tenant_id)
+) COMMENT 'Daily sales report (aggregated)';
+
+CREATE TABLE IF NOT EXISTS rpt_product_sales (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    report_date DATE NOT NULL,
+    sales_quantity DECIMAL(12,2) NOT NULL DEFAULT 0,
+    sales_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    cost_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    profit_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_store_product_date (store_id, product_id, report_date, tenant_id)
+) COMMENT 'Product sales report (aggregated)';
+
+CREATE TABLE IF NOT EXISTS rpt_inventory_snapshot (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    location_type TINYINT NOT NULL,
+    location_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    snapshot_date DATE NOT NULL,
+    quantity DECIMAL(12,2) NOT NULL DEFAULT 0,
+    cost_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_location_product_date (location_type, location_id, product_id, snapshot_date, tenant_id)
+) COMMENT 'Inventory snapshot (daily)';
