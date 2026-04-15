@@ -17,3 +17,7 @@ spring:
           uri: lb://erp-archive
           predicates:
             - Path=/api/v1/admin/archive/**
+        - id: erp-inventory
+          uri: lb://erp-inventory
+          predicates:
+            - Path=/api/v1/admin/inventory/**

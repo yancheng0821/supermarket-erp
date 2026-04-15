@@ -249,3 +249,178 @@ CREATE TABLE IF NOT EXISTS arc_product_store (
     INDEX idx_tenant (tenant_id),
     UNIQUE INDEX uk_product_store (product_id, store_id, tenant_id)
 ) COMMENT 'Product-Store mapping table';
+
+-- ============================================================
+-- Inventory Module Tables
+-- ============================================================
+
+-- Stock
+CREATE TABLE IF NOT EXISTS inv_stock (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    location_id BIGINT NOT NULL COMMENT 'Location ID',
+    quantity DECIMAL(12,2) DEFAULT 0 COMMENT 'Current quantity',
+    cost_amount DECIMAL(12,2) DEFAULT 0 COMMENT 'Total cost amount',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_product_location (product_id, location_type, location_id, tenant_id),
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Inventory stock table';
+
+-- Stock Log
+CREATE TABLE IF NOT EXISTS inv_stock_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    location_id BIGINT NOT NULL COMMENT 'Location ID',
+    biz_type TINYINT NOT NULL COMMENT '1=receipt,2=issue,3=transfer_in,4=transfer_out,5=check_profit,6=check_loss',
+    biz_id BIGINT COMMENT 'Business order ID',
+    quantity_change DECIMAL(12,2) NOT NULL COMMENT 'Quantity change',
+    quantity_before DECIMAL(12,2) NOT NULL COMMENT 'Quantity before',
+    quantity_after DECIMAL(12,2) NOT NULL COMMENT 'Quantity after',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_product (product_id),
+    INDEX idx_biz (biz_type, biz_id)
+) COMMENT 'Inventory stock log table';
+
+-- Receipt Order
+CREATE TABLE IF NOT EXISTS inv_receipt_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_no VARCHAR(50) NOT NULL COMMENT 'Order number',
+    type TINYINT NOT NULL COMMENT '1=purchase,2=transfer,3=return',
+    location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    location_id BIGINT NOT NULL COMMENT 'Location ID',
+    supplier_id BIGINT COMMENT 'Supplier ID',
+    status TINYINT DEFAULT 0 COMMENT '0=draft,1=confirmed,2=cancelled',
+    remark VARCHAR(500) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_order_no (order_no, tenant_id),
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Receipt order table';
+
+-- Receipt Order Item
+CREATE TABLE IF NOT EXISTS inv_receipt_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_id BIGINT NOT NULL COMMENT 'Receipt order ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    quantity DECIMAL(12,2) NOT NULL COMMENT 'Quantity',
+    cost_price DECIMAL(12,2) COMMENT 'Cost price',
+    remark VARCHAR(200) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Receipt order item table';
+
+-- Issue Order
+CREATE TABLE IF NOT EXISTS inv_issue_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_no VARCHAR(50) NOT NULL COMMENT 'Order number',
+    type TINYINT NOT NULL COMMENT '1=sales,2=transfer,3=damage',
+    location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    location_id BIGINT NOT NULL COMMENT 'Location ID',
+    supplier_id BIGINT COMMENT 'Supplier ID',
+    status TINYINT DEFAULT 0 COMMENT '0=draft,1=confirmed,2=cancelled',
+    remark VARCHAR(500) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_order_no (order_no, tenant_id),
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Issue order table';
+
+-- Issue Order Item
+CREATE TABLE IF NOT EXISTS inv_issue_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_id BIGINT NOT NULL COMMENT 'Issue order ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    quantity DECIMAL(12,2) NOT NULL COMMENT 'Quantity',
+    cost_price DECIMAL(12,2) COMMENT 'Cost price',
+    remark VARCHAR(200) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Issue order item table';
+
+-- Transfer Order
+CREATE TABLE IF NOT EXISTS inv_transfer_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_no VARCHAR(50) NOT NULL COMMENT 'Order number',
+    from_location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    from_location_id BIGINT NOT NULL COMMENT 'From location ID',
+    to_location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    to_location_id BIGINT NOT NULL COMMENT 'To location ID',
+    status TINYINT DEFAULT 0 COMMENT '0=draft,1=in_transit,2=received,3=cancelled',
+    remark VARCHAR(500) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_order_no (order_no, tenant_id),
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Transfer order table';
+
+-- Transfer Order Item
+CREATE TABLE IF NOT EXISTS inv_transfer_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_id BIGINT NOT NULL COMMENT 'Transfer order ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    quantity DECIMAL(12,2) NOT NULL COMMENT 'Quantity',
+    remark VARCHAR(200) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Transfer order item table';
+
+-- Check Order (Stocktaking)
+CREATE TABLE IF NOT EXISTS inv_check_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_no VARCHAR(50) NOT NULL COMMENT 'Order number',
+    location_type TINYINT NOT NULL COMMENT '1=store,2=warehouse',
+    location_id BIGINT NOT NULL COMMENT 'Location ID',
+    status TINYINT DEFAULT 0 COMMENT '0=draft,1=counting,2=confirmed,3=cancelled',
+    remark VARCHAR(500) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_order_no (order_no, tenant_id),
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Check order table';
+
+-- Check Order Item
+CREATE TABLE IF NOT EXISTS inv_check_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL COMMENT 'Tenant ID',
+    order_id BIGINT NOT NULL COMMENT 'Check order ID',
+    product_id BIGINT NOT NULL COMMENT 'Product ID',
+    system_quantity DECIMAL(12,2) NOT NULL COMMENT 'System quantity',
+    actual_quantity DECIMAL(12,2) COMMENT 'Actual quantity',
+    diff_quantity DECIMAL(12,2) COMMENT 'Difference quantity',
+    remark VARCHAR(200) COMMENT 'Remark',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Check order item table';

@@ -17,6 +17,7 @@
         <module>erp-gateway</module>
         <module>erp-module-system</module>
         <module>erp-module-archive</module>
+        <module>erp-module-inventory</module>
     </modules>
 
     <properties>

@@ -152,6 +152,11 @@
                 <artifactId>erp-module-archive-api</artifactId>
                 <version>${erp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.supermarket</groupId>
+                <artifactId>erp-module-inventory-api</artifactId>
+                <version>${erp.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
