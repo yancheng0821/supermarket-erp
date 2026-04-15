@@ -11,10 +11,11 @@
     <name>supermarket-erp</name>
     <description>Multi-tenant SaaS Supermarket ERP System</description>
 
-    <!-- Modules added incrementally as they are created -->
     <modules>
         <module>erp-dependencies</module>
         <module>erp-framework</module>
+        <module>erp-gateway</module>
+        <module>erp-module-system</module>
     </modules>
 
     <properties>

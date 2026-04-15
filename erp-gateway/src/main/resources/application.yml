@@ -1,0 +1,15 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: erp-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: erp-system
+          uri: lb://erp-system
+          predicates:
+            - Path=/api/v1/admin/auth/**, /api/v1/admin/user/**, /api/v1/admin/role/**, /api/v1/admin/menu/**, /api/v1/admin/tenant/**
