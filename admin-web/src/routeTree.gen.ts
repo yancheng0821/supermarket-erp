@@ -39,6 +39,35 @@ import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_auth
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedPurchaseReplenishIndexRouteImport } from './routes/_authenticated/purchase/replenish/index'
+import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase/orders/index'
+import { Route as AuthenticatedOperationSalesIndexRouteImport } from './routes/_authenticated/operation/sales/index'
+import { Route as AuthenticatedOperationRefundsIndexRouteImport } from './routes/_authenticated/operation/refunds/index'
+import { Route as AuthenticatedOperationPaymentsIndexRouteImport } from './routes/_authenticated/operation/payments/index'
+import { Route as AuthenticatedOperationCashierShiftsIndexRouteImport } from './routes/_authenticated/operation/cashier-shifts/index'
+import { Route as AuthenticatedOnlineStoreConfigIndexRouteImport } from './routes/_authenticated/online/store-config/index'
+import { Route as AuthenticatedOnlineProductsIndexRouteImport } from './routes/_authenticated/online/products/index'
+import { Route as AuthenticatedOnlineDeliveriesIndexRouteImport } from './routes/_authenticated/online/deliveries/index'
+import { Route as AuthenticatedMemberPointsIndexRouteImport } from './routes/_authenticated/member/points/index'
+import { Route as AuthenticatedMemberMembersIndexRouteImport } from './routes/_authenticated/member/members/index'
+import { Route as AuthenticatedMemberCouponsIndexRouteImport } from './routes/_authenticated/member/coupons/index'
+import { Route as AuthenticatedInventoryTransfersIndexRouteImport } from './routes/_authenticated/inventory/transfers/index'
+import { Route as AuthenticatedInventoryStockIndexRouteImport } from './routes/_authenticated/inventory/stock/index'
+import { Route as AuthenticatedInventoryReceiptsIndexRouteImport } from './routes/_authenticated/inventory/receipts/index'
+import { Route as AuthenticatedInventoryIssuesIndexRouteImport } from './routes/_authenticated/inventory/issues/index'
+import { Route as AuthenticatedInventoryChecksIndexRouteImport } from './routes/_authenticated/inventory/checks/index'
+import { Route as AuthenticatedFinanceVouchersIndexRouteImport } from './routes/_authenticated/finance/vouchers/index'
+import { Route as AuthenticatedFinanceSupplierSettlementIndexRouteImport } from './routes/_authenticated/finance/supplier-settlement/index'
+import { Route as AuthenticatedFinanceStoreSettlementIndexRouteImport } from './routes/_authenticated/finance/store-settlement/index'
+import { Route as AuthenticatedFinanceFeesIndexRouteImport } from './routes/_authenticated/finance/fees/index'
+import { Route as AuthenticatedArchiveWarehousesIndexRouteImport } from './routes/_authenticated/archive/warehouses/index'
+import { Route as AuthenticatedArchiveSuppliersIndexRouteImport } from './routes/_authenticated/archive/suppliers/index'
+import { Route as AuthenticatedArchiveStoresIndexRouteImport } from './routes/_authenticated/archive/stores/index'
+import { Route as AuthenticatedArchiveProductsIndexRouteImport } from './routes/_authenticated/archive/products/index'
+import { Route as AuthenticatedArchiveCategoriesIndexRouteImport } from './routes/_authenticated/archive/categories/index'
+import { Route as AuthenticatedAnalyticsProductSalesIndexRouteImport } from './routes/_authenticated/analytics/product-sales/index'
+import { Route as AuthenticatedAnalyticsInventoryIndexRouteImport } from './routes/_authenticated/analytics/inventory/index'
+import { Route as AuthenticatedAnalyticsDailySalesIndexRouteImport } from './routes/_authenticated/analytics/daily-sales/index'
 
 const ClerkRouteRoute = ClerkRouteRouteImport.update({
   id: '/clerk',
@@ -196,6 +225,180 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPurchaseReplenishIndexRoute =
+  AuthenticatedPurchaseReplenishIndexRouteImport.update({
+    id: '/purchase/replenish/',
+    path: '/purchase/replenish/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPurchaseOrdersIndexRoute =
+  AuthenticatedPurchaseOrdersIndexRouteImport.update({
+    id: '/purchase/orders/',
+    path: '/purchase/orders/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOperationSalesIndexRoute =
+  AuthenticatedOperationSalesIndexRouteImport.update({
+    id: '/operation/sales/',
+    path: '/operation/sales/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOperationRefundsIndexRoute =
+  AuthenticatedOperationRefundsIndexRouteImport.update({
+    id: '/operation/refunds/',
+    path: '/operation/refunds/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOperationPaymentsIndexRoute =
+  AuthenticatedOperationPaymentsIndexRouteImport.update({
+    id: '/operation/payments/',
+    path: '/operation/payments/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOperationCashierShiftsIndexRoute =
+  AuthenticatedOperationCashierShiftsIndexRouteImport.update({
+    id: '/operation/cashier-shifts/',
+    path: '/operation/cashier-shifts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOnlineStoreConfigIndexRoute =
+  AuthenticatedOnlineStoreConfigIndexRouteImport.update({
+    id: '/online/store-config/',
+    path: '/online/store-config/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOnlineProductsIndexRoute =
+  AuthenticatedOnlineProductsIndexRouteImport.update({
+    id: '/online/products/',
+    path: '/online/products/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedOnlineDeliveriesIndexRoute =
+  AuthenticatedOnlineDeliveriesIndexRouteImport.update({
+    id: '/online/deliveries/',
+    path: '/online/deliveries/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMemberPointsIndexRoute =
+  AuthenticatedMemberPointsIndexRouteImport.update({
+    id: '/member/points/',
+    path: '/member/points/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMemberMembersIndexRoute =
+  AuthenticatedMemberMembersIndexRouteImport.update({
+    id: '/member/members/',
+    path: '/member/members/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedMemberCouponsIndexRoute =
+  AuthenticatedMemberCouponsIndexRouteImport.update({
+    id: '/member/coupons/',
+    path: '/member/coupons/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInventoryTransfersIndexRoute =
+  AuthenticatedInventoryTransfersIndexRouteImport.update({
+    id: '/inventory/transfers/',
+    path: '/inventory/transfers/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInventoryStockIndexRoute =
+  AuthenticatedInventoryStockIndexRouteImport.update({
+    id: '/inventory/stock/',
+    path: '/inventory/stock/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInventoryReceiptsIndexRoute =
+  AuthenticatedInventoryReceiptsIndexRouteImport.update({
+    id: '/inventory/receipts/',
+    path: '/inventory/receipts/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInventoryIssuesIndexRoute =
+  AuthenticatedInventoryIssuesIndexRouteImport.update({
+    id: '/inventory/issues/',
+    path: '/inventory/issues/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInventoryChecksIndexRoute =
+  AuthenticatedInventoryChecksIndexRouteImport.update({
+    id: '/inventory/checks/',
+    path: '/inventory/checks/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceVouchersIndexRoute =
+  AuthenticatedFinanceVouchersIndexRouteImport.update({
+    id: '/finance/vouchers/',
+    path: '/finance/vouchers/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceSupplierSettlementIndexRoute =
+  AuthenticatedFinanceSupplierSettlementIndexRouteImport.update({
+    id: '/finance/supplier-settlement/',
+    path: '/finance/supplier-settlement/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceStoreSettlementIndexRoute =
+  AuthenticatedFinanceStoreSettlementIndexRouteImport.update({
+    id: '/finance/store-settlement/',
+    path: '/finance/store-settlement/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedFinanceFeesIndexRoute =
+  AuthenticatedFinanceFeesIndexRouteImport.update({
+    id: '/finance/fees/',
+    path: '/finance/fees/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedArchiveWarehousesIndexRoute =
+  AuthenticatedArchiveWarehousesIndexRouteImport.update({
+    id: '/archive/warehouses/',
+    path: '/archive/warehouses/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedArchiveSuppliersIndexRoute =
+  AuthenticatedArchiveSuppliersIndexRouteImport.update({
+    id: '/archive/suppliers/',
+    path: '/archive/suppliers/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedArchiveStoresIndexRoute =
+  AuthenticatedArchiveStoresIndexRouteImport.update({
+    id: '/archive/stores/',
+    path: '/archive/stores/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedArchiveProductsIndexRoute =
+  AuthenticatedArchiveProductsIndexRouteImport.update({
+    id: '/archive/products/',
+    path: '/archive/products/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedArchiveCategoriesIndexRoute =
+  AuthenticatedArchiveCategoriesIndexRouteImport.update({
+    id: '/archive/categories/',
+    path: '/archive/categories/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAnalyticsProductSalesIndexRoute =
+  AuthenticatedAnalyticsProductSalesIndexRouteImport.update({
+    id: '/analytics/product-sales/',
+    path: '/analytics/product-sales/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAnalyticsInventoryIndexRoute =
+  AuthenticatedAnalyticsInventoryIndexRouteImport.update({
+    id: '/analytics/inventory/',
+    path: '/analytics/inventory/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAnalyticsDailySalesIndexRoute =
+  AuthenticatedAnalyticsDailySalesIndexRouteImport.update({
+    id: '/analytics/daily-sales/',
+    path: '/analytics/daily-sales/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -225,6 +428,35 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks/': typeof AuthenticatedTasksIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
+  '/analytics/daily-sales/': typeof AuthenticatedAnalyticsDailySalesIndexRoute
+  '/analytics/inventory/': typeof AuthenticatedAnalyticsInventoryIndexRoute
+  '/analytics/product-sales/': typeof AuthenticatedAnalyticsProductSalesIndexRoute
+  '/archive/categories/': typeof AuthenticatedArchiveCategoriesIndexRoute
+  '/archive/products/': typeof AuthenticatedArchiveProductsIndexRoute
+  '/archive/stores/': typeof AuthenticatedArchiveStoresIndexRoute
+  '/archive/suppliers/': typeof AuthenticatedArchiveSuppliersIndexRoute
+  '/archive/warehouses/': typeof AuthenticatedArchiveWarehousesIndexRoute
+  '/finance/fees/': typeof AuthenticatedFinanceFeesIndexRoute
+  '/finance/store-settlement/': typeof AuthenticatedFinanceStoreSettlementIndexRoute
+  '/finance/supplier-settlement/': typeof AuthenticatedFinanceSupplierSettlementIndexRoute
+  '/finance/vouchers/': typeof AuthenticatedFinanceVouchersIndexRoute
+  '/inventory/checks/': typeof AuthenticatedInventoryChecksIndexRoute
+  '/inventory/issues/': typeof AuthenticatedInventoryIssuesIndexRoute
+  '/inventory/receipts/': typeof AuthenticatedInventoryReceiptsIndexRoute
+  '/inventory/stock/': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory/transfers/': typeof AuthenticatedInventoryTransfersIndexRoute
+  '/member/coupons/': typeof AuthenticatedMemberCouponsIndexRoute
+  '/member/members/': typeof AuthenticatedMemberMembersIndexRoute
+  '/member/points/': typeof AuthenticatedMemberPointsIndexRoute
+  '/online/deliveries/': typeof AuthenticatedOnlineDeliveriesIndexRoute
+  '/online/products/': typeof AuthenticatedOnlineProductsIndexRoute
+  '/online/store-config/': typeof AuthenticatedOnlineStoreConfigIndexRoute
+  '/operation/cashier-shifts/': typeof AuthenticatedOperationCashierShiftsIndexRoute
+  '/operation/payments/': typeof AuthenticatedOperationPaymentsIndexRoute
+  '/operation/refunds/': typeof AuthenticatedOperationRefundsIndexRoute
+  '/operation/sales/': typeof AuthenticatedOperationSalesIndexRoute
+  '/purchase/orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/purchase/replenish/': typeof AuthenticatedPurchaseReplenishIndexRoute
 }
 export interface FileRoutesByTo {
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
@@ -253,6 +485,35 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/analytics/daily-sales': typeof AuthenticatedAnalyticsDailySalesIndexRoute
+  '/analytics/inventory': typeof AuthenticatedAnalyticsInventoryIndexRoute
+  '/analytics/product-sales': typeof AuthenticatedAnalyticsProductSalesIndexRoute
+  '/archive/categories': typeof AuthenticatedArchiveCategoriesIndexRoute
+  '/archive/products': typeof AuthenticatedArchiveProductsIndexRoute
+  '/archive/stores': typeof AuthenticatedArchiveStoresIndexRoute
+  '/archive/suppliers': typeof AuthenticatedArchiveSuppliersIndexRoute
+  '/archive/warehouses': typeof AuthenticatedArchiveWarehousesIndexRoute
+  '/finance/fees': typeof AuthenticatedFinanceFeesIndexRoute
+  '/finance/store-settlement': typeof AuthenticatedFinanceStoreSettlementIndexRoute
+  '/finance/supplier-settlement': typeof AuthenticatedFinanceSupplierSettlementIndexRoute
+  '/finance/vouchers': typeof AuthenticatedFinanceVouchersIndexRoute
+  '/inventory/checks': typeof AuthenticatedInventoryChecksIndexRoute
+  '/inventory/issues': typeof AuthenticatedInventoryIssuesIndexRoute
+  '/inventory/receipts': typeof AuthenticatedInventoryReceiptsIndexRoute
+  '/inventory/stock': typeof AuthenticatedInventoryStockIndexRoute
+  '/inventory/transfers': typeof AuthenticatedInventoryTransfersIndexRoute
+  '/member/coupons': typeof AuthenticatedMemberCouponsIndexRoute
+  '/member/members': typeof AuthenticatedMemberMembersIndexRoute
+  '/member/points': typeof AuthenticatedMemberPointsIndexRoute
+  '/online/deliveries': typeof AuthenticatedOnlineDeliveriesIndexRoute
+  '/online/products': typeof AuthenticatedOnlineProductsIndexRoute
+  '/online/store-config': typeof AuthenticatedOnlineStoreConfigIndexRoute
+  '/operation/cashier-shifts': typeof AuthenticatedOperationCashierShiftsIndexRoute
+  '/operation/payments': typeof AuthenticatedOperationPaymentsIndexRoute
+  '/operation/refunds': typeof AuthenticatedOperationRefundsIndexRoute
+  '/operation/sales': typeof AuthenticatedOperationSalesIndexRoute
+  '/purchase/orders': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/purchase/replenish': typeof AuthenticatedPurchaseReplenishIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -286,6 +547,35 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/analytics/daily-sales/': typeof AuthenticatedAnalyticsDailySalesIndexRoute
+  '/_authenticated/analytics/inventory/': typeof AuthenticatedAnalyticsInventoryIndexRoute
+  '/_authenticated/analytics/product-sales/': typeof AuthenticatedAnalyticsProductSalesIndexRoute
+  '/_authenticated/archive/categories/': typeof AuthenticatedArchiveCategoriesIndexRoute
+  '/_authenticated/archive/products/': typeof AuthenticatedArchiveProductsIndexRoute
+  '/_authenticated/archive/stores/': typeof AuthenticatedArchiveStoresIndexRoute
+  '/_authenticated/archive/suppliers/': typeof AuthenticatedArchiveSuppliersIndexRoute
+  '/_authenticated/archive/warehouses/': typeof AuthenticatedArchiveWarehousesIndexRoute
+  '/_authenticated/finance/fees/': typeof AuthenticatedFinanceFeesIndexRoute
+  '/_authenticated/finance/store-settlement/': typeof AuthenticatedFinanceStoreSettlementIndexRoute
+  '/_authenticated/finance/supplier-settlement/': typeof AuthenticatedFinanceSupplierSettlementIndexRoute
+  '/_authenticated/finance/vouchers/': typeof AuthenticatedFinanceVouchersIndexRoute
+  '/_authenticated/inventory/checks/': typeof AuthenticatedInventoryChecksIndexRoute
+  '/_authenticated/inventory/issues/': typeof AuthenticatedInventoryIssuesIndexRoute
+  '/_authenticated/inventory/receipts/': typeof AuthenticatedInventoryReceiptsIndexRoute
+  '/_authenticated/inventory/stock/': typeof AuthenticatedInventoryStockIndexRoute
+  '/_authenticated/inventory/transfers/': typeof AuthenticatedInventoryTransfersIndexRoute
+  '/_authenticated/member/coupons/': typeof AuthenticatedMemberCouponsIndexRoute
+  '/_authenticated/member/members/': typeof AuthenticatedMemberMembersIndexRoute
+  '/_authenticated/member/points/': typeof AuthenticatedMemberPointsIndexRoute
+  '/_authenticated/online/deliveries/': typeof AuthenticatedOnlineDeliveriesIndexRoute
+  '/_authenticated/online/products/': typeof AuthenticatedOnlineProductsIndexRoute
+  '/_authenticated/online/store-config/': typeof AuthenticatedOnlineStoreConfigIndexRoute
+  '/_authenticated/operation/cashier-shifts/': typeof AuthenticatedOperationCashierShiftsIndexRoute
+  '/_authenticated/operation/payments/': typeof AuthenticatedOperationPaymentsIndexRoute
+  '/_authenticated/operation/refunds/': typeof AuthenticatedOperationRefundsIndexRoute
+  '/_authenticated/operation/sales/': typeof AuthenticatedOperationSalesIndexRoute
+  '/_authenticated/purchase/orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
+  '/_authenticated/purchase/replenish/': typeof AuthenticatedPurchaseReplenishIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -317,6 +607,35 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/tasks/'
     | '/users/'
+    | '/analytics/daily-sales/'
+    | '/analytics/inventory/'
+    | '/analytics/product-sales/'
+    | '/archive/categories/'
+    | '/archive/products/'
+    | '/archive/stores/'
+    | '/archive/suppliers/'
+    | '/archive/warehouses/'
+    | '/finance/fees/'
+    | '/finance/store-settlement/'
+    | '/finance/supplier-settlement/'
+    | '/finance/vouchers/'
+    | '/inventory/checks/'
+    | '/inventory/issues/'
+    | '/inventory/receipts/'
+    | '/inventory/stock/'
+    | '/inventory/transfers/'
+    | '/member/coupons/'
+    | '/member/members/'
+    | '/member/points/'
+    | '/online/deliveries/'
+    | '/online/products/'
+    | '/online/store-config/'
+    | '/operation/cashier-shifts/'
+    | '/operation/payments/'
+    | '/operation/refunds/'
+    | '/operation/sales/'
+    | '/purchase/orders/'
+    | '/purchase/replenish/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/clerk'
@@ -345,6 +664,35 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/analytics/daily-sales'
+    | '/analytics/inventory'
+    | '/analytics/product-sales'
+    | '/archive/categories'
+    | '/archive/products'
+    | '/archive/stores'
+    | '/archive/suppliers'
+    | '/archive/warehouses'
+    | '/finance/fees'
+    | '/finance/store-settlement'
+    | '/finance/supplier-settlement'
+    | '/finance/vouchers'
+    | '/inventory/checks'
+    | '/inventory/issues'
+    | '/inventory/receipts'
+    | '/inventory/stock'
+    | '/inventory/transfers'
+    | '/member/coupons'
+    | '/member/members'
+    | '/member/points'
+    | '/online/deliveries'
+    | '/online/products'
+    | '/online/store-config'
+    | '/operation/cashier-shifts'
+    | '/operation/payments'
+    | '/operation/refunds'
+    | '/operation/sales'
+    | '/purchase/orders'
+    | '/purchase/replenish'
   id:
     | '__root__'
     | '/_authenticated'
@@ -377,6 +725,35 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/analytics/daily-sales/'
+    | '/_authenticated/analytics/inventory/'
+    | '/_authenticated/analytics/product-sales/'
+    | '/_authenticated/archive/categories/'
+    | '/_authenticated/archive/products/'
+    | '/_authenticated/archive/stores/'
+    | '/_authenticated/archive/suppliers/'
+    | '/_authenticated/archive/warehouses/'
+    | '/_authenticated/finance/fees/'
+    | '/_authenticated/finance/store-settlement/'
+    | '/_authenticated/finance/supplier-settlement/'
+    | '/_authenticated/finance/vouchers/'
+    | '/_authenticated/inventory/checks/'
+    | '/_authenticated/inventory/issues/'
+    | '/_authenticated/inventory/receipts/'
+    | '/_authenticated/inventory/stock/'
+    | '/_authenticated/inventory/transfers/'
+    | '/_authenticated/member/coupons/'
+    | '/_authenticated/member/members/'
+    | '/_authenticated/member/points/'
+    | '/_authenticated/online/deliveries/'
+    | '/_authenticated/online/products/'
+    | '/_authenticated/online/store-config/'
+    | '/_authenticated/operation/cashier-shifts/'
+    | '/_authenticated/operation/payments/'
+    | '/_authenticated/operation/refunds/'
+    | '/_authenticated/operation/sales/'
+    | '/_authenticated/purchase/orders/'
+    | '/_authenticated/purchase/replenish/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -606,6 +983,209 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/purchase/replenish/': {
+      id: '/_authenticated/purchase/replenish/'
+      path: '/purchase/replenish'
+      fullPath: '/purchase/replenish/'
+      preLoaderRoute: typeof AuthenticatedPurchaseReplenishIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/purchase/orders/': {
+      id: '/_authenticated/purchase/orders/'
+      path: '/purchase/orders'
+      fullPath: '/purchase/orders/'
+      preLoaderRoute: typeof AuthenticatedPurchaseOrdersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operation/sales/': {
+      id: '/_authenticated/operation/sales/'
+      path: '/operation/sales'
+      fullPath: '/operation/sales/'
+      preLoaderRoute: typeof AuthenticatedOperationSalesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operation/refunds/': {
+      id: '/_authenticated/operation/refunds/'
+      path: '/operation/refunds'
+      fullPath: '/operation/refunds/'
+      preLoaderRoute: typeof AuthenticatedOperationRefundsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operation/payments/': {
+      id: '/_authenticated/operation/payments/'
+      path: '/operation/payments'
+      fullPath: '/operation/payments/'
+      preLoaderRoute: typeof AuthenticatedOperationPaymentsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operation/cashier-shifts/': {
+      id: '/_authenticated/operation/cashier-shifts/'
+      path: '/operation/cashier-shifts'
+      fullPath: '/operation/cashier-shifts/'
+      preLoaderRoute: typeof AuthenticatedOperationCashierShiftsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/online/store-config/': {
+      id: '/_authenticated/online/store-config/'
+      path: '/online/store-config'
+      fullPath: '/online/store-config/'
+      preLoaderRoute: typeof AuthenticatedOnlineStoreConfigIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/online/products/': {
+      id: '/_authenticated/online/products/'
+      path: '/online/products'
+      fullPath: '/online/products/'
+      preLoaderRoute: typeof AuthenticatedOnlineProductsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/online/deliveries/': {
+      id: '/_authenticated/online/deliveries/'
+      path: '/online/deliveries'
+      fullPath: '/online/deliveries/'
+      preLoaderRoute: typeof AuthenticatedOnlineDeliveriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/member/points/': {
+      id: '/_authenticated/member/points/'
+      path: '/member/points'
+      fullPath: '/member/points/'
+      preLoaderRoute: typeof AuthenticatedMemberPointsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/member/members/': {
+      id: '/_authenticated/member/members/'
+      path: '/member/members'
+      fullPath: '/member/members/'
+      preLoaderRoute: typeof AuthenticatedMemberMembersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/member/coupons/': {
+      id: '/_authenticated/member/coupons/'
+      path: '/member/coupons'
+      fullPath: '/member/coupons/'
+      preLoaderRoute: typeof AuthenticatedMemberCouponsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventory/transfers/': {
+      id: '/_authenticated/inventory/transfers/'
+      path: '/inventory/transfers'
+      fullPath: '/inventory/transfers/'
+      preLoaderRoute: typeof AuthenticatedInventoryTransfersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventory/stock/': {
+      id: '/_authenticated/inventory/stock/'
+      path: '/inventory/stock'
+      fullPath: '/inventory/stock/'
+      preLoaderRoute: typeof AuthenticatedInventoryStockIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventory/receipts/': {
+      id: '/_authenticated/inventory/receipts/'
+      path: '/inventory/receipts'
+      fullPath: '/inventory/receipts/'
+      preLoaderRoute: typeof AuthenticatedInventoryReceiptsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventory/issues/': {
+      id: '/_authenticated/inventory/issues/'
+      path: '/inventory/issues'
+      fullPath: '/inventory/issues/'
+      preLoaderRoute: typeof AuthenticatedInventoryIssuesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/inventory/checks/': {
+      id: '/_authenticated/inventory/checks/'
+      path: '/inventory/checks'
+      fullPath: '/inventory/checks/'
+      preLoaderRoute: typeof AuthenticatedInventoryChecksIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/finance/vouchers/': {
+      id: '/_authenticated/finance/vouchers/'
+      path: '/finance/vouchers'
+      fullPath: '/finance/vouchers/'
+      preLoaderRoute: typeof AuthenticatedFinanceVouchersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/finance/supplier-settlement/': {
+      id: '/_authenticated/finance/supplier-settlement/'
+      path: '/finance/supplier-settlement'
+      fullPath: '/finance/supplier-settlement/'
+      preLoaderRoute: typeof AuthenticatedFinanceSupplierSettlementIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/finance/store-settlement/': {
+      id: '/_authenticated/finance/store-settlement/'
+      path: '/finance/store-settlement'
+      fullPath: '/finance/store-settlement/'
+      preLoaderRoute: typeof AuthenticatedFinanceStoreSettlementIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/finance/fees/': {
+      id: '/_authenticated/finance/fees/'
+      path: '/finance/fees'
+      fullPath: '/finance/fees/'
+      preLoaderRoute: typeof AuthenticatedFinanceFeesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/archive/warehouses/': {
+      id: '/_authenticated/archive/warehouses/'
+      path: '/archive/warehouses'
+      fullPath: '/archive/warehouses/'
+      preLoaderRoute: typeof AuthenticatedArchiveWarehousesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/archive/suppliers/': {
+      id: '/_authenticated/archive/suppliers/'
+      path: '/archive/suppliers'
+      fullPath: '/archive/suppliers/'
+      preLoaderRoute: typeof AuthenticatedArchiveSuppliersIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/archive/stores/': {
+      id: '/_authenticated/archive/stores/'
+      path: '/archive/stores'
+      fullPath: '/archive/stores/'
+      preLoaderRoute: typeof AuthenticatedArchiveStoresIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/archive/products/': {
+      id: '/_authenticated/archive/products/'
+      path: '/archive/products'
+      fullPath: '/archive/products/'
+      preLoaderRoute: typeof AuthenticatedArchiveProductsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/archive/categories/': {
+      id: '/_authenticated/archive/categories/'
+      path: '/archive/categories'
+      fullPath: '/archive/categories/'
+      preLoaderRoute: typeof AuthenticatedArchiveCategoriesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analytics/product-sales/': {
+      id: '/_authenticated/analytics/product-sales/'
+      path: '/analytics/product-sales'
+      fullPath: '/analytics/product-sales/'
+      preLoaderRoute: typeof AuthenticatedAnalyticsProductSalesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analytics/inventory/': {
+      id: '/_authenticated/analytics/inventory/'
+      path: '/analytics/inventory'
+      fullPath: '/analytics/inventory/'
+      preLoaderRoute: typeof AuthenticatedAnalyticsInventoryIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analytics/daily-sales/': {
+      id: '/_authenticated/analytics/daily-sales/'
+      path: '/analytics/daily-sales'
+      fullPath: '/analytics/daily-sales/'
+      preLoaderRoute: typeof AuthenticatedAnalyticsDailySalesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -641,6 +1221,35 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedAnalyticsDailySalesIndexRoute: typeof AuthenticatedAnalyticsDailySalesIndexRoute
+  AuthenticatedAnalyticsInventoryIndexRoute: typeof AuthenticatedAnalyticsInventoryIndexRoute
+  AuthenticatedAnalyticsProductSalesIndexRoute: typeof AuthenticatedAnalyticsProductSalesIndexRoute
+  AuthenticatedArchiveCategoriesIndexRoute: typeof AuthenticatedArchiveCategoriesIndexRoute
+  AuthenticatedArchiveProductsIndexRoute: typeof AuthenticatedArchiveProductsIndexRoute
+  AuthenticatedArchiveStoresIndexRoute: typeof AuthenticatedArchiveStoresIndexRoute
+  AuthenticatedArchiveSuppliersIndexRoute: typeof AuthenticatedArchiveSuppliersIndexRoute
+  AuthenticatedArchiveWarehousesIndexRoute: typeof AuthenticatedArchiveWarehousesIndexRoute
+  AuthenticatedFinanceFeesIndexRoute: typeof AuthenticatedFinanceFeesIndexRoute
+  AuthenticatedFinanceStoreSettlementIndexRoute: typeof AuthenticatedFinanceStoreSettlementIndexRoute
+  AuthenticatedFinanceSupplierSettlementIndexRoute: typeof AuthenticatedFinanceSupplierSettlementIndexRoute
+  AuthenticatedFinanceVouchersIndexRoute: typeof AuthenticatedFinanceVouchersIndexRoute
+  AuthenticatedInventoryChecksIndexRoute: typeof AuthenticatedInventoryChecksIndexRoute
+  AuthenticatedInventoryIssuesIndexRoute: typeof AuthenticatedInventoryIssuesIndexRoute
+  AuthenticatedInventoryReceiptsIndexRoute: typeof AuthenticatedInventoryReceiptsIndexRoute
+  AuthenticatedInventoryStockIndexRoute: typeof AuthenticatedInventoryStockIndexRoute
+  AuthenticatedInventoryTransfersIndexRoute: typeof AuthenticatedInventoryTransfersIndexRoute
+  AuthenticatedMemberCouponsIndexRoute: typeof AuthenticatedMemberCouponsIndexRoute
+  AuthenticatedMemberMembersIndexRoute: typeof AuthenticatedMemberMembersIndexRoute
+  AuthenticatedMemberPointsIndexRoute: typeof AuthenticatedMemberPointsIndexRoute
+  AuthenticatedOnlineDeliveriesIndexRoute: typeof AuthenticatedOnlineDeliveriesIndexRoute
+  AuthenticatedOnlineProductsIndexRoute: typeof AuthenticatedOnlineProductsIndexRoute
+  AuthenticatedOnlineStoreConfigIndexRoute: typeof AuthenticatedOnlineStoreConfigIndexRoute
+  AuthenticatedOperationCashierShiftsIndexRoute: typeof AuthenticatedOperationCashierShiftsIndexRoute
+  AuthenticatedOperationPaymentsIndexRoute: typeof AuthenticatedOperationPaymentsIndexRoute
+  AuthenticatedOperationRefundsIndexRoute: typeof AuthenticatedOperationRefundsIndexRoute
+  AuthenticatedOperationSalesIndexRoute: typeof AuthenticatedOperationSalesIndexRoute
+  AuthenticatedPurchaseOrdersIndexRoute: typeof AuthenticatedPurchaseOrdersIndexRoute
+  AuthenticatedPurchaseReplenishIndexRoute: typeof AuthenticatedPurchaseReplenishIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -652,6 +1261,55 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedAnalyticsDailySalesIndexRoute:
+    AuthenticatedAnalyticsDailySalesIndexRoute,
+  AuthenticatedAnalyticsInventoryIndexRoute:
+    AuthenticatedAnalyticsInventoryIndexRoute,
+  AuthenticatedAnalyticsProductSalesIndexRoute:
+    AuthenticatedAnalyticsProductSalesIndexRoute,
+  AuthenticatedArchiveCategoriesIndexRoute:
+    AuthenticatedArchiveCategoriesIndexRoute,
+  AuthenticatedArchiveProductsIndexRoute:
+    AuthenticatedArchiveProductsIndexRoute,
+  AuthenticatedArchiveStoresIndexRoute: AuthenticatedArchiveStoresIndexRoute,
+  AuthenticatedArchiveSuppliersIndexRoute:
+    AuthenticatedArchiveSuppliersIndexRoute,
+  AuthenticatedArchiveWarehousesIndexRoute:
+    AuthenticatedArchiveWarehousesIndexRoute,
+  AuthenticatedFinanceFeesIndexRoute: AuthenticatedFinanceFeesIndexRoute,
+  AuthenticatedFinanceStoreSettlementIndexRoute:
+    AuthenticatedFinanceStoreSettlementIndexRoute,
+  AuthenticatedFinanceSupplierSettlementIndexRoute:
+    AuthenticatedFinanceSupplierSettlementIndexRoute,
+  AuthenticatedFinanceVouchersIndexRoute:
+    AuthenticatedFinanceVouchersIndexRoute,
+  AuthenticatedInventoryChecksIndexRoute:
+    AuthenticatedInventoryChecksIndexRoute,
+  AuthenticatedInventoryIssuesIndexRoute:
+    AuthenticatedInventoryIssuesIndexRoute,
+  AuthenticatedInventoryReceiptsIndexRoute:
+    AuthenticatedInventoryReceiptsIndexRoute,
+  AuthenticatedInventoryStockIndexRoute: AuthenticatedInventoryStockIndexRoute,
+  AuthenticatedInventoryTransfersIndexRoute:
+    AuthenticatedInventoryTransfersIndexRoute,
+  AuthenticatedMemberCouponsIndexRoute: AuthenticatedMemberCouponsIndexRoute,
+  AuthenticatedMemberMembersIndexRoute: AuthenticatedMemberMembersIndexRoute,
+  AuthenticatedMemberPointsIndexRoute: AuthenticatedMemberPointsIndexRoute,
+  AuthenticatedOnlineDeliveriesIndexRoute:
+    AuthenticatedOnlineDeliveriesIndexRoute,
+  AuthenticatedOnlineProductsIndexRoute: AuthenticatedOnlineProductsIndexRoute,
+  AuthenticatedOnlineStoreConfigIndexRoute:
+    AuthenticatedOnlineStoreConfigIndexRoute,
+  AuthenticatedOperationCashierShiftsIndexRoute:
+    AuthenticatedOperationCashierShiftsIndexRoute,
+  AuthenticatedOperationPaymentsIndexRoute:
+    AuthenticatedOperationPaymentsIndexRoute,
+  AuthenticatedOperationRefundsIndexRoute:
+    AuthenticatedOperationRefundsIndexRoute,
+  AuthenticatedOperationSalesIndexRoute: AuthenticatedOperationSalesIndexRoute,
+  AuthenticatedPurchaseOrdersIndexRoute: AuthenticatedPurchaseOrdersIndexRoute,
+  AuthenticatedPurchaseReplenishIndexRoute:
+    AuthenticatedPurchaseReplenishIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
