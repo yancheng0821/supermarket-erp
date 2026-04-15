@@ -29,3 +29,7 @@ spring:
           uri: lb://erp-operation
           predicates:
             - Path=/api/v1/admin/operation/**
+        - id: erp-member
+          uri: lb://erp-member
+          predicates:
+            - Path=/api/v1/admin/member/**

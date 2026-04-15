@@ -588,3 +588,120 @@ CREATE TABLE IF NOT EXISTS opr_refund (
     INDEX idx_order (order_id),
     UNIQUE INDEX uk_refund_no (refund_no, tenant_id)
 ) COMMENT 'Refund/after-sales order';
+
+-- ==================== Member Tables ====================
+
+CREATE TABLE IF NOT EXISTS mbr_member (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    name VARCHAR(50),
+    nickname VARCHAR(50),
+    gender TINYINT COMMENT '0=unknown, 1=male, 2=female',
+    birthday DATE,
+    avatar VARCHAR(500),
+    openid VARCHAR(100) COMMENT 'WeChat openid',
+    level TINYINT NOT NULL DEFAULT 1 COMMENT 'Member level',
+    status TINYINT NOT NULL DEFAULT 0,
+    register_store_id BIGINT COMMENT 'Registration store',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_phone (phone, tenant_id),
+    INDEX idx_openid (openid)
+) COMMENT 'Member table';
+
+CREATE TABLE IF NOT EXISTS mbr_member_card (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    card_no VARCHAR(50) NOT NULL,
+    level TINYINT NOT NULL DEFAULT 1 COMMENT '1=normal, 2=silver, 3=gold, 4=platinum',
+    balance DECIMAL(12,2) NOT NULL DEFAULT 0,
+    points INT NOT NULL DEFAULT 0,
+    total_spend DECIMAL(12,2) NOT NULL DEFAULT 0 COMMENT 'Cumulative spending',
+    status TINYINT NOT NULL DEFAULT 0,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_card_no (card_no, tenant_id),
+    INDEX idx_member (member_id)
+) COMMENT 'Member card';
+
+CREATE TABLE IF NOT EXISTS mbr_points_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    card_id BIGINT NOT NULL,
+    type TINYINT NOT NULL COMMENT '1=earn, 2=redeem, 3=expire, 4=adjust',
+    points INT NOT NULL COMMENT 'Change amount (+/-)',
+    points_before INT NOT NULL,
+    points_after INT NOT NULL,
+    biz_type VARCHAR(50) COMMENT 'e.g. purchase, checkin, redeem',
+    biz_id BIGINT,
+    remark VARCHAR(200),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_member (member_id)
+) COMMENT 'Points movement journal';
+
+CREATE TABLE IF NOT EXISTS mbr_balance_log (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    card_id BIGINT NOT NULL,
+    type TINYINT NOT NULL COMMENT '1=topup, 2=spend, 3=refund, 4=adjust',
+    amount DECIMAL(12,2) NOT NULL COMMENT 'Change amount (+/-)',
+    balance_before DECIMAL(12,2) NOT NULL,
+    balance_after DECIMAL(12,2) NOT NULL,
+    biz_type VARCHAR(50),
+    biz_id BIGINT,
+    remark VARCHAR(200),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_member (member_id)
+) COMMENT 'Balance movement journal';
+
+CREATE TABLE IF NOT EXISTS mbr_coupon (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    type TINYINT NOT NULL COMMENT '1=threshold_discount, 2=percentage_off, 3=category_coupon',
+    discount_value DECIMAL(12,2) COMMENT 'Discount amount or percentage',
+    min_spend DECIMAL(12,2) DEFAULT 0 COMMENT 'Minimum spend to use',
+    category_id BIGINT COMMENT 'Applicable category (for type=3)',
+    total_count INT NOT NULL DEFAULT 0 COMMENT 'Total issued',
+    used_count INT NOT NULL DEFAULT 0,
+    start_time DATETIME,
+    end_time DATETIME,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=active, 1=disabled',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id)
+) COMMENT 'Coupon template';
+
+CREATE TABLE IF NOT EXISTS mbr_coupon_instance (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    coupon_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=unused, 1=used, 2=expired',
+    use_time DATETIME,
+    use_order_id BIGINT COMMENT 'Order that used this coupon',
+    expire_time DATETIME,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_member (member_id),
+    INDEX idx_coupon (coupon_id)
+) COMMENT 'Coupon instance (user-held)';

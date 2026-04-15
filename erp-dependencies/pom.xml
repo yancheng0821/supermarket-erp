@@ -167,6 +167,11 @@
                 <artifactId>erp-module-operation-api</artifactId>
                 <version>${erp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.supermarket</groupId>
+                <artifactId>erp-module-member-api</artifactId>
+                <version>${erp.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
