@@ -36,6 +36,16 @@ export function FeeRecordsPage() {
     paid: { label: t('finance.supplierSettlement.pay'), variant: 'default' },
     cancelled: { label: t('inventory.receipt.cancelled'), variant: 'destructive' },
   }
+  const typeMap: Record<string, string> = {
+    delivery: t('online.deliveries.delivery'),
+    platform: t('finance.fees.platform'),
+    service: t('finance.fees.service'),
+    other: t('finance.fees.other'),
+  }
+  const targetTypeMap: Record<string, string> = {
+    store: t('purchase.replenish.store'),
+    supplier: t('purchase.orders.supplier'),
+  }
 
   const [data, setData] = useState<FeeRecord[]>([])
   const [total, setTotal] = useState(0)
@@ -103,8 +113,8 @@ export function FeeRecordsPage() {
               <TableRow>
                 <TableHead>{t('finance.fees.feeNo')}</TableHead>
                 <TableHead>{t('purchase.orders.type')}</TableHead>
-                <TableHead>Target Type</TableHead>
-                <TableHead>Target ID</TableHead>
+                <TableHead>{t('finance.fees.targetType')}</TableHead>
+                <TableHead>{t('finance.fees.targetId')}</TableHead>
                 <TableHead>{t('operation.payments.amount')}</TableHead>
                 <TableHead>{t('common.status')}</TableHead>
                 <TableHead>{t('common.actions')}</TableHead>
@@ -114,8 +124,10 @@ export function FeeRecordsPage() {
               {data.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell className='font-medium'>{item.feeNo}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.targetType}</TableCell>
+                  <TableCell>{typeMap[item.type] || item.type}</TableCell>
+                  <TableCell>
+                    {targetTypeMap[item.targetType] || item.targetType}
+                  </TableCell>
                   <TableCell>{item.targetId}</TableCell>
                   <TableCell>{item.amount.toFixed(2)}</TableCell>
                   <TableCell>
@@ -153,14 +165,16 @@ export function FeeRecordsPage() {
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value='delivery'>{t('online.deliveries.delivery')}</SelectItem>
-                  <SelectItem value='platform'>Platform</SelectItem>
-                  <SelectItem value='service'>Service</SelectItem>
-                  <SelectItem value='other'>Other</SelectItem>
+                  <SelectItem value='platform'>{t('finance.fees.platform')}</SelectItem>
+                  <SelectItem value='service'>{t('finance.fees.service')}</SelectItem>
+                  <SelectItem value='other'>{t('finance.fees.other')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className='text-sm font-medium'>Target Type</label>
+              <label className='text-sm font-medium'>
+                {t('finance.fees.targetType')}
+              </label>
               <Select value={form.targetType} onValueChange={(v) => setForm({ ...form, targetType: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -170,7 +184,9 @@ export function FeeRecordsPage() {
               </Select>
             </div>
             <div>
-              <label className='text-sm font-medium'>Target ID</label>
+              <label className='text-sm font-medium'>
+                {t('finance.fees.targetId')}
+              </label>
               <Input type='number' value={form.targetId} onChange={(e) => setForm({ ...form, targetId: Number(e.target.value) })} />
             </div>
             <div>

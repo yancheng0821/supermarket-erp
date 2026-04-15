@@ -1,5 +1,7 @@
 import { format } from 'date-fns'
+import { enUS, zhCN } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -17,8 +19,11 @@ type DatePickerProps = {
 export function DatePicker({
   selected,
   onSelect,
-  placeholder = 'Pick a date',
+  placeholder,
 }: DatePickerProps) {
+  const { i18n, t } = useTranslation()
+  const locale = i18n.language.startsWith('zh') ? zhCN : enUS
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -28,15 +33,16 @@ export function DatePicker({
           className='w-[240px] justify-start text-start font-normal data-[empty=true]:text-muted-foreground'
         >
           {selected ? (
-            format(selected, 'MMM d, yyyy')
+            format(selected, 'PPP', { locale })
           ) : (
-            <span>{placeholder}</span>
+            <span>{placeholder ?? t('common.pickDate')}</span>
           )}
           <CalendarIcon className='ms-auto h-4 w-4 opacity-50' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className='w-auto p-0'>
         <Calendar
+          locale={locale}
           mode='single'
           captionLayout='dropdown'
           selected={selected}

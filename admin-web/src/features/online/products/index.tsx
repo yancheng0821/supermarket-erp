@@ -102,7 +102,7 @@ export function OnlineProductsPage() {
               <TableRow>
                 <TableHead>{t('inventory.stock.productId')}</TableHead>
                 <TableHead>{t('purchase.replenish.store')}</TableHead>
-                <TableHead>Image</TableHead>
+                <TableHead>{t('online.products.image')}</TableHead>
                 <TableHead>{t('archive.categories.sort')}</TableHead>
                 <TableHead>{t('common.status')}</TableHead>
                 <TableHead>{t('common.actions')}</TableHead>
@@ -115,7 +115,11 @@ export function OnlineProductsPage() {
                   <TableCell>{item.storeName}</TableCell>
                   <TableCell>
                     {item.mainImage ? (
-                      <img src={item.mainImage} alt='product' className='h-10 w-10 rounded object-cover' />
+                      <img
+                        src={item.mainImage}
+                        alt={t('online.products.productImageAlt')}
+                        className='h-10 w-10 rounded object-cover'
+                      />
                     ) : '-'}
                   </TableCell>
                   <TableCell>{item.sort}</TableCell>
@@ -157,7 +161,9 @@ export function OnlineProductsPage() {
               <Input value={form.storeName} onChange={(e) => setForm({ ...form, storeName: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Image URL</label>
+              <label className='text-sm font-medium'>
+                {t('online.products.imageUrl')}
+              </label>
               <Input value={form.mainImage} onChange={(e) => setForm({ ...form, mainImage: e.target.value })} />
             </div>
             <div>

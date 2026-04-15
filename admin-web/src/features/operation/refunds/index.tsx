@@ -75,7 +75,7 @@ export function RefundsPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>{t('operation.refunds.refundNo')}</TableHead>
-                <TableHead>Order ID</TableHead>
+                <TableHead>{t('operation.refunds.orderId')}</TableHead>
                 <TableHead>{t('operation.refunds.refundAmount')}</TableHead>
                 <TableHead>{t('operation.refunds.reason')}</TableHead>
                 <TableHead>{t('common.status')}</TableHead>

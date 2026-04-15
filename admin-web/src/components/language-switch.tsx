@@ -9,7 +9,7 @@ import {
 import { Languages } from 'lucide-react'
 
 export function LanguageSwitch() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng)
@@ -21,7 +21,7 @@ export function LanguageSwitch() {
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='icon' className='scale-95 rounded-full'>
           <Languages className='h-[1.2rem] w-[1.2rem]' />
-          <span className='sr-only'>Switch language</span>
+          <span className='sr-only'>{t('common.switchLanguage')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end'>

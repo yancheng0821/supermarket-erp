@@ -29,11 +29,33 @@
     "searchByName": "Search by name...",
     "deleteConfirm": "Are you sure you want to delete?",
     "operationSuccess": "Operation successful",
-    "operationFailed": "Operation failed"
+    "operationFailed": "Operation failed",
+    "continue": "Continue",
+    "reset": "Reset",
+    "close": "Close",
+    "goBack": "Go Back",
+    "backToHome": "Back to Home",
+    "learnMore": "Learn more",
+    "noResults": "No results found.",
+    "pickDate": "Pick a date",
+    "profile": "Profile",
+    "billing": "Billing",
+    "upgradeToPro": "Upgrade to Pro",
+    "newTeam": "New Team",
+    "teams": "Teams",
+    "addTeam": "Add team",
+    "toggleSidebar": "Toggle sidebar",
+    "toggleTheme": "Toggle theme",
+    "switchLanguage": "Switch language",
+    "openMenu": "Open menu",
+    "contentNotModified": "Content not modified!",
+    "sessionExpired": "Session expired!",
+    "select": "Select"
   },
   "sidebar": {
     "overview": "Overview",
     "dashboard": "Dashboard",
+    "businessModules": "Business Modules",
     "archive": "Archive",
     "stores": "Stores",
     "warehouses": "Warehouses",
@@ -88,7 +110,94 @@
     "forgotPassword": "Forgot password?",
     "welcomeBack": "Welcome back",
     "enterCredentials": "Enter your credentials to sign in",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "signOutDescription": "Are you sure you want to sign out? You will need to sign in again to access your account."
+  },
+  "app": {
+    "name": "Supermarket ERP",
+    "tagline": "Multi-tenant SaaS",
+    "comingSoonTitle": "Coming Soon!",
+    "comingSoonDescription": "This page has not been created yet. Stay tuned."
+  },
+  "commandMenu": {
+    "title": "Command Palette",
+    "description": "Search for a command to run...",
+    "placeholder": "Type a command or search...",
+    "theme": "Theme"
+  },
+  "dataTable": {
+    "view": "View",
+    "toggleColumns": "Toggle columns",
+    "rowsPerPage": "Rows per page",
+    "pageStatus": "Page {{currentPage}} of {{totalPages}}",
+    "goToFirstPage": "Go to first page",
+    "goToPreviousPage": "Go to previous page",
+    "goToNextPage": "Go to next page",
+    "goToLastPage": "Go to last page",
+    "goToPage": "Go to page {{page}}",
+    "clearSelection": "Clear selection",
+    "clearSelectionShortcut": "Clear selection (Escape)",
+    "selected": "selected",
+    "filtersSelected": "{{count}} selected",
+    "clearFilters": "Clear filters",
+    "filterPlaceholder": "Filter...",
+    "bulkActionsAriaLabel": "Bulk actions for {{count}} selected {{entity}}",
+    "selectionAnnouncement": "{{count}} {{entity}} selected. Bulk actions toolbar is available.",
+    "sortAsc": "Asc",
+    "sortDesc": "Desc",
+    "hide": "Hide"
+  },
+  "configDrawer": {
+    "openSettings": "Open theme settings",
+    "title": "Theme Settings",
+    "description": "Adjust the appearance and layout to suit your preferences.",
+    "resetAllSettings": "Reset all settings to default values",
+    "theme": "Theme",
+    "themeDescription": "Choose between system preference, light mode, or dark mode",
+    "sidebar": "Sidebar",
+    "sidebarDescription": "Choose between inset, floating, or standard sidebar layout",
+    "layout": "Layout",
+    "layoutDescription": "Choose between default expanded, compact icon-only, or full layout mode",
+    "direction": "Direction",
+    "directionDescription": "Choose between left-to-right or right-to-left site direction",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "inset": "Inset",
+    "floating": "Floating",
+    "default": "Default",
+    "compact": "Compact",
+    "fullLayout": "Full layout",
+    "leftToRight": "Left to Right",
+    "rightToLeft": "Right to Left",
+    "mobileSidebarDescription": "Displays the mobile sidebar.",
+    "selectOption": "Select {{option}}",
+    "optionPreview": "{{option}} option preview"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong!",
+    "contentNotFound": "Content not found.",
+    "internalServerError": "Internal Server Error!",
+    "unauthorized": {
+      "title": "Unauthorized Access",
+      "description": "Please log in with the appropriate credentials to access this resource."
+    },
+    "forbidden": {
+      "title": "Access Forbidden",
+      "description": "You don't have the necessary permission to view this resource."
+    },
+    "notFound": {
+      "title": "Oops! Page Not Found!",
+      "description": "It seems like the page you're looking for does not exist or might have been removed."
+    },
+    "general": {
+      "title": "Oops! Something went wrong",
+      "description": "We apologize for the inconvenience. Please try again later."
+    },
+    "maintenance": {
+      "title": "Website is under maintenance!",
+      "description": "The site is not available at the moment. We'll be back online shortly."
+    }
   },
   "dashboard": {
     "title": "Dashboard",
@@ -260,6 +369,7 @@
       "title": "Payments",
       "description": "View payment records.",
       "paymentNo": "Payment No",
+      "orderId": "Order ID",
       "method": "Method",
       "cash": "Cash",
       "wechat": "WeChat Pay",
@@ -284,6 +394,7 @@
       "title": "Refunds",
       "description": "Manage refund requests.",
       "refundNo": "Refund No",
+      "orderId": "Order ID",
       "refundAmount": "Refund Amount",
       "reason": "Reason",
       "reject": "Reject",
@@ -329,7 +440,10 @@
   "online": {
     "products": {
       "title": "Online Products",
-      "description": "Manage online product display."
+      "description": "Manage online product display.",
+      "image": "Image",
+      "imageUrl": "Image URL",
+      "productImageAlt": "Product image"
     },
     "deliveries": {
       "title": "Delivery Orders",
@@ -370,6 +484,11 @@
       "title": "Fee Records",
       "description": "Manage fee records.",
       "feeNo": "Fee No",
+      "targetType": "Target Type",
+      "targetId": "Target ID",
+      "platform": "Platform",
+      "service": "Service",
+      "other": "Other",
       "manual": "Manual",
       "promoCompensation": "Promo Compensation",
       "rebate": "Rebate"

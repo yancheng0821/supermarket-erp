@@ -71,7 +71,7 @@ export function PaymentsPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>{t('operation.payments.paymentNo')}</TableHead>
-                <TableHead>Order ID</TableHead>
+                <TableHead>{t('operation.payments.orderId')}</TableHead>
                 <TableHead>{t('operation.payments.method')}</TableHead>
                 <TableHead>{t('operation.payments.amount')}</TableHead>
                 <TableHead>{t('common.status')}</TableHead>
