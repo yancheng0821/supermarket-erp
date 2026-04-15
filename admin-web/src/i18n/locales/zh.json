@@ -97,7 +97,15 @@
     "totalProducts": "总商品",
     "totalMembers": "总会员",
     "recentSales": "近期销售",
-    "overview": "概览"
+    "overview": "概览",
+    "analytics": "分析",
+    "reports": "报表",
+    "notifications": "通知",
+    "customers": "客户",
+    "download": "下载",
+    "fromLastMonth": "较上月",
+    "salesThisMonth": "本月完成 265 笔销售",
+    "sinceLastHour": "较上一小时 +201"
   },
   "archive": {
     "products": {

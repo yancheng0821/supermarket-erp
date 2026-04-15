@@ -97,7 +97,15 @@
     "totalProducts": "Total Products",
     "totalMembers": "Total Members",
     "recentSales": "Recent Sales",
-    "overview": "Overview"
+    "overview": "Overview",
+    "analytics": "Analytics",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "customers": "Customers",
+    "download": "Download",
+    "fromLastMonth": "from last month",
+    "salesThisMonth": "You made 265 sales this month.",
+    "sinceLastHour": "+201 since last hour"
   },
   "archive": {
     "products": {

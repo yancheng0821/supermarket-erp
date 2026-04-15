@@ -85,3 +85,150 @@
     height: 0;
   }
 }
+
+/* ===========================================================
+   Probexa-identical overrides
+   =========================================================== */
+
+/* --- Primary buttons: gradient #6366f1 → #8b5cf6 --- */
+[data-slot="button"].bg-primary,
+button.bg-primary {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+[data-slot="button"].bg-primary:hover,
+button.bg-primary:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+}
+
+/* --- Sidebar: probexa active = #f0f0ff bg + #6366f1 text --- */
+[data-sidebar="menu-button"][data-active="true"] {
+  background: #f0f0ff !important;
+  color: #6366f1 !important;
+  font-weight: 600 !important;
+}
+[data-sidebar="menu-button"][data-active="true"] svg {
+  color: #6366f1 !important;
+}
+/* Sidebar: default = dark text, hover = light bg, active = purple */
+[data-sidebar="menu-button"] {
+  color: #1a1a2e !important;
+}
+[data-sidebar="menu-button"] svg {
+  color: #888888 !important;
+}
+[data-sidebar="menu-button"]:not([data-active="true"]):hover {
+  background: #f0f0ff !important;
+  color: #1a1a2e !important;
+}
+[data-sidebar="menu-button"]:not([data-active="true"]):hover svg {
+  color: #6366f1 !important;
+}
+
+/* --- Logo area: gradient square, icon MUST be white --- */
+[data-sidebar="header"] .rounded-lg svg,
+[data-sidebar="header"] [style*="gradient"] svg {
+  color: white !important;
+  stroke: white !important;
+}
+
+/* --- Badges: use probexa-style colored pills --- */
+[data-slot="badge"].bg-primary {
+  background: #f0f0ff !important;
+  color: #6366f1 !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+/* --- Table: probexa style --- */
+table thead tr {
+  background: #ffffff !important;
+}
+table thead th {
+  color: #888888 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+table tbody tr:hover {
+  background: #f8f9fa !important;
+}
+table {
+  font-size: 13px !important;
+}
+
+/* --- Cards: probexa shadow --- */
+[data-slot="card"],
+.rounded-md.border {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  border-color: #e8e8e8 !important;
+}
+
+/* --- Inputs: probexa style (#f8f9fa bg) --- */
+[data-slot="input"],
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"] {
+  background: #f8f9fa !important;
+  border-color: #e8e8e8 !important;
+}
+[data-slot="input"]:focus,
+input:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* --- Focus ring --- */
+:focus-visible {
+  outline-color: #6366f1 !important;
+}
+
+/* --- Status pills (probexa exact colors) --- */
+.pill-success, [data-status="success"] { background: #dcfce7 !important; color: #16a34a !important; }
+.pill-warning, [data-status="warning"] { background: #fef3c7 !important; color: #d97706 !important; }
+.pill-danger,  [data-status="danger"]  { background: #fee2e2 !important; color: #dc2626 !important; }
+.pill-info,    [data-status="info"]    { background: #dbeafe !important; color: #2563eb !important; }
+.pill-purple,  [data-status="purple"]  { background: #ede9fe !important; color: #7c3aed !important; }
+
+/* --- Gradient text utility --- */
+.text-gradient {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- Scrollbar: probexa style --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* --- Global font size: probexa uses 13px --- */
+body { font-size: 13px; -webkit-font-smoothing: antialiased; }
+
+/* --- Probexa rounded corners (12px card, 8px controls) --- */
+.rounded-md,
+.rounded-lg,
+[data-slot="card"],
+table,
+.border {
+  border-radius: 12px !important;
+}
+table {
+  overflow: hidden;
+}
+[data-slot="input"],
+[data-slot="select-trigger"],
+[data-slot="button"],
+[data-slot="badge"],
+input,
+select,
+textarea,
+.rounded-md.border input {
+  border-radius: 8px !important;
+}
+[data-slot="dialog-content"] {
+  border-radius: 12px !important;
+}
