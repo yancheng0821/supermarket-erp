@@ -13,3 +13,7 @@ spring:
           uri: lb://erp-system
           predicates:
             - Path=/api/v1/admin/auth/**, /api/v1/admin/user/**, /api/v1/admin/role/**, /api/v1/admin/menu/**, /api/v1/admin/tenant/**
+        - id: erp-archive
+          uri: lb://erp-archive
+          predicates:
+            - Path=/api/v1/admin/archive/**
