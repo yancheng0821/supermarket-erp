@@ -705,3 +705,86 @@ CREATE TABLE IF NOT EXISTS mbr_coupon_instance (
     INDEX idx_member (member_id),
     INDEX idx_coupon (coupon_id)
 ) COMMENT 'Coupon instance (user-held)';
+
+-- ==================== Online Tables ====================
+
+CREATE TABLE IF NOT EXISTS onl_online_product (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL COMMENT 'Reference to arc_product',
+    store_id BIGINT NOT NULL,
+    main_image VARCHAR(500),
+    images VARCHAR(2000) COMMENT 'JSON array of image URLs',
+    description TEXT,
+    sort INT NOT NULL DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=listed, 1=delisted',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_store (store_id),
+    INDEX idx_product (product_id)
+) COMMENT 'Online product (mini-program display)';
+
+CREATE TABLE IF NOT EXISTS onl_shopping_cart (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    quantity DECIMAL(12,2) NOT NULL DEFAULT 1,
+    selected BIT(1) NOT NULL DEFAULT 1,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_member (member_id)
+) COMMENT 'Shopping cart';
+
+CREATE TABLE IF NOT EXISTS onl_delivery_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_no VARCHAR(50) NOT NULL,
+    sales_order_id BIGINT NOT NULL COMMENT 'Reference to opr_sales_order',
+    store_id BIGINT NOT NULL,
+    member_id BIGINT NOT NULL,
+    delivery_type TINYINT NOT NULL COMMENT '1=delivery, 2=self_pickup',
+    contact_name VARCHAR(50),
+    contact_phone VARCHAR(20),
+    address VARCHAR(500),
+    expected_time DATETIME COMMENT 'Expected delivery/pickup time',
+    actual_time DATETIME,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=pending, 1=preparing, 2=delivering, 3=completed, 4=cancelled',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_order (sales_order_id),
+    UNIQUE INDEX uk_order_no (order_no, tenant_id)
+) COMMENT 'Delivery order';
+
+CREATE TABLE IF NOT EXISTS onl_store_config (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    online_enabled BIT(1) NOT NULL DEFAULT 0,
+    open_time VARCHAR(10) COMMENT 'e.g. 08:00',
+    close_time VARCHAR(10) COMMENT 'e.g. 22:00',
+    delivery_enabled BIT(1) NOT NULL DEFAULT 1,
+    pickup_enabled BIT(1) NOT NULL DEFAULT 1,
+    delivery_radius DECIMAL(5,1) COMMENT 'Delivery range in km',
+    min_order_amount DECIMAL(12,2) DEFAULT 0,
+    delivery_fee DECIMAL(12,2) DEFAULT 0,
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_store (store_id, tenant_id)
+) COMMENT 'Store online configuration';

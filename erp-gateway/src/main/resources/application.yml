@@ -33,3 +33,11 @@ spring:
           uri: lb://erp-member
           predicates:
             - Path=/api/v1/admin/member/**
+        - id: erp-online-admin
+          uri: lb://erp-online
+          predicates:
+            - Path=/api/v1/admin/online/**
+        - id: erp-online-app
+          uri: lb://erp-online
+          predicates:
+            - Path=/api/v1/app/online/**

@@ -21,6 +21,7 @@
         <module>erp-module-purchase</module>
         <module>erp-module-operation</module>
         <module>erp-module-member</module>
+        <module>erp-module-online</module>
     </modules>
 
     <properties>
