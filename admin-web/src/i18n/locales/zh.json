@@ -1,0 +1,402 @@
+{
+  "common": {
+    "search": "搜索",
+    "create": "新建",
+    "edit": "编辑",
+    "delete": "删除",
+    "save": "保存",
+    "cancel": "取消",
+    "confirm": "确认",
+    "back": "返回",
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "total": "共",
+    "items": "条",
+    "page": "第",
+    "of": "页，共",
+    "pages": "页",
+    "previous": "上一页",
+    "next": "下一页",
+    "actions": "操作",
+    "status": "状态",
+    "enabled": "启用",
+    "disabled": "停用",
+    "active": "活跃",
+    "name": "名称",
+    "code": "编码",
+    "remark": "备注",
+    "createdAt": "创建时间",
+    "searchByName": "按名称搜索...",
+    "deleteConfirm": "确定删除吗？",
+    "operationSuccess": "操作成功",
+    "operationFailed": "操作失败"
+  },
+  "sidebar": {
+    "overview": "概览",
+    "dashboard": "仪表盘",
+    "archive": "档案",
+    "stores": "门店",
+    "warehouses": "仓库",
+    "products": "商品",
+    "categories": "类别",
+    "suppliers": "供应商",
+    "purchase": "采购",
+    "purchaseOrders": "采购订单",
+    "replenishPlans": "补货计划",
+    "inventory": "库存",
+    "stockOverview": "库存总览",
+    "receiptOrders": "入库单",
+    "issueOrders": "出库单",
+    "transfers": "调拨单",
+    "stockTakes": "盘点单",
+    "operation": "营运",
+    "salesOrders": "销售订单",
+    "payments": "支付记录",
+    "cashierShifts": "收银班次",
+    "refunds": "退款",
+    "member": "会员",
+    "members": "会员管理",
+    "points": "积分",
+    "coupons": "优惠券",
+    "online": "线上",
+    "onlineProducts": "线上商品",
+    "deliveryOrders": "配送订单",
+    "storeConfig": "门店配置",
+    "finance": "财务",
+    "supplierSettlement": "供应商结算",
+    "storeSettlement": "门店结算",
+    "feeRecords": "费用单",
+    "vouchers": "凭证",
+    "analytics": "数据",
+    "dailySales": "日销售报表",
+    "productSales": "商品销售",
+    "inventorySnapshot": "库存快照",
+    "system": "系统",
+    "settings": "设置",
+    "profile": "个人资料",
+    "account": "账户",
+    "appearance": "外观",
+    "notifications": "通知",
+    "display": "显示",
+    "helpCenter": "帮助中心"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "username": "用户名",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "welcomeBack": "欢迎回来",
+    "enterCredentials": "请输入您的账号和密码",
+    "signOut": "退出登录"
+  },
+  "dashboard": {
+    "title": "仪表盘",
+    "totalRevenue": "总收入",
+    "totalOrders": "总订单",
+    "totalProducts": "总商品",
+    "totalMembers": "总会员",
+    "recentSales": "近期销售",
+    "overview": "概览"
+  },
+  "archive": {
+    "products": {
+      "title": "商品管理",
+      "description": "管理商品主数据",
+      "newProduct": "新建商品",
+      "editProduct": "编辑商品",
+      "productName": "商品名称",
+      "barcode": "条码",
+      "category": "类别",
+      "spec": "规格",
+      "unit": "单位",
+      "shelfLife": "保质期(天)",
+      "costPrice": "进货价",
+      "retailPrice": "零售价",
+      "discontinued": "停售"
+    },
+    "stores": {
+      "title": "门店管理",
+      "description": "管理门店信息",
+      "newStore": "新建门店",
+      "editStore": "编辑门店",
+      "storeName": "门店名称",
+      "type": "类型",
+      "direct": "直营",
+      "franchise": "加盟",
+      "address": "地址",
+      "contactName": "联系人",
+      "contactPhone": "联系电话"
+    },
+    "warehouses": {
+      "title": "仓库管理",
+      "description": "管理仓库信息",
+      "newWarehouse": "新建仓库",
+      "editWarehouse": "编辑仓库",
+      "dc": "配送中心",
+      "storeWarehouse": "门店仓"
+    },
+    "suppliers": {
+      "title": "供应商管理",
+      "description": "管理供应商信息",
+      "newSupplier": "新建供应商",
+      "editSupplier": "编辑供应商",
+      "email": "邮箱",
+      "settlementType": "结算方式",
+      "monthly": "月结",
+      "biweekly": "半月结",
+      "perOrder": "单次结算"
+    },
+    "categories": {
+      "title": "类别管理",
+      "description": "管理商品分类",
+      "newCategory": "新建类别",
+      "editCategory": "编辑类别",
+      "parentCategory": "上级类别",
+      "rootCategory": "顶级类别",
+      "sort": "排序",
+      "level": "层级",
+      "hasChildren": "该类别下有子类别，无法删除"
+    }
+  },
+  "purchase": {
+    "orders": {
+      "title": "采购订单",
+      "description": "管理采购订单",
+      "orderNo": "订单号",
+      "type": "类型",
+      "centralized": "统配",
+      "direct": "直配",
+      "selfPurchase": "自采",
+      "supplier": "供应商",
+      "totalAmount": "总金额",
+      "approve": "审核通过",
+      "draft": "草稿",
+      "pendingReview": "待审核",
+      "approved": "已审核",
+      "shipped": "已发货",
+      "partiallyReceived": "部分到货",
+      "completed": "已完成",
+      "closed": "已关闭"
+    },
+    "replenish": {
+      "title": "补货计划",
+      "description": "管理补货计划",
+      "store": "门店",
+      "product": "商品",
+      "currentStock": "当前库存",
+      "minStock": "最低库存",
+      "suggestQuantity": "建议补货量",
+      "pending": "待处理",
+      "converted": "已转单"
+    }
+  },
+  "inventory": {
+    "stock": {
+      "title": "库存总览",
+      "description": "查看实时库存数据",
+      "productId": "商品ID",
+      "locationType": "库位类型",
+      "locationId": "库位ID",
+      "quantity": "数量",
+      "costAmount": "成本金额",
+      "store": "门店",
+      "warehouse": "仓库"
+    },
+    "receipt": {
+      "title": "入库单",
+      "description": "管理入库单据",
+      "orderNo": "单号",
+      "purchaseReceipt": "采购入库",
+      "transferReceipt": "调拨入库",
+      "returnReceipt": "退货入库",
+      "confirmed": "已确认",
+      "cancelled": "已取消"
+    },
+    "issue": {
+      "title": "出库单",
+      "description": "管理出库单据",
+      "salesIssue": "销售出库",
+      "transferIssue": "调拨出库",
+      "damageIssue": "报损出库"
+    },
+    "transfer": {
+      "title": "调拨单",
+      "description": "管理库存调拨",
+      "from": "调出方",
+      "to": "调入方",
+      "inTransit": "在途中",
+      "received": "已接收"
+    },
+    "check": {
+      "title": "盘点单",
+      "description": "管理库存盘点",
+      "counting": "盘点中"
+    }
+  },
+  "operation": {
+    "sales": {
+      "title": "销售订单",
+      "description": "查看销售订单数据",
+      "channel": "渠道",
+      "pos": "POS",
+      "onlineChannel": "线上",
+      "o2o": "O2O",
+      "payAmount": "实付金额",
+      "pendingPayment": "待支付",
+      "paid": "已支付",
+      "delivering": "配送中",
+      "refunded": "已退款"
+    },
+    "payments": {
+      "title": "支付记录",
+      "description": "查看支付流水",
+      "paymentNo": "支付单号",
+      "method": "支付方式",
+      "cash": "现金",
+      "wechat": "微信支付",
+      "alipay": "支付宝",
+      "memberCard": "会员卡",
+      "bankCard": "银行卡",
+      "amount": "金额",
+      "success": "成功",
+      "failed": "失败"
+    },
+    "cashierShifts": {
+      "title": "收银班次",
+      "description": "查看收银员班次数据",
+      "shiftNo": "班次号",
+      "cashier": "收银员",
+      "startTime": "开始时间",
+      "endTime": "结束时间",
+      "salesAmount": "销售金额",
+      "orderCount": "订单数"
+    },
+    "refunds": {
+      "title": "退款管理",
+      "description": "管理退款申请",
+      "refundNo": "退款单号",
+      "refundAmount": "退款金额",
+      "reason": "原因",
+      "reject": "驳回",
+      "complete": "完成退款"
+    }
+  },
+  "member": {
+    "members": {
+      "title": "会员管理",
+      "description": "管理会员信息",
+      "register": "注册会员",
+      "phone": "手机号",
+      "nickname": "昵称",
+      "level": "等级",
+      "normal": "普通",
+      "silver": "银卡",
+      "gold": "金卡",
+      "platinum": "白金"
+    },
+    "points": {
+      "title": "积分管理",
+      "description": "查看积分变动记录",
+      "memberId": "会员ID",
+      "earn": "获取",
+      "redeem": "兑换",
+      "expire": "过期",
+      "adjust": "调整",
+      "pointsBefore": "变动前",
+      "pointsAfter": "变动后"
+    },
+    "coupons": {
+      "title": "优惠券管理",
+      "description": "管理优惠券",
+      "thresholdDiscount": "满减",
+      "percentageOff": "折扣",
+      "categoryCoupon": "品类券",
+      "discountValue": "优惠值",
+      "minSpend": "最低消费",
+      "totalCount": "发放总量",
+      "usedCount": "已使用"
+    }
+  },
+  "online": {
+    "products": {
+      "title": "线上商品",
+      "description": "管理线上商品展示"
+    },
+    "deliveries": {
+      "title": "配送订单",
+      "description": "管理配送订单",
+      "delivery": "配送",
+      "selfPickup": "自提",
+      "preparing": "备货中"
+    },
+    "storeConfig": {
+      "title": "门店线上配置",
+      "description": "管理门店线上设置",
+      "onlineEnabled": "线上开启",
+      "openTime": "营业开始",
+      "closeTime": "营业结束",
+      "deliveryRadius": "配送半径(km)",
+      "minOrderAmount": "起送价",
+      "deliveryFee": "配送费"
+    }
+  },
+  "finance": {
+    "supplierSettlement": {
+      "title": "供应商结算",
+      "description": "管理供应商结算单",
+      "settlementNo": "结算单号",
+      "periodStart": "开始日期",
+      "periodEnd": "结束日期",
+      "paidAmount": "已付金额",
+      "pay": "付款"
+    },
+    "storeSettlement": {
+      "title": "门店结算",
+      "description": "管理门店结算单",
+      "salesAmount": "销售金额",
+      "commissionAmount": "佣金",
+      "netAmount": "净额"
+    },
+    "fees": {
+      "title": "费用单",
+      "description": "管理费用记录",
+      "feeNo": "费用单号",
+      "manual": "手工费用",
+      "promoCompensation": "促销补差",
+      "rebate": "返利"
+    },
+    "vouchers": {
+      "title": "凭证管理",
+      "description": "管理财务凭证",
+      "voucherNo": "凭证号",
+      "bizType": "业务类型",
+      "debitAccount": "借方科目",
+      "creditAccount": "贷方科目",
+      "period": "会计期间",
+      "posted": "已过账",
+      "post": "过账"
+    }
+  },
+  "analytics": {
+    "dailySales": {
+      "title": "日销售报表",
+      "description": "查看每日销售汇总",
+      "reportDate": "日期",
+      "salesAmount": "销售金额",
+      "costAmount": "成本金额",
+      "profitAmount": "利润",
+      "orderCount": "订单数",
+      "customerCount": "客户数"
+    },
+    "productSales": {
+      "title": "商品销售报表",
+      "description": "查看商品销售明细",
+      "salesQuantity": "销量"
+    },
+    "inventorySnapshot": {
+      "title": "库存快照",
+      "description": "查看每日库存快照"
+    }
+  }
+}

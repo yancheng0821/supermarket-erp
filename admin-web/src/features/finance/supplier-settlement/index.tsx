@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,15 +24,17 @@ interface SupplierSettlement {
 }
 interface PageResult<T> { list: T[]; total: number }
 
-const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  draft: { label: 'Draft', variant: 'secondary' },
-  confirmed: { label: 'Confirmed', variant: 'outline' },
-  partial_paid: { label: 'Partial Paid', variant: 'default' },
-  paid: { label: 'Paid', variant: 'default' },
-  cancelled: { label: 'Cancelled', variant: 'destructive' },
-}
-
 export function SupplierSettlementPage() {
+  const { t } = useTranslation()
+
+  const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    draft: { label: t('purchase.orders.draft'), variant: 'secondary' },
+    confirmed: { label: t('inventory.receipt.confirmed'), variant: 'outline' },
+    partial_paid: { label: t('finance.supplierSettlement.paidAmount'), variant: 'default' },
+    paid: { label: t('finance.supplierSettlement.pay'), variant: 'default' },
+    cancelled: { label: t('inventory.receipt.cancelled'), variant: 'destructive' },
+  }
+
   const [data, setData] = useState<SupplierSettlement[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -52,10 +56,10 @@ export function SupplierSettlementPage() {
     try {
       if (editing) {
         await api.put(`/admin/finance/supplier-settlement/${editing.id}`, form)
-        toast.success('Updated successfully')
+        toast.success(t('common.operationSuccess'))
       } else {
         await api.post('/admin/finance/supplier-settlement', form)
-        toast.success('Created successfully')
+        toast.success(t('common.operationSuccess'))
       }
       setOpen(false); setEditing(null); fetchData()
     } catch (e: any) { toast.error(e.message) }
@@ -77,31 +81,32 @@ export function SupplierSettlementPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Supplier Settlement</h1>
-          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />New Settlement</Button>
+          <h1 className='text-2xl font-bold'>{t('finance.supplierSettlement.title')}</h1>
+          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />{t('common.create')}</Button>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search settlement no...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Settlement No</TableHead>
-                <TableHead>Supplier</TableHead>
-                <TableHead>Period Start</TableHead>
-                <TableHead>Period End</TableHead>
-                <TableHead>Total Amount</TableHead>
-                <TableHead>Paid Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('finance.supplierSettlement.settlementNo')}</TableHead>
+                <TableHead>{t('purchase.orders.supplier')}</TableHead>
+                <TableHead>{t('finance.supplierSettlement.periodStart')}</TableHead>
+                <TableHead>{t('finance.supplierSettlement.periodEnd')}</TableHead>
+                <TableHead>{t('purchase.orders.totalAmount')}</TableHead>
+                <TableHead>{t('finance.supplierSettlement.paidAmount')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
+                <TableHead>{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -119,49 +124,49 @@ export function SupplierSettlementPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>Edit</Button>
+                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>{t('common.edit')}</Button>
                   </TableCell>
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? 'Edit Settlement' : 'New Settlement'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? t('common.edit') : t('common.create')}</DialogTitle></DialogHeader>
           <div className='space-y-4'>
             <div>
-              <label className='text-sm font-medium'>Supplier</label>
+              <label className='text-sm font-medium'>{t('purchase.orders.supplier')}</label>
               <Input value={form.supplierName} onChange={(e) => setForm({ ...form, supplierName: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Period Start</label>
+              <label className='text-sm font-medium'>{t('finance.supplierSettlement.periodStart')}</label>
               <Input type='date' value={form.periodStart} onChange={(e) => setForm({ ...form, periodStart: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Period End</label>
+              <label className='text-sm font-medium'>{t('finance.supplierSettlement.periodEnd')}</label>
               <Input type='date' value={form.periodEnd} onChange={(e) => setForm({ ...form, periodEnd: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Total Amount</label>
+              <label className='text-sm font-medium'>{t('purchase.orders.totalAmount')}</label>
               <Input type='number' value={form.totalAmount} onChange={(e) => setForm({ ...form, totalAmount: Number(e.target.value) })} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button variant='outline' onClick={() => setOpen(false)}>{t('common.cancel')}</Button>
+            <Button onClick={handleSave}>{t('common.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

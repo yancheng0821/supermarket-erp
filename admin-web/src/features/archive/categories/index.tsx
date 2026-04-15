@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -46,7 +48,7 @@ function buildTree(list: Category[]): Category[] {
 }
 
 function TreeNode({
-  node, level, onEdit, onDelete, expanded, onToggle,
+  node, level, onEdit, onDelete, expanded, onToggle, t,
 }: {
   node: Category
   level: number
@@ -54,6 +56,7 @@ function TreeNode({
   onDelete: (id: number) => void
   expanded: Set<number>
   onToggle: (id: number) => void
+  t: (key: string) => string
 }) {
   const hasChildren = node.children && node.children.length > 0
   const isExpanded = expanded.has(node.id)
@@ -75,7 +78,7 @@ function TreeNode({
         <span className='font-medium flex-1'>{node.name}</span>
         <span className='text-sm text-muted-foreground w-16 text-center'>#{node.sort}</span>
         <Badge variant={node.status === 0 ? 'default' : 'secondary'} className='w-16 justify-center'>
-          {node.status === 0 ? 'Active' : 'Inactive'}
+          {node.status === 0 ? t('common.active') : t('common.disabled')}
         </Badge>
         <div className='flex gap-1'>
           <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => onEdit(node)}>
@@ -95,6 +98,7 @@ function TreeNode({
           onDelete={onDelete}
           expanded={expanded}
           onToggle={onToggle}
+          t={t}
         />
       ))}
     </>
@@ -102,6 +106,7 @@ function TreeNode({
 }
 
 export function CategoriesPage() {
+  const { t } = useTranslation()
   const [list, setList] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -117,7 +122,7 @@ export function CategoriesPage() {
       const result = await api.get<Category[]>('/admin/archive/category/tree')
       setList(result)
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Failed to fetch')
+      toast.error(e instanceof Error ? e.message : t('common.operationFailed'))
     } finally {
       setLoading(false)
     }
@@ -159,26 +164,26 @@ export function CategoriesPage() {
       const payload = { name: form.name, parentId: Number(form.parentId), sort: Number(form.sort) }
       if (editingItem) {
         await api.put('/admin/archive/category', { id: editingItem.id, ...payload })
-        toast.success('Category updated')
+        toast.success(t('common.operationSuccess'))
       } else {
         await api.post('/admin/archive/category', payload)
-        toast.success('Category created')
+        toast.success(t('common.operationSuccess'))
       }
       setDialogOpen(false)
       fetchData()
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Operation failed')
+      toast.error(e instanceof Error ? e.message : t('common.operationFailed'))
     }
   }
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Delete this category? Child categories may be affected.')) return
+    if (!confirm(t('common.deleteConfirm'))) return
     try {
       await api.del(`/admin/archive/category/${id}`)
-      toast.success('Category deleted')
+      toast.success(t('common.operationSuccess'))
       fetchData()
     } catch (e: unknown) {
-      toast.error(e instanceof Error ? e.message : 'Delete failed')
+      toast.error(e instanceof Error ? e.message : t('common.operationFailed'))
     }
   }
 
@@ -189,6 +194,7 @@ export function CategoriesPage() {
     <>
       <Header fixed>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
@@ -197,20 +203,20 @@ export function CategoriesPage() {
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>Categories</h2>
-            <p className='text-muted-foreground'>Manage product category tree.</p>
+            <h2 className='text-2xl font-bold tracking-tight'>{t('archive.categories.title')}</h2>
+            <p className='text-muted-foreground'>{t('archive.categories.description')}</p>
           </div>
           <div className='flex gap-2'>
-            <Button variant='outline' onClick={expandAll}>Expand All</Button>
-            <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' /> New Category</Button>
+            <Button variant='outline' onClick={expandAll}>{t('common.edit')}</Button>
+            <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' /> {t('archive.categories.newCategory')}</Button>
           </div>
         </div>
 
         <div className='rounded-md border p-2'>
           {loading ? (
-            <div className='text-center py-8 text-muted-foreground'>Loading...</div>
+            <div className='text-center py-8 text-muted-foreground'>{t('common.loading')}</div>
           ) : tree.length === 0 ? (
-            <div className='text-center py-8 text-muted-foreground'>No categories found.</div>
+            <div className='text-center py-8 text-muted-foreground'>{t('common.noData')}</div>
           ) : (
             tree.map((node) => (
               <TreeNode
@@ -221,6 +227,7 @@ export function CategoriesPage() {
                 onDelete={handleDelete}
                 expanded={expanded}
                 onToggle={onToggle}
+                t={t}
               />
             ))
           )}
@@ -230,24 +237,24 @@ export function CategoriesPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingItem ? 'Edit Category' : 'New Category'}</DialogTitle>
+            <DialogTitle>{editingItem ? t('archive.categories.editCategory') : t('archive.categories.newCategory')}</DialogTitle>
           </DialogHeader>
           <div className='grid gap-4 py-4'>
-            <Input placeholder='Category name *' value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
+            <Input placeholder={t('common.name')} value={form.name} onChange={(e) => setForm({...form, name: e.target.value})} />
             <Select value={form.parentId} onValueChange={(v) => setForm({...form, parentId: v})}>
-              <SelectTrigger><SelectValue placeholder='Parent category' /></SelectTrigger>
+              <SelectTrigger><SelectValue placeholder={t('archive.categories.parentCategory')} /></SelectTrigger>
               <SelectContent>
-                <SelectItem value='0'>Root (no parent)</SelectItem>
+                <SelectItem value='0'>{t('archive.categories.rootCategory')}</SelectItem>
                 {parentOptions.map((c) => (
                   <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <Input placeholder='Sort order' type='number' value={form.sort} onChange={(e) => setForm({...form, sort: e.target.value})} />
+            <Input placeholder={t('archive.categories.sort')} type='number' value={form.sort} onChange={(e) => setForm({...form, sort: e.target.value})} />
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSubmit}>{editingItem ? 'Save' : 'Create'}</Button>
+            <Button variant='outline' onClick={() => setDialogOpen(false)}>{t('common.cancel')}</Button>
+            <Button onClick={handleSubmit}>{editingItem ? t('common.save') : t('common.create')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

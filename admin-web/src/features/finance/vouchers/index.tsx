@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,13 +24,15 @@ interface Voucher {
 }
 interface PageResult<T> { list: T[]; total: number }
 
-const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  draft: { label: 'Draft', variant: 'secondary' },
-  posted: { label: 'Posted', variant: 'default' },
-  reversed: { label: 'Reversed', variant: 'destructive' },
-}
-
 export function VouchersPage() {
+  const { t } = useTranslation()
+
+  const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    draft: { label: t('purchase.orders.draft'), variant: 'secondary' },
+    posted: { label: t('finance.vouchers.posted'), variant: 'default' },
+    reversed: { label: t('inventory.receipt.cancelled'), variant: 'destructive' },
+  }
+
   const [data, setData] = useState<Voucher[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -50,10 +54,10 @@ export function VouchersPage() {
     try {
       if (editing) {
         await api.put(`/admin/finance/voucher/${editing.id}`, form)
-        toast.success('Updated successfully')
+        toast.success(t('common.operationSuccess'))
       } else {
         await api.post('/admin/finance/voucher', form)
-        toast.success('Created successfully')
+        toast.success(t('common.operationSuccess'))
       }
       setOpen(false); setEditing(null); fetchData()
     } catch (e: any) { toast.error(e.message) }
@@ -75,31 +79,32 @@ export function VouchersPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Vouchers</h1>
-          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />New Voucher</Button>
+          <h1 className='text-2xl font-bold'>{t('finance.vouchers.title')}</h1>
+          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />{t('common.create')}</Button>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search voucher no...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Voucher No</TableHead>
-                <TableHead>Biz Type</TableHead>
-                <TableHead>Debit Account</TableHead>
-                <TableHead>Credit Account</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Period</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('finance.vouchers.voucherNo')}</TableHead>
+                <TableHead>{t('finance.vouchers.bizType')}</TableHead>
+                <TableHead>{t('finance.vouchers.debitAccount')}</TableHead>
+                <TableHead>{t('finance.vouchers.creditAccount')}</TableHead>
+                <TableHead>{t('operation.payments.amount')}</TableHead>
+                <TableHead>{t('finance.vouchers.period')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
+                <TableHead>{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -117,53 +122,53 @@ export function VouchersPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>Edit</Button>
+                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>{t('common.edit')}</Button>
                   </TableCell>
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? 'Edit Voucher' : 'New Voucher'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? t('common.edit') : t('common.create')}</DialogTitle></DialogHeader>
           <div className='space-y-4'>
             <div>
-              <label className='text-sm font-medium'>Biz Type</label>
+              <label className='text-sm font-medium'>{t('finance.vouchers.bizType')}</label>
               <Input value={form.bizType} onChange={(e) => setForm({ ...form, bizType: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Debit Account</label>
+              <label className='text-sm font-medium'>{t('finance.vouchers.debitAccount')}</label>
               <Input value={form.debitAccount} onChange={(e) => setForm({ ...form, debitAccount: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Credit Account</label>
+              <label className='text-sm font-medium'>{t('finance.vouchers.creditAccount')}</label>
               <Input value={form.creditAccount} onChange={(e) => setForm({ ...form, creditAccount: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Amount</label>
+              <label className='text-sm font-medium'>{t('operation.payments.amount')}</label>
               <Input type='number' value={form.amount} onChange={(e) => setForm({ ...form, amount: Number(e.target.value) })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Period</label>
+              <label className='text-sm font-medium'>{t('finance.vouchers.period')}</label>
               <Input value={form.period} onChange={(e) => setForm({ ...form, period: e.target.value })} placeholder='2026-04' />
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button variant='outline' onClick={() => setOpen(false)}>{t('common.cancel')}</Button>
+            <Button onClick={handleSave}>{t('common.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

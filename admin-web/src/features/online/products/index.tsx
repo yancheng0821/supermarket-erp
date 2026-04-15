@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -25,13 +27,15 @@ interface OnlineProduct {
 }
 interface PageResult<T> { list: T[]; total: number }
 
-const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  online: { label: 'Online', variant: 'default' },
-  offline: { label: 'Offline', variant: 'secondary' },
-  pending: { label: 'Pending', variant: 'outline' },
-}
-
 export function OnlineProductsPage() {
+  const { t } = useTranslation()
+
+  const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    online: { label: t('common.enabled'), variant: 'default' },
+    offline: { label: t('common.disabled'), variant: 'secondary' },
+    pending: { label: t('purchase.replenish.pending'), variant: 'outline' },
+  }
+
   const [data, setData] = useState<OnlineProduct[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -53,10 +57,10 @@ export function OnlineProductsPage() {
     try {
       if (editing) {
         await api.put(`/admin/online/product/${editing.id}`, form)
-        toast.success('Updated successfully')
+        toast.success(t('common.operationSuccess'))
       } else {
         await api.post('/admin/online/product', form)
-        toast.success('Created successfully')
+        toast.success(t('common.operationSuccess'))
       }
       setOpen(false); setEditing(null); fetchData()
     } catch (e: any) { toast.error(e.message) }
@@ -78,29 +82,30 @@ export function OnlineProductsPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Online Products</h1>
-          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />New Product</Button>
+          <h1 className='text-2xl font-bold'>{t('online.products.title')}</h1>
+          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />{t('common.create')}</Button>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search product...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Product ID</TableHead>
-                <TableHead>Store</TableHead>
-                <TableHead>Main Image</TableHead>
-                <TableHead>Sort</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('inventory.stock.productId')}</TableHead>
+                <TableHead>{t('purchase.replenish.store')}</TableHead>
+                <TableHead>Image</TableHead>
+                <TableHead>{t('archive.categories.sort')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
+                <TableHead>{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -120,59 +125,59 @@ export function OnlineProductsPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>Edit</Button>
+                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>{t('common.edit')}</Button>
                   </TableCell>
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={6} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? 'Edit Product' : 'New Product'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? t('common.edit') : t('common.create')}</DialogTitle></DialogHeader>
           <div className='space-y-4'>
             <div>
-              <label className='text-sm font-medium'>Product ID</label>
+              <label className='text-sm font-medium'>{t('inventory.stock.productId')}</label>
               <Input type='number' value={form.productId} onChange={(e) => setForm({ ...form, productId: Number(e.target.value) })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Store</label>
+              <label className='text-sm font-medium'>{t('purchase.replenish.store')}</label>
               <Input value={form.storeName} onChange={(e) => setForm({ ...form, storeName: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Main Image URL</label>
+              <label className='text-sm font-medium'>Image URL</label>
               <Input value={form.mainImage} onChange={(e) => setForm({ ...form, mainImage: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Sort</label>
+              <label className='text-sm font-medium'>{t('archive.categories.sort')}</label>
               <Input type='number' value={form.sort} onChange={(e) => setForm({ ...form, sort: Number(e.target.value) })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Status</label>
+              <label className='text-sm font-medium'>{t('common.status')}</label>
               <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='online'>Online</SelectItem>
-                  <SelectItem value='offline'>Offline</SelectItem>
+                  <SelectItem value='online'>{t('common.enabled')}</SelectItem>
+                  <SelectItem value='offline'>{t('common.disabled')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button variant='outline' onClick={() => setOpen(false)}>{t('common.cancel')}</Button>
+            <Button onClick={handleSave}>{t('common.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

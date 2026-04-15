@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,14 +21,16 @@ interface Refund {
 }
 interface PageResult<T> { list: T[]; total: number }
 
-const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  pending: { label: 'Pending', variant: 'outline' },
-  approved: { label: 'Approved', variant: 'default' },
-  complete: { label: 'Complete', variant: 'default' },
-  rejected: { label: 'Rejected', variant: 'destructive' },
-}
-
 export function RefundsPage() {
+  const { t } = useTranslation()
+
+  const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    pending: { label: t('purchase.replenish.pending'), variant: 'outline' },
+    approved: { label: t('purchase.orders.approved'), variant: 'default' },
+    complete: { label: t('operation.refunds.complete'), variant: 'default' },
+    rejected: { label: t('operation.refunds.reject'), variant: 'destructive' },
+  }
+
   const [data, setData] = useState<Refund[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,7 +48,7 @@ export function RefundsPage() {
   const handleAction = async (id: number, action: string) => {
     try {
       await api.put(`/admin/operation/refund/${id}/${action}`)
-      toast.success(`${action.charAt(0).toUpperCase() + action.slice(1)} successfully`)
+      toast.success(t('common.operationSuccess'))
       fetchData()
     } catch (e: any) { toast.error(e.message) }
   }
@@ -53,28 +57,29 @@ export function RefundsPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Refunds</h1>
+          <h1 className='text-2xl font-bold'>{t('operation.refunds.title')}</h1>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search refund no...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Refund No</TableHead>
+                <TableHead>{t('operation.refunds.refundNo')}</TableHead>
                 <TableHead>Order ID</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('operation.refunds.refundAmount')}</TableHead>
+                <TableHead>{t('operation.refunds.reason')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
+                <TableHead>{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -93,32 +98,32 @@ export function RefundsPage() {
                     {item.status === 'pending' && (
                       <>
                         <Button variant='default' size='sm' onClick={() => handleAction(item.id, 'approve')}>
-                          <CheckCircle className='mr-1 h-3 w-3' />Approve
+                          <CheckCircle className='mr-1 h-3 w-3' />{t('purchase.orders.approve')}
                         </Button>
                         <Button variant='destructive' size='sm' onClick={() => handleAction(item.id, 'reject')}>
-                          <XCircle className='mr-1 h-3 w-3' />Reject
+                          <XCircle className='mr-1 h-3 w-3' />{t('operation.refunds.reject')}
                         </Button>
                       </>
                     )}
                     {item.status === 'approved' && (
                       <Button variant='default' size='sm' onClick={() => handleAction(item.id, 'complete')}>
-                        <CheckCircle className='mr-1 h-3 w-3' />Complete
+                        <CheckCircle className='mr-1 h-3 w-3' />{t('operation.refunds.complete')}
                       </Button>
                     )}
                   </TableCell>
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={6} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={6} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>

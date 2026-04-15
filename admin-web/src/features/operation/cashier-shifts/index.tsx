@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -19,13 +21,15 @@ interface CashierShift {
 }
 interface PageResult<T> { list: T[]; total: number }
 
-const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-  active: { label: 'Active', variant: 'default' },
-  closed: { label: 'Closed', variant: 'secondary' },
-  reconciled: { label: 'Reconciled', variant: 'outline' },
-}
-
 export function CashierShiftsPage() {
+  const { t } = useTranslation()
+
+  const statusMap: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
+    active: { label: t('common.active'), variant: 'default' },
+    closed: { label: t('purchase.orders.closed'), variant: 'secondary' },
+    reconciled: { label: t('common.confirm'), variant: 'outline' },
+  }
+
   const [data, setData] = useState<CashierShift[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,30 +48,31 @@ export function CashierShiftsPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Cashier Shifts</h1>
+          <h1 className='text-2xl font-bold'>{t('operation.cashierShifts.title')}</h1>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search shift no...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Shift No</TableHead>
-                <TableHead>Store</TableHead>
-                <TableHead>Cashier</TableHead>
-                <TableHead>Start Time</TableHead>
-                <TableHead>End Time</TableHead>
-                <TableHead>Sales Amount</TableHead>
-                <TableHead>Order Count</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('operation.cashierShifts.shiftNo')}</TableHead>
+                <TableHead>{t('purchase.replenish.store')}</TableHead>
+                <TableHead>{t('operation.cashierShifts.cashier')}</TableHead>
+                <TableHead>{t('operation.cashierShifts.startTime')}</TableHead>
+                <TableHead>{t('operation.cashierShifts.endTime')}</TableHead>
+                <TableHead>{t('operation.cashierShifts.salesAmount')}</TableHead>
+                <TableHead>{t('operation.cashierShifts.orderCount')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -88,16 +93,16 @@ export function CashierShiftsPage() {
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={8} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>

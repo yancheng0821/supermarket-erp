@@ -43,236 +43,236 @@ export const sidebarData: SidebarData = {
   ],
   navGroups: [
     {
-      title: 'Overview',
+      title: 'sidebar.overview',
       items: [
         {
-          title: 'Dashboard',
+          title: 'sidebar.dashboard',
           url: '/',
           icon: LayoutDashboard,
         },
       ],
     },
     {
-      title: 'Archive',
+      title: 'sidebar.archive',
       items: [
         {
-          title: 'Stores',
+          title: 'sidebar.stores',
           url: '/archive/stores',
           icon: Store,
         },
         {
-          title: 'Warehouses',
+          title: 'sidebar.warehouses',
           url: '/archive/warehouses',
           icon: Warehouse,
         },
         {
-          title: 'Products',
+          title: 'sidebar.products',
           url: '/archive/products',
           icon: Package,
         },
         {
-          title: 'Categories',
+          title: 'sidebar.categories',
           url: '/archive/categories',
           icon: ClipboardList,
         },
         {
-          title: 'Suppliers',
+          title: 'sidebar.suppliers',
           url: '/archive/suppliers',
           icon: Truck,
         },
       ],
     },
     {
-      title: 'Purchase',
+      title: 'sidebar.purchase',
       items: [
         {
-          title: 'Purchase Orders',
+          title: 'sidebar.purchaseOrders',
           url: '/purchase/orders',
           icon: ShoppingCart,
         },
         {
-          title: 'Replenish Plans',
+          title: 'sidebar.replenishPlans',
           url: '/purchase/replenish',
           icon: ClipboardList,
         },
       ],
     },
     {
-      title: 'Inventory',
+      title: 'sidebar.inventory',
       items: [
         {
-          title: 'Stock Overview',
+          title: 'sidebar.stockOverview',
           url: '/inventory/stock',
           icon: Boxes,
         },
         {
-          title: 'Receipt Orders',
+          title: 'sidebar.receiptOrders',
           url: '/inventory/receipts',
           icon: ClipboardList,
         },
         {
-          title: 'Issue Orders',
+          title: 'sidebar.issueOrders',
           url: '/inventory/issues',
           icon: ClipboardList,
         },
         {
-          title: 'Transfers',
+          title: 'sidebar.transfers',
           url: '/inventory/transfers',
           icon: ArrowRightLeft,
         },
         {
-          title: 'Stock Takes',
+          title: 'sidebar.stockTakes',
           url: '/inventory/checks',
           icon: ClipboardList,
         },
       ],
     },
     {
-      title: 'Operation',
+      title: 'sidebar.operation',
       items: [
         {
-          title: 'Sales Orders',
+          title: 'sidebar.salesOrders',
           url: '/operation/sales',
           icon: CreditCard,
         },
         {
-          title: 'Payments',
+          title: 'sidebar.payments',
           url: '/operation/payments',
           icon: DollarSign,
         },
         {
-          title: 'Cashier Shifts',
+          title: 'sidebar.cashierShifts',
           url: '/operation/cashier-shifts',
           icon: Receipt,
         },
         {
-          title: 'Refunds',
+          title: 'sidebar.refunds',
           url: '/operation/refunds',
           icon: ArrowRightLeft,
         },
       ],
     },
     {
-      title: 'Member',
+      title: 'sidebar.member',
       items: [
         {
-          title: 'Members',
+          title: 'sidebar.members',
           url: '/member/members',
           icon: Users,
         },
         {
-          title: 'Points',
+          title: 'sidebar.points',
           url: '/member/points',
           icon: Gift,
         },
         {
-          title: 'Coupons',
+          title: 'sidebar.coupons',
           url: '/member/coupons',
           icon: Ticket,
         },
       ],
     },
     {
-      title: 'Online',
+      title: 'sidebar.online',
       items: [
         {
-          title: 'Online Products',
+          title: 'sidebar.onlineProducts',
           url: '/online/products',
           icon: Globe,
         },
         {
-          title: 'Delivery Orders',
+          title: 'sidebar.deliveryOrders',
           url: '/online/deliveries',
           icon: Truck,
         },
         {
-          title: 'Store Config',
+          title: 'sidebar.storeConfig',
           url: '/online/store-config',
           icon: Settings,
         },
       ],
     },
     {
-      title: 'Finance',
+      title: 'sidebar.finance',
       items: [
         {
-          title: 'Supplier Settlement',
+          title: 'sidebar.supplierSettlement',
           url: '/finance/supplier-settlement',
           icon: FileText,
         },
         {
-          title: 'Store Settlement',
+          title: 'sidebar.storeSettlement',
           url: '/finance/store-settlement',
           icon: FileText,
         },
         {
-          title: 'Fee Records',
+          title: 'sidebar.feeRecords',
           url: '/finance/fees',
           icon: Receipt,
         },
         {
-          title: 'Vouchers',
+          title: 'sidebar.vouchers',
           url: '/finance/vouchers',
           icon: FileText,
         },
       ],
     },
     {
-      title: 'Analytics',
+      title: 'sidebar.analytics',
       items: [
         {
-          title: 'Daily Sales',
+          title: 'sidebar.dailySales',
           url: '/analytics/daily-sales',
           icon: BarChart3,
         },
         {
-          title: 'Product Sales',
+          title: 'sidebar.productSales',
           url: '/analytics/product-sales',
           icon: TrendingUp,
         },
         {
-          title: 'Inventory Snapshot',
+          title: 'sidebar.inventorySnapshot',
           url: '/analytics/inventory',
           icon: Boxes,
         },
       ],
     },
     {
-      title: 'System',
+      title: 'sidebar.system',
       items: [
         {
-          title: 'Settings',
+          title: 'sidebar.settings',
           icon: Settings,
           items: [
             {
-              title: 'Profile',
+              title: 'sidebar.profile',
               url: '/settings',
               icon: UserCog,
             },
             {
-              title: 'Account',
+              title: 'sidebar.account',
               url: '/settings/account',
               icon: Wrench,
             },
             {
-              title: 'Appearance',
+              title: 'sidebar.appearance',
               url: '/settings/appearance',
               icon: Palette,
             },
             {
-              title: 'Notifications',
+              title: 'sidebar.notifications',
               url: '/settings/notifications',
               icon: Bell,
             },
             {
-              title: 'Display',
+              title: 'sidebar.display',
               url: '/settings/display',
               icon: Monitor,
             },
           ],
         },
         {
-          title: 'Help Center',
+          title: 'sidebar.helpCenter',
           url: '/help-center',
           icon: HelpCircle,
         },

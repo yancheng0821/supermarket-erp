@@ -1,0 +1,402 @@
+{
+  "common": {
+    "search": "Search",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "loading": "Loading...",
+    "noData": "No data found.",
+    "total": "Total:",
+    "items": "items",
+    "page": "Page",
+    "of": "of",
+    "pages": "pages",
+    "previous": "Previous",
+    "next": "Next",
+    "actions": "Actions",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "active": "Active",
+    "name": "Name",
+    "code": "Code",
+    "remark": "Remark",
+    "createdAt": "Created At",
+    "searchByName": "Search by name...",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "operationSuccess": "Operation successful",
+    "operationFailed": "Operation failed"
+  },
+  "sidebar": {
+    "overview": "Overview",
+    "dashboard": "Dashboard",
+    "archive": "Archive",
+    "stores": "Stores",
+    "warehouses": "Warehouses",
+    "products": "Products",
+    "categories": "Categories",
+    "suppliers": "Suppliers",
+    "purchase": "Purchase",
+    "purchaseOrders": "Purchase Orders",
+    "replenishPlans": "Replenish Plans",
+    "inventory": "Inventory",
+    "stockOverview": "Stock Overview",
+    "receiptOrders": "Receipt Orders",
+    "issueOrders": "Issue Orders",
+    "transfers": "Transfers",
+    "stockTakes": "Stock Takes",
+    "operation": "Operation",
+    "salesOrders": "Sales Orders",
+    "payments": "Payments",
+    "cashierShifts": "Cashier Shifts",
+    "refunds": "Refunds",
+    "member": "Member",
+    "members": "Members",
+    "points": "Points",
+    "coupons": "Coupons",
+    "online": "Online",
+    "onlineProducts": "Online Products",
+    "deliveryOrders": "Delivery Orders",
+    "storeConfig": "Store Config",
+    "finance": "Finance",
+    "supplierSettlement": "Supplier Settlement",
+    "storeSettlement": "Store Settlement",
+    "feeRecords": "Fee Records",
+    "vouchers": "Vouchers",
+    "analytics": "Analytics",
+    "dailySales": "Daily Sales",
+    "productSales": "Product Sales",
+    "inventorySnapshot": "Inventory Snapshot",
+    "system": "System",
+    "settings": "Settings",
+    "profile": "Profile",
+    "account": "Account",
+    "appearance": "Appearance",
+    "notifications": "Notifications",
+    "display": "Display",
+    "helpCenter": "Help Center"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "username": "Username",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "welcomeBack": "Welcome back",
+    "enterCredentials": "Enter your credentials to sign in",
+    "signOut": "Sign Out"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalRevenue": "Total Revenue",
+    "totalOrders": "Total Orders",
+    "totalProducts": "Total Products",
+    "totalMembers": "Total Members",
+    "recentSales": "Recent Sales",
+    "overview": "Overview"
+  },
+  "archive": {
+    "products": {
+      "title": "Products",
+      "description": "Manage product master data.",
+      "newProduct": "New Product",
+      "editProduct": "Edit Product",
+      "productName": "Product Name",
+      "barcode": "Barcode",
+      "category": "Category",
+      "spec": "Spec",
+      "unit": "Unit",
+      "shelfLife": "Shelf Life (days)",
+      "costPrice": "Cost Price",
+      "retailPrice": "Retail Price",
+      "discontinued": "Discontinued"
+    },
+    "stores": {
+      "title": "Stores",
+      "description": "Manage store information.",
+      "newStore": "New Store",
+      "editStore": "Edit Store",
+      "storeName": "Store Name",
+      "type": "Type",
+      "direct": "Direct",
+      "franchise": "Franchise",
+      "address": "Address",
+      "contactName": "Contact",
+      "contactPhone": "Phone"
+    },
+    "warehouses": {
+      "title": "Warehouses",
+      "description": "Manage warehouse information.",
+      "newWarehouse": "New Warehouse",
+      "editWarehouse": "Edit Warehouse",
+      "dc": "Distribution Center",
+      "storeWarehouse": "Store Warehouse"
+    },
+    "suppliers": {
+      "title": "Suppliers",
+      "description": "Manage supplier information.",
+      "newSupplier": "New Supplier",
+      "editSupplier": "Edit Supplier",
+      "email": "Email",
+      "settlementType": "Settlement Type",
+      "monthly": "Monthly",
+      "biweekly": "Bi-weekly",
+      "perOrder": "Per Order"
+    },
+    "categories": {
+      "title": "Categories",
+      "description": "Manage product categories.",
+      "newCategory": "New Category",
+      "editCategory": "Edit Category",
+      "parentCategory": "Parent Category",
+      "rootCategory": "Root Category",
+      "sort": "Sort",
+      "level": "Level",
+      "hasChildren": "Cannot delete category with children"
+    }
+  },
+  "purchase": {
+    "orders": {
+      "title": "Purchase Orders",
+      "description": "Manage purchase orders.",
+      "orderNo": "Order No",
+      "type": "Type",
+      "centralized": "Centralized",
+      "direct": "Direct",
+      "selfPurchase": "Self-purchase",
+      "supplier": "Supplier",
+      "totalAmount": "Total Amount",
+      "approve": "Approve",
+      "draft": "Draft",
+      "pendingReview": "Pending Review",
+      "approved": "Approved",
+      "shipped": "Shipped",
+      "partiallyReceived": "Partially Received",
+      "completed": "Completed",
+      "closed": "Closed"
+    },
+    "replenish": {
+      "title": "Replenish Plans",
+      "description": "Manage replenishment plans.",
+      "store": "Store",
+      "product": "Product",
+      "currentStock": "Current Stock",
+      "minStock": "Min Stock",
+      "suggestQuantity": "Suggest Qty",
+      "pending": "Pending",
+      "converted": "Converted"
+    }
+  },
+  "inventory": {
+    "stock": {
+      "title": "Stock Overview",
+      "description": "View real-time stock data.",
+      "productId": "Product ID",
+      "locationType": "Location Type",
+      "locationId": "Location ID",
+      "quantity": "Quantity",
+      "costAmount": "Cost Amount",
+      "store": "Store",
+      "warehouse": "Warehouse"
+    },
+    "receipt": {
+      "title": "Receipt Orders",
+      "description": "Manage receipt orders.",
+      "orderNo": "Order No",
+      "purchaseReceipt": "Purchase Receipt",
+      "transferReceipt": "Transfer Receipt",
+      "returnReceipt": "Return Receipt",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    },
+    "issue": {
+      "title": "Issue Orders",
+      "description": "Manage issue orders.",
+      "salesIssue": "Sales Issue",
+      "transferIssue": "Transfer Issue",
+      "damageIssue": "Damage Issue"
+    },
+    "transfer": {
+      "title": "Transfers",
+      "description": "Manage stock transfers.",
+      "from": "From",
+      "to": "To",
+      "inTransit": "In Transit",
+      "received": "Received"
+    },
+    "check": {
+      "title": "Stock Takes",
+      "description": "Manage stock takes.",
+      "counting": "Counting"
+    }
+  },
+  "operation": {
+    "sales": {
+      "title": "Sales Orders",
+      "description": "View sales order data.",
+      "channel": "Channel",
+      "pos": "POS",
+      "onlineChannel": "Online",
+      "o2o": "O2O",
+      "payAmount": "Pay Amount",
+      "pendingPayment": "Pending",
+      "paid": "Paid",
+      "delivering": "Delivering",
+      "refunded": "Refunded"
+    },
+    "payments": {
+      "title": "Payments",
+      "description": "View payment records.",
+      "paymentNo": "Payment No",
+      "method": "Method",
+      "cash": "Cash",
+      "wechat": "WeChat Pay",
+      "alipay": "Alipay",
+      "memberCard": "Member Card",
+      "bankCard": "Bank Card",
+      "amount": "Amount",
+      "success": "Success",
+      "failed": "Failed"
+    },
+    "cashierShifts": {
+      "title": "Cashier Shifts",
+      "description": "View cashier shift data.",
+      "shiftNo": "Shift No",
+      "cashier": "Cashier",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "salesAmount": "Sales Amount",
+      "orderCount": "Order Count"
+    },
+    "refunds": {
+      "title": "Refunds",
+      "description": "Manage refund requests.",
+      "refundNo": "Refund No",
+      "refundAmount": "Refund Amount",
+      "reason": "Reason",
+      "reject": "Reject",
+      "complete": "Complete"
+    }
+  },
+  "member": {
+    "members": {
+      "title": "Members",
+      "description": "Manage member information.",
+      "register": "Register",
+      "phone": "Phone",
+      "nickname": "Nickname",
+      "level": "Level",
+      "normal": "Normal",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum"
+    },
+    "points": {
+      "title": "Points",
+      "description": "View points history.",
+      "memberId": "Member ID",
+      "earn": "Earn",
+      "redeem": "Redeem",
+      "expire": "Expire",
+      "adjust": "Adjust",
+      "pointsBefore": "Before",
+      "pointsAfter": "After"
+    },
+    "coupons": {
+      "title": "Coupons",
+      "description": "Manage coupons.",
+      "thresholdDiscount": "Threshold Discount",
+      "percentageOff": "Percentage Off",
+      "categoryCoupon": "Category Coupon",
+      "discountValue": "Discount Value",
+      "minSpend": "Min Spend",
+      "totalCount": "Total Count",
+      "usedCount": "Used Count"
+    }
+  },
+  "online": {
+    "products": {
+      "title": "Online Products",
+      "description": "Manage online product display."
+    },
+    "deliveries": {
+      "title": "Delivery Orders",
+      "description": "Manage delivery orders.",
+      "delivery": "Delivery",
+      "selfPickup": "Self Pickup",
+      "preparing": "Preparing"
+    },
+    "storeConfig": {
+      "title": "Store Online Config",
+      "description": "Manage store online settings.",
+      "onlineEnabled": "Online Enabled",
+      "openTime": "Open Time",
+      "closeTime": "Close Time",
+      "deliveryRadius": "Delivery Radius (km)",
+      "minOrderAmount": "Min Order Amount",
+      "deliveryFee": "Delivery Fee"
+    }
+  },
+  "finance": {
+    "supplierSettlement": {
+      "title": "Supplier Settlement",
+      "description": "Manage supplier settlements.",
+      "settlementNo": "Settlement No",
+      "periodStart": "Period Start",
+      "periodEnd": "Period End",
+      "paidAmount": "Paid Amount",
+      "pay": "Pay"
+    },
+    "storeSettlement": {
+      "title": "Store Settlement",
+      "description": "Manage store settlements.",
+      "salesAmount": "Sales Amount",
+      "commissionAmount": "Commission",
+      "netAmount": "Net Amount"
+    },
+    "fees": {
+      "title": "Fee Records",
+      "description": "Manage fee records.",
+      "feeNo": "Fee No",
+      "manual": "Manual",
+      "promoCompensation": "Promo Compensation",
+      "rebate": "Rebate"
+    },
+    "vouchers": {
+      "title": "Vouchers",
+      "description": "Manage financial vouchers.",
+      "voucherNo": "Voucher No",
+      "bizType": "Biz Type",
+      "debitAccount": "Debit Account",
+      "creditAccount": "Credit Account",
+      "period": "Period",
+      "posted": "Posted",
+      "post": "Post"
+    }
+  },
+  "analytics": {
+    "dailySales": {
+      "title": "Daily Sales",
+      "description": "View daily sales summary.",
+      "reportDate": "Date",
+      "salesAmount": "Sales Amount",
+      "costAmount": "Cost Amount",
+      "profitAmount": "Profit",
+      "orderCount": "Orders",
+      "customerCount": "Customers"
+    },
+    "productSales": {
+      "title": "Product Sales",
+      "description": "View product sales details.",
+      "salesQuantity": "Sales Qty"
+    },
+    "inventorySnapshot": {
+      "title": "Inventory Snapshot",
+      "description": "View daily inventory snapshot."
+    }
+  }
+}

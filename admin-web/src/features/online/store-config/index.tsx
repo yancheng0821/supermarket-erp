@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
+import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -23,6 +25,7 @@ interface StoreConfig {
 interface PageResult<T> { list: T[]; total: number }
 
 export function StoreConfigPage() {
+  const { t } = useTranslation()
   const [data, setData] = useState<StoreConfig[]>([])
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(1)
@@ -44,10 +47,10 @@ export function StoreConfigPage() {
     try {
       if (editing) {
         await api.put(`/admin/online/store-config/${editing.id}`, form)
-        toast.success('Updated successfully')
+        toast.success(t('common.operationSuccess'))
       } else {
         await api.post('/admin/online/store-config', form)
-        toast.success('Created successfully')
+        toast.success(t('common.operationSuccess'))
       }
       setOpen(false); setEditing(null); fetchData()
     } catch (e: any) { toast.error(e.message) }
@@ -69,30 +72,31 @@ export function StoreConfigPage() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
+          <LanguageSwitch />
           <ThemeSwitch />
           <ProfileDropdown />
         </div>
       </Header>
       <Main>
         <div className='mb-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold'>Store Config</h1>
-          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />New Config</Button>
+          <h1 className='text-2xl font-bold'>{t('online.storeConfig.title')}</h1>
+          <Button onClick={openCreate}><Plus className='mr-2 h-4 w-4' />{t('common.create')}</Button>
         </div>
         <div className='mb-4 flex items-center gap-2'>
-          <Input placeholder='Search store...' value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
+          <Input placeholder={t('common.searchByName')} value={keyword} onChange={(e) => { setKeyword(e.target.value); setPage(1) }} className='max-w-sm' />
           <Search className='h-4 w-4 text-muted-foreground' />
         </div>
         <div className='rounded-md border'>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Store</TableHead>
-                <TableHead>Online Enabled</TableHead>
-                <TableHead>Open Time</TableHead>
-                <TableHead>Close Time</TableHead>
-                <TableHead>Delivery Radius</TableHead>
-                <TableHead>Min Order</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('purchase.replenish.store')}</TableHead>
+                <TableHead>{t('online.storeConfig.onlineEnabled')}</TableHead>
+                <TableHead>{t('online.storeConfig.openTime')}</TableHead>
+                <TableHead>{t('online.storeConfig.closeTime')}</TableHead>
+                <TableHead>{t('online.storeConfig.deliveryRadius')}</TableHead>
+                <TableHead>{t('online.storeConfig.minOrderAmount')}</TableHead>
+                <TableHead>{t('common.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -101,7 +105,7 @@ export function StoreConfigPage() {
                   <TableCell className='font-medium'>{item.storeName}</TableCell>
                   <TableCell>
                     <Badge variant={item.onlineEnabled ? 'default' : 'secondary'}>
-                      {item.onlineEnabled ? 'Yes' : 'No'}
+                      {item.onlineEnabled ? t('common.enabled') : t('common.disabled')}
                     </Badge>
                   </TableCell>
                   <TableCell>{item.openTime}</TableCell>
@@ -109,53 +113,53 @@ export function StoreConfigPage() {
                   <TableCell>{item.deliveryRadius} km</TableCell>
                   <TableCell>{item.minOrder.toFixed(2)}</TableCell>
                   <TableCell>
-                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>Edit</Button>
+                    <Button variant='outline' size='sm' onClick={() => openEdit(item)}>{t('common.edit')}</Button>
                   </TableCell>
                 </TableRow>
               ))}
               {data.length === 0 && (
-                <TableRow><TableCell colSpan={7} className='text-center py-8 text-muted-foreground'>No data</TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className='text-center py-8 text-muted-foreground'>{t('common.noData')}</TableCell></TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <div className='mt-4 flex items-center justify-between'>
-          <span className='text-sm text-muted-foreground'>Total: {total}</span>
+          <span className='text-sm text-muted-foreground'>{t('common.total')} {total}</span>
           <div className='space-x-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>Prev</Button>
-            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('common.previous')}</Button>
+            <Button variant='outline' size='sm' disabled={page * 10 >= total} onClick={() => setPage(page + 1)}>{t('common.next')}</Button>
           </div>
         </div>
       </Main>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader><DialogTitle>{editing ? 'Edit Config' : 'New Config'}</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{editing ? t('common.edit') : t('common.create')}</DialogTitle></DialogHeader>
           <div className='space-y-4'>
             <div>
-              <label className='text-sm font-medium'>Store</label>
+              <label className='text-sm font-medium'>{t('purchase.replenish.store')}</label>
               <Input value={form.storeName} onChange={(e) => setForm({ ...form, storeName: e.target.value })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Open Time</label>
+              <label className='text-sm font-medium'>{t('online.storeConfig.openTime')}</label>
               <Input value={form.openTime} onChange={(e) => setForm({ ...form, openTime: e.target.value })} placeholder='08:00' />
             </div>
             <div>
-              <label className='text-sm font-medium'>Close Time</label>
+              <label className='text-sm font-medium'>{t('online.storeConfig.closeTime')}</label>
               <Input value={form.closeTime} onChange={(e) => setForm({ ...form, closeTime: e.target.value })} placeholder='22:00' />
             </div>
             <div>
-              <label className='text-sm font-medium'>Delivery Radius (km)</label>
+              <label className='text-sm font-medium'>{t('online.storeConfig.deliveryRadius')}</label>
               <Input type='number' value={form.deliveryRadius} onChange={(e) => setForm({ ...form, deliveryRadius: Number(e.target.value) })} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Min Order Amount</label>
+              <label className='text-sm font-medium'>{t('online.storeConfig.minOrderAmount')}</label>
               <Input type='number' value={form.minOrder} onChange={(e) => setForm({ ...form, minOrder: Number(e.target.value) })} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant='outline' onClick={() => setOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button variant='outline' onClick={() => setOpen(false)}>{t('common.cancel')}</Button>
+            <Button onClick={handleSave}>{t('common.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
