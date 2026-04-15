@@ -484,3 +484,107 @@ CREATE TABLE IF NOT EXISTS pur_replenish_plan (
     INDEX idx_tenant (tenant_id),
     INDEX idx_store (store_id)
 ) COMMENT 'Replenishment plan';
+
+-- ==================== Operation Tables ====================
+
+CREATE TABLE IF NOT EXISTS opr_sales_order (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_no VARCHAR(50) NOT NULL,
+    channel TINYINT NOT NULL COMMENT '1=POS, 2=online, 3=O2O',
+    store_id BIGINT NOT NULL,
+    member_id BIGINT COMMENT 'Member ID if applicable',
+    total_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    pay_amount DECIMAL(12,2) NOT NULL DEFAULT 0 COMMENT 'Actual paid amount',
+    item_count INT NOT NULL DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=pending_payment, 1=paid, 2=delivering, 3=completed, 4=cancelled, 5=refunded',
+    remark VARCHAR(500),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    UNIQUE INDEX uk_order_no (order_no, tenant_id),
+    INDEX idx_store (store_id),
+    INDEX idx_member (member_id),
+    INDEX idx_create_time (create_time)
+) COMMENT 'Sales order (unified POS/online)';
+
+CREATE TABLE IF NOT EXISTS opr_sales_order_item (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    product_name VARCHAR(200),
+    quantity DECIMAL(12,2) NOT NULL,
+    unit_price DECIMAL(12,2) NOT NULL,
+    discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+    amount DECIMAL(12,2) NOT NULL COMMENT 'Line total after discount',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_order (order_id)
+) COMMENT 'Sales order line items';
+
+CREATE TABLE IF NOT EXISTS opr_payment (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    order_id BIGINT NOT NULL,
+    payment_no VARCHAR(50) NOT NULL,
+    method TINYINT NOT NULL COMMENT '1=cash, 2=wechat, 3=alipay, 4=member_card, 5=bank_card',
+    amount DECIMAL(12,2) NOT NULL,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=pending, 1=success, 2=failed, 3=refunded',
+    third_party_no VARCHAR(100) COMMENT 'External transaction number',
+    remark VARCHAR(200),
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_order (order_id),
+    UNIQUE INDEX uk_payment_no (payment_no, tenant_id)
+) COMMENT 'Payment record';
+
+CREATE TABLE IF NOT EXISTS opr_cashier_shift (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    store_id BIGINT NOT NULL,
+    cashier_id BIGINT NOT NULL COMMENT 'User ID of cashier',
+    cashier_name VARCHAR(50),
+    shift_no VARCHAR(50),
+    start_time DATETIME NOT NULL,
+    end_time DATETIME,
+    opening_amount DECIMAL(12,2) NOT NULL DEFAULT 0 COMMENT 'Cash at shift start',
+    closing_amount DECIMAL(12,2) COMMENT 'Cash at shift end',
+    sales_amount DECIMAL(12,2) NOT NULL DEFAULT 0 COMMENT 'Total sales during shift',
+    order_count INT NOT NULL DEFAULT 0,
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=active, 1=closed',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_store (store_id),
+    INDEX idx_cashier (cashier_id)
+) COMMENT 'Cashier shift';
+
+CREATE TABLE IF NOT EXISTS opr_refund (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    tenant_id BIGINT NOT NULL,
+    refund_no VARCHAR(50) NOT NULL,
+    order_id BIGINT NOT NULL COMMENT 'Original sales order',
+    refund_amount DECIMAL(12,2) NOT NULL,
+    reason VARCHAR(500),
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=pending, 1=approved, 2=completed, 3=rejected',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    INDEX idx_tenant (tenant_id),
+    INDEX idx_order (order_id),
+    UNIQUE INDEX uk_refund_no (refund_no, tenant_id)
+) COMMENT 'Refund/after-sales order';
