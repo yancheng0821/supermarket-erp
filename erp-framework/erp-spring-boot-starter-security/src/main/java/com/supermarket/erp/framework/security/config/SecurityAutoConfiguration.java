@@ -1,5 +1,8 @@
 package com.supermarket.erp.framework.security.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.supermarket.erp.framework.security.core.JsonAccessDeniedHandler;
+import com.supermarket.erp.framework.security.core.JsonAuthenticationEntryPoint;
 import com.supermarket.erp.framework.security.core.TokenAuthenticationFilter;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.HashSet;
@@ -32,9 +37,21 @@ public class SecurityAutoConfiguration {
     }
 
     @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint(ObjectMapper objectMapper) {
+        return new JsonAuthenticationEntryPoint(objectMapper);
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(ObjectMapper objectMapper) {
+        return new JsonAccessDeniedHandler(objectMapper);
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                     TokenAuthenticationFilter tokenAuthenticationFilter,
-                                                    SecurityProperties securityProperties) throws Exception {
+                                                    SecurityProperties securityProperties,
+                                                    AuthenticationEntryPoint authenticationEntryPoint,
+                                                    AccessDeniedHandler accessDeniedHandler) throws Exception {
         // Collect all permit-all URLs
         Set<String> permitAllUrls = new HashSet<>(securityProperties.getPermitAllUrls());
         permitAllUrls.add("/doc.html");
@@ -44,7 +61,14 @@ public class SecurityAutoConfiguration {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(permitAllUrls.toArray(new String[0])).permitAll()
                         .anyRequest().authenticated()

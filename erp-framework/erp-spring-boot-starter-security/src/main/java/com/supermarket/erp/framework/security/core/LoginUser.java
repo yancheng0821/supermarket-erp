@@ -9,6 +9,8 @@ public class LoginUser {
 
     private Long userId;
 
+    private LoginScope loginScope;
+
     private Integer userType;
 
     private Long tenantId;

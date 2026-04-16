@@ -1,53 +1,91 @@
 import { create } from 'zustand'
-import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import type {
+  AuthSessionResponse,
+  AuthSessionSnapshot,
+  LoginScope,
+} from '@/features/auth/types'
 
-const ACCESS_TOKEN = 'thisisjustarandomstring'
+export const AUTH_STORAGE_KEY = 'erp-auth-session'
 
-interface AuthUser {
-  accountNo: string
-  email: string
-  role: string[]
-  exp: number
+type RestoreStatus = 'idle' | 'loading' | 'ready'
+
+type AuthStoreState = {
+  token: string
+  loginScope: LoginScope | null
+  user: AuthSessionSnapshot['user'] | null
+  tenant: AuthSessionSnapshot['tenant'] | null
+  permissions: string[]
+  menuTree: AuthSessionSnapshot['menuTree']
+  restoreStatus: RestoreStatus
+  setToken: (token: string) => void
+  setSession: (session: AuthSessionResponse) => void
+  setSessionSnapshot: (session: AuthSessionSnapshot) => void
+  setRestoreStatus: (status: RestoreStatus) => void
+  reset: () => void
 }
 
-interface AuthState {
-  auth: {
-    user: AuthUser | null
-    setUser: (user: AuthUser | null) => void
-    accessToken: string
-    setAccessToken: (accessToken: string) => void
-    resetAccessToken: () => void
-    reset: () => void
-  }
-}
+const emptyAuthState = {
+  token: '',
+  loginScope: null,
+  user: null,
+  tenant: null,
+  permissions: [],
+  menuTree: [],
+} satisfies Omit<
+  AuthStoreState,
+  'restoreStatus' | 'setToken' | 'setSession' | 'setSessionSnapshot' | 'setRestoreStatus' | 'reset'
+>
 
-export const useAuthStore = create<AuthState>()((set) => {
-  const cookieState = getCookie(ACCESS_TOKEN)
-  const initToken = cookieState ? JSON.parse(cookieState) : ''
-  return {
-    auth: {
-      user: null,
-      setUser: (user) =>
-        set((state) => ({ ...state, auth: { ...state.auth, user } })),
-      accessToken: initToken,
-      setAccessToken: (accessToken) =>
-        set((state) => {
-          setCookie(ACCESS_TOKEN, JSON.stringify(accessToken))
-          return { ...state, auth: { ...state.auth, accessToken } }
+export const useAuthStore = create<AuthStoreState>()(
+  persist(
+    (set) => ({
+      ...emptyAuthState,
+      restoreStatus: 'idle',
+      setToken: (token) =>
+        set({
+          ...emptyAuthState,
+          token,
+          restoreStatus: 'idle',
         }),
-      resetAccessToken: () =>
-        set((state) => {
-          removeCookie(ACCESS_TOKEN)
-          return { ...state, auth: { ...state.auth, accessToken: '' } }
+      setSession: (session) =>
+        set((state) => ({
+          ...state,
+          loginScope: session.loginScope,
+          user: session.user,
+          tenant: session.tenant,
+          permissions: session.permissions,
+          menuTree: session.menuTree,
+          restoreStatus: 'ready',
+        })),
+      setSessionSnapshot: (session) =>
+        set({
+          token: session.token,
+          loginScope: session.loginScope,
+          user: session.user,
+          tenant: session.tenant,
+          permissions: session.permissions,
+          menuTree: session.menuTree,
+          restoreStatus: 'ready',
         }),
+      setRestoreStatus: (restoreStatus) => set({ restoreStatus }),
       reset: () =>
-        set((state) => {
-          removeCookie(ACCESS_TOKEN)
-          return {
-            ...state,
-            auth: { ...state.auth, user: null, accessToken: '' },
-          }
+        set({
+          ...emptyAuthState,
+          restoreStatus: 'ready',
         }),
-    },
-  }
-})
+    }),
+    {
+      name: AUTH_STORAGE_KEY,
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        token: state.token,
+        loginScope: state.loginScope,
+        user: state.user,
+        tenant: state.tenant,
+        permissions: state.permissions,
+        menuTree: state.menuTree,
+      }),
+    }
+  )
+)

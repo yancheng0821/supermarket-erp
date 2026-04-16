@@ -4,7 +4,7 @@ services:
     image: mysql:8.0
     container_name: erp-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_ROOT_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
       MYSQL_DATABASE: supermarket_erp
     ports:
       - "3306:3306"

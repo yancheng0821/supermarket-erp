@@ -2,6 +2,7 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { ExternalLink, Key } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
@@ -38,11 +39,13 @@ function RouteComponent() {
 }
 
 function MissingClerkPubKey() {
+  const { t } = useTranslation()
   const codeBlock =
     'bg-foreground/10 rounded-sm py-0.5 px-1 text-xs text-foreground font-bold'
+
   return (
     <AuthenticatedLayout>
-      <div className='bg-backgroundh-16 flex justify-between p-4'>
+      <div className='bg-background flex h-16 justify-between p-4'>
         <SidebarTrigger variant='outline' className='scale-125 sm:scale-100' />
         <div className='space-x-4'>
           <LanguageSwitch />
@@ -54,46 +57,60 @@ function MissingClerkPubKey() {
         <div className='max-w-2xl'>
           <Alert>
             <Key className='size-4' />
-            <AlertTitle>No Publishable Key Found!</AlertTitle>
+            <AlertTitle>{t('clerk.missingKeyTitle')}</AlertTitle>
             <AlertDescription>
               <p className='text-balance'>
-                You need to generate a publishable key from Clerk and put it
-                inside the <code className={codeBlock}>.env</code> file.
+                <Trans
+                  i18nKey='clerk.missingKeyDescription'
+                  components={{ code: <code className={codeBlock} /> }}
+                />
               </p>
             </AlertDescription>
           </Alert>
 
-          <h1 className='mt-4 text-2xl font-bold'>Set your Clerk API key</h1>
+          <h1 className='mt-4 text-2xl font-bold'>
+            {t('clerk.setupKeyTitle')}
+          </h1>
           <div className='mt-4 flex flex-col gap-y-4 text-foreground/75'>
             <ol className='list-inside list-decimal space-y-1.5'>
               <li>
-                In the{' '}
-                <a
-                  href='https://go.clerk.com/GttUAaK'
-                  target='_blank'
-                  className='underline decoration-dashed underline-offset-4 hover:decoration-solid'
-                >
-                  Clerk
-                  <sup>
-                    <ExternalLink className='inline-block size-4' />
-                  </sup>
-                </a>{' '}
-                Dashboard, navigate to the API keys page.
+                <Trans
+                  i18nKey='clerk.apiKeysPageStep'
+                  components={{
+                    link: (
+                      <a
+                        href='https://go.clerk.com/GttUAaK'
+                        target='_blank'
+                        rel='noreferrer'
+                        className='underline decoration-dashed underline-offset-4 hover:decoration-solid'
+                      />
+                    ),
+                  }}
+                />
+                <sup>
+                  <ExternalLink className='inline-block size-4' />
+                </sup>
               </li>
               <li>
-                In the <strong>Quick Copy</strong> section, copy your Clerk
-                Publishable Key.
+                <Trans
+                  i18nKey='clerk.quickCopyStep'
+                  components={{ strong: <strong /> }}
+                />
               </li>
               <li>
-                Rename <code className={codeBlock}>.env.example</code> to{' '}
-                <code className={codeBlock}>.env</code>
+                <Trans
+                  i18nKey='clerk.renameEnvStep'
+                  components={{ code: <code className={codeBlock} /> }}
+                />
               </li>
               <li>
-                Paste your key into your <code className={codeBlock}>.env</code>{' '}
-                file.
+                <Trans
+                  i18nKey='clerk.pasteKeyStep'
+                  components={{ code: <code className={codeBlock} /> }}
+                />
               </li>
             </ol>
-            <p>The final result should resemble the following:</p>
+            <p>{t('clerk.finalResultLabel')}</p>
 
             <div className='@container space-y-2 rounded-md bg-slate-800 px-3 py-3 text-sm text-slate-200'>
               <span className='ps-1'>.env</span>
@@ -110,23 +127,22 @@ function MissingClerkPubKey() {
           <Separator className='my-4 w-full' />
 
           <Alert>
-            <AlertTitle>Clerk Integration is Optional</AlertTitle>
+            <AlertTitle>{t('clerk.optionalTitle')}</AlertTitle>
             <AlertDescription>
               <p className='text-balance'>
-                The Clerk integration lives entirely inside{' '}
-                <code className={codeBlock}>src/routes/clerk</code>. If you plan
-                to use Clerk as your auth service, you might want to place{' '}
-                <code className={codeBlock}>ClerkProvider</code> at the root
-                route.
+                <Trans
+                  i18nKey='clerk.optionalDescription'
+                  components={{ code: <code className={codeBlock} /> }}
+                />
               </p>
               <p>
-                However, if you don't plan to use Clerk, you can safely remove
-                this directory and related dependency_{' '}
-                <code className={codeBlock}>@clerk/clerk-react</code>.
+                <Trans
+                  i18nKey='clerk.optionalRemovalDescription'
+                  components={{ code: <code className={codeBlock} /> }}
+                />
               </p>
               <p className='mt-2 text-sm'>
-                This setup is modular by design and won't affect the rest of the
-                application.
+                {t('clerk.optionalNote')}
               </p>
             </AlertDescription>
           </Alert>

@@ -1,14 +1,46 @@
+import { useAuthStore } from '@/stores/auth-store'
+
 const BASE_URL = '/api/v1'
 
 interface RequestOptions extends RequestInit {
   params?: Record<string, string | number | undefined>
 }
 
-async function request<T>(url: string, options: RequestOptions = {}): Promise<T> {
-  const { params, ...init } = options
+interface CommonResult<T> {
+  code: number
+  msg: string
+  data: T
+}
 
-  // Build query string
+export class ApiError extends Error {
+  constructor(
+    public readonly status: number,
+    public readonly code: number,
+    message: string,
+    public readonly payload?: unknown
+  ) {
+    super(message)
+    this.name = 'ApiError'
+  }
+}
+
+async function parseResult<T>(response: Response) {
+  if (response.status === 204) {
+    return null
+  }
+
+  const contentType = response.headers.get('content-type') ?? ''
+  if (!contentType.includes('application/json')) {
+    return null
+  }
+
+  return (await response.json()) as CommonResult<T>
+}
+
+async function request<T>(url: string, options: RequestOptions = {}) {
+  const { params, ...init } = options
   let fullUrl = `${BASE_URL}${url}`
+
   if (params) {
     const searchParams = new URLSearchParams()
     Object.entries(params).forEach(([key, value]) => {
@@ -16,27 +48,44 @@ async function request<T>(url: string, options: RequestOptions = {}): Promise<T>
         searchParams.append(key, String(value))
       }
     })
-    const qs = searchParams.toString()
-    if (qs) fullUrl += `?${qs}`
+    const query = searchParams.toString()
+    if (query) {
+      fullUrl += `?${query}`
+    }
   }
 
-  // Get token from localStorage
-  const token = localStorage.getItem('erp_token')
-
+  const token = useAuthStore.getState().token
   const response = await fetch(fullUrl, {
     ...init,
     headers: {
       'Content-Type': 'application/json',
-      'tenant-id': localStorage.getItem('erp_tenant_id') || '1',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init.headers,
     },
   })
 
-  const result = await response.json()
+  const result = await parseResult<T>(response)
+
+  if (!response.ok) {
+    throw new ApiError(
+      response.status,
+      result?.code ?? response.status,
+      result?.msg ?? response.statusText,
+      result
+    )
+  }
+
+  if (!result) {
+    return undefined as T
+  }
 
   if (result.code !== 0) {
-    throw new Error(result.msg || 'Request failed')
+    throw new ApiError(
+      response.status || 200,
+      result.code,
+      result.msg || 'Request failed',
+      result
+    )
   }
 
   return result.data
@@ -47,10 +96,16 @@ export const api = {
     request<T>(url, { method: 'GET', params }),
 
   post: <T>(url: string, data?: unknown) =>
-    request<T>(url, { method: 'POST', body: data ? JSON.stringify(data) : undefined }),
+    request<T>(url, {
+      method: 'POST',
+      body: data ? JSON.stringify(data) : undefined,
+    }),
 
   put: <T>(url: string, data?: unknown) =>
-    request<T>(url, { method: 'PUT', body: data ? JSON.stringify(data) : undefined }),
+    request<T>(url, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    }),
 
   del: <T>(url: string) =>
     request<T>(url, { method: 'DELETE' }),

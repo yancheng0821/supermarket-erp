@@ -1,4 +1,5 @@
 import { getRouteApi } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -17,6 +18,7 @@ const route = getRouteApi('/_authenticated/users/')
 export function Users() {
   const search = route.useSearch()
   const navigate = route.useNavigate()
+  const { t } = useTranslation()
 
   return (
     <UsersProvider>
@@ -33,10 +35,10 @@ export function Users() {
       <Main className='flex flex-1 flex-col gap-4 sm:gap-6'>
         <div className='flex flex-wrap items-end justify-between gap-2'>
           <div>
-            <h2 className='text-2xl font-bold tracking-tight'>User List</h2>
-            <p className='text-muted-foreground'>
-              Manage your users and their roles here.
-            </p>
+            <h2 className='text-2xl font-bold tracking-tight'>
+              {t('users.title')}
+            </h2>
+            <p className='text-muted-foreground'>{t('users.description')}</p>
           </div>
           <UsersPrimaryButtons />
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Check, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { showSubmittedData } from '@/lib/show-submitted-data'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -28,6 +30,7 @@ type NewChatProps = {
 }
 export function NewChat({ users, onOpenChange, open }: NewChatProps) {
   const [selectedUsers, setSelectedUsers] = useState<User[]>([])
+  const { t } = useTranslation()
 
   const handleSelectUser = (user: User) => {
     if (!selectedUsers.find((u) => u.id === user.id)) {
@@ -53,16 +56,24 @@ export function NewChat({ users, onOpenChange, open }: NewChatProps) {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className='sm:max-w-[600px]'>
         <DialogHeader>
-          <DialogTitle>New message</DialogTitle>
+          <DialogTitle>{t('chats.newChat.title')}</DialogTitle>
+          <DialogDescription className='sr-only'>
+            {t('chats.newChat.description')}
+          </DialogDescription>
         </DialogHeader>
         <div className='flex flex-col gap-4'>
           <div className='flex flex-wrap items-baseline-last gap-2'>
-            <span className='min-h-6 text-sm text-muted-foreground'>To:</span>
+            <span className='min-h-6 text-sm text-muted-foreground'>
+              {t('chats.newChat.to')}
+            </span>
             {selectedUsers.map((user) => (
               <Badge key={user.id} variant='default'>
                 {user.fullName}
                 <button
                   className='ms-1 rounded-full ring-offset-background outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2'
+                  aria-label={t('chats.newChat.removeUser', {
+                    name: user.fullName,
+                  })}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       handleRemoveUser(user.id)
@@ -77,11 +88,11 @@ export function NewChat({ users, onOpenChange, open }: NewChatProps) {
           </div>
           <Command className='rounded-lg border'>
             <CommandInput
-              placeholder='Search people...'
+              placeholder={t('chats.newChat.searchPeoplePlaceholder')}
               className='text-foreground'
             />
             <CommandList>
-              <CommandEmpty>No people found.</CommandEmpty>
+              <CommandEmpty>{t('chats.newChat.empty')}</CommandEmpty>
               <CommandGroup>
                 {users.map((user) => (
                   <CommandItem
@@ -115,10 +126,12 @@ export function NewChat({ users, onOpenChange, open }: NewChatProps) {
           </Command>
           <Button
             variant={'default'}
-            onClick={() => showSubmittedData(selectedUsers)}
+            onClick={() =>
+              showSubmittedData(selectedUsers, t('chats.newChat.submittedSummary'))
+            }
             disabled={selectedUsers.length === 0}
           >
-            Chat
+            {t('chats.newChat.chat')}
           </Button>
         </div>
       </DialogContent>

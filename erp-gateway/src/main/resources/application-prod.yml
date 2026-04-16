@@ -1,0 +1,11 @@
+spring:
+  config:
+    import: "optional:nacos:erp-gateway-prod.yml"
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR}
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR}

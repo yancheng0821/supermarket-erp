@@ -23,6 +23,21 @@ public class PermissionService {
     private final RoleMenuMapper roleMenuMapper;
     private final MenuMapper menuMapper;
 
+    public Set<String> getPlatformPermissions() {
+        List<MenuDO> menus = menuMapper.selectList(
+                new LambdaQueryWrapper<MenuDO>()
+                        .eq(MenuDO::getStatus, 0)
+                        .in(MenuDO::getScope, "platform", "both")
+        );
+        if (menus.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return menus.stream()
+                .map(MenuDO::getPermission)
+                .filter(permission -> permission != null && !permission.isEmpty())
+                .collect(Collectors.toSet());
+    }
+
     public Set<String> getPermissionsByUserId(Long userId) {
         // 1. Get role IDs by user ID
         List<UserRoleDO> userRoles = userRoleMapper.selectList(
@@ -46,7 +61,10 @@ public class PermissionService {
 
         // 3. Get permission strings from menus
         List<MenuDO> menus = menuMapper.selectList(
-                new LambdaQueryWrapper<MenuDO>().in(MenuDO::getId, menuIds));
+                new LambdaQueryWrapper<MenuDO>()
+                        .in(MenuDO::getId, menuIds)
+                        .eq(MenuDO::getStatus, 0)
+                        .in(MenuDO::getScope, "tenant", "both"));
         return menus.stream()
                 .map(MenuDO::getPermission)
                 .filter(permission -> permission != null && !permission.isEmpty())

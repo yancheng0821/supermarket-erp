@@ -20,7 +20,8 @@ public class TenantAutoConfiguration {
                                                                   MybatisPlusInterceptor mybatisPlusInterceptor) {
         TenantDatabaseInterceptor handler = new TenantDatabaseInterceptor(tenantProperties);
         TenantLineInnerInterceptor interceptor = new TenantLineInnerInterceptor(handler);
-        mybatisPlusInterceptor.getInterceptors().add(0, interceptor);
+        // getInterceptors() may return unmodifiable list, use addInnerInterceptor instead
+        mybatisPlusInterceptor.addInnerInterceptor(interceptor);
         return interceptor;
     }
 

@@ -5,6 +5,7 @@ USE supermarket_erp;
 -- Tenant (no tenant_id, this is the root table)
 CREATE TABLE sys_tenant (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(64) NOT NULL COMMENT 'Tenant login code',
     name VARCHAR(100) NOT NULL COMMENT 'Tenant name',
     contact_name VARCHAR(50) COMMENT 'Contact person',
     contact_phone VARCHAR(20) COMMENT 'Contact phone',
@@ -15,8 +16,23 @@ CREATE TABLE sys_tenant (
     creator VARCHAR(64) DEFAULT '',
     updater VARCHAR(64) DEFAULT '',
     deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_code (code),
     INDEX idx_name (name)
 ) COMMENT 'Tenant table';
+
+CREATE TABLE sys_platform_user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL COMMENT 'Platform username',
+    password VARCHAR(200) NOT NULL COMMENT 'Password (BCrypt)',
+    nickname VARCHAR(50) COMMENT 'Display name',
+    status TINYINT NOT NULL DEFAULT 0 COMMENT '0=enabled, 1=disabled',
+    create_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    creator VARCHAR(64) DEFAULT '',
+    updater VARCHAR(64) DEFAULT '',
+    deleted BIT(1) NOT NULL DEFAULT 0,
+    UNIQUE INDEX uk_username (username, deleted)
+) COMMENT 'Platform admin user table';
 
 -- Admin User
 CREATE TABLE sys_user (
@@ -58,6 +74,7 @@ CREATE TABLE sys_role (
 -- Menu (no tenant_id, global)
 CREATE TABLE sys_menu (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    scope VARCHAR(16) NOT NULL DEFAULT 'tenant' COMMENT 'platform|tenant|both',
     name VARCHAR(50) NOT NULL COMMENT 'Menu name',
     permission VARCHAR(100) COMMENT 'Permission key',
     type TINYINT NOT NULL COMMENT '1=dir, 2=menu, 3=button',
@@ -101,10 +118,45 @@ CREATE TABLE sys_user_role (
 ) COMMENT 'User-Role mapping';
 
 -- Seed data
-INSERT INTO sys_tenant (id, name, contact_name, contact_phone, status) VALUES (1, 'Default Tenant', 'Admin', '13800000000', 0);
-INSERT INTO sys_user (id, tenant_id, username, password, nickname, status) VALUES (1, 1, 'admin', '$2a$10$EqKcp1WFKVQISheBxnFOheP8vYCmRt.tI8YbL.FwNKVrz6AuO8BKu', 'Super Admin', 0);
+INSERT INTO sys_tenant (id, code, name, contact_name, contact_phone, status) VALUES (1, 'freshmart-sh', 'Default Tenant', 'Admin', '13800000000', 0);
+INSERT INTO sys_platform_user (id, username, password, nickname, status) VALUES (1, 'platform-admin', '$2b$12$4kJjReLEFNQ0aUVUg65SvuO6OjKY5ybCjp.HtdPfZH1vp0868R6a.', 'Platform Admin', 0);
+INSERT INTO sys_menu (id, scope, name, permission, type, parent_id, path, component, icon, sort, status) VALUES
+    (1, 'platform', 'Platform Management', NULL, 1, 0, '/platform', NULL, 'shield', 1, 0),
+    (2, 'platform', 'Tenant Management', 'platform:tenant:page', 2, 1, '/platform/tenants', 'platform/tenants/index', 'building', 10, 0),
+    (3, 'platform', 'Create Tenant', 'platform:tenant:create', 3, 2, NULL, NULL, NULL, 11, 0),
+    (4, 'platform', 'Update Tenant', 'platform:tenant:update', 3, 2, NULL, NULL, NULL, 12, 0),
+    (5, 'platform', 'Update Tenant Status', 'platform:tenant:update-status', 3, 2, NULL, NULL, NULL, 13, 0),
+    (6, 'platform', 'Menu Management', 'platform:menu:tree', 2, 1, '/platform/menus', 'platform/menus/index', 'menu', 20, 0),
+    (7, 'platform', 'Create Menu', 'platform:menu:create', 3, 6, NULL, NULL, NULL, 21, 0),
+    (8, 'platform', 'Update Menu', 'platform:menu:update', 3, 6, NULL, NULL, NULL, 22, 0),
+    (101, 'tenant', 'System Management', NULL, 1, 0, '/system', NULL, 'settings', 1, 0),
+    (102, 'tenant', 'User Management', 'system:user:page', 2, 101, '/system/users', 'system/users/index', 'users', 10, 0),
+    (103, 'tenant', 'Create User', 'system:user:create', 3, 102, NULL, NULL, NULL, 11, 0),
+    (104, 'tenant', 'Update User', 'system:user:update', 3, 102, NULL, NULL, NULL, 12, 0),
+    (105, 'tenant', 'Update User Status', 'system:user:update-status', 3, 102, NULL, NULL, NULL, 13, 0),
+    (106, 'tenant', 'Reset User Password', 'system:user:reset-password', 3, 102, NULL, NULL, NULL, 14, 0),
+    (107, 'tenant', 'Assign User Roles', 'system:user:assign-role', 3, 102, NULL, NULL, NULL, 15, 0),
+    (108, 'tenant', 'Role Management', 'system:role:page', 2, 101, '/system/roles', 'system/roles/index', 'shield-check', 20, 0),
+    (109, 'tenant', 'Create Role', 'system:role:create', 3, 108, NULL, NULL, NULL, 21, 0),
+    (110, 'tenant', 'Update Role', 'system:role:update', 3, 108, NULL, NULL, NULL, 22, 0),
+    (111, 'tenant', 'Update Role Status', 'system:role:update-status', 3, 108, NULL, NULL, NULL, 23, 0),
+    (112, 'tenant', 'Assign Role Menus', 'system:role:assign-menu', 3, 108, NULL, NULL, NULL, 24, 0);
+INSERT INTO sys_user (id, tenant_id, username, password, nickname, status) VALUES (1, 1, 'admin', '$2b$12$4kJjReLEFNQ0aUVUg65SvuO6OjKY5ybCjp.HtdPfZH1vp0868R6a.', 'Super Admin', 0);
 INSERT INTO sys_role (id, tenant_id, name, code, sort, status) VALUES (1, 1, 'Super Admin', 'super_admin', 0, 0);
 INSERT INTO sys_user_role (user_id, role_id, tenant_id) VALUES (1, 1, 1);
+INSERT INTO sys_role_menu (role_id, menu_id, tenant_id) VALUES
+    (1, 101, 1),
+    (1, 102, 1),
+    (1, 103, 1),
+    (1, 104, 1),
+    (1, 105, 1),
+    (1, 106, 1),
+    (1, 107, 1),
+    (1, 108, 1),
+    (1, 109, 1),
+    (1, 110, 1),
+    (1, 111, 1),
+    (1, 112, 1);
 
 -- ============================================================
 -- Archive Module Tables

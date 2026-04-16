@@ -1,5 +1,6 @@
 import { Outlet } from '@tanstack/react-router'
 import { getCookie } from '@/lib/cookies'
+import { useAuthStore } from '@/stores/auth-store'
 import { cn } from '@/lib/utils'
 import { LayoutProvider } from '@/context/layout-provider'
 import { SearchProvider } from '@/context/search-provider'
@@ -13,6 +14,16 @@ type AuthenticatedLayoutProps = {
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
   const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const restoreStatus = useAuthStore((state) => state.restoreStatus)
+
+  if (restoreStatus === 'loading') {
+    return (
+      <div className='flex min-h-svh items-center justify-center text-sm text-muted-foreground'>
+        Restoring session...
+      </div>
+    )
+  }
+
   return (
     <SearchProvider>
       <LayoutProvider>

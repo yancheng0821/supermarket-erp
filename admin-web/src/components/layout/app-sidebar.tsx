@@ -7,6 +7,8 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 // import { AppTitle } from './app-title'
+import { buildSidebarData } from '@/features/auth/menu-to-sidebar'
+import { useAuthStore } from '@/stores/auth-store'
 import { sidebarData } from './data/sidebar-data'
 import { NavGroup } from './nav-group'
 import { NavUser } from './nav-user'
@@ -14,22 +16,38 @@ import { TeamSwitcher } from './team-switcher'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
+  const loginScope = useAuthStore((state) => state.loginScope)
+  const user = useAuthStore((state) => state.user)
+  const tenant = useAuthStore((state) => state.tenant)
+  const menuTree = useAuthStore((state) => state.menuTree)
+  const resolvedSidebarData =
+    loginScope && user
+      ? buildSidebarData({
+          token: '',
+          loginScope,
+          user,
+          tenant,
+          permissions: [],
+          menuTree,
+        })
+      : sidebarData
+
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
-        <TeamSwitcher teams={sidebarData.teams} />
+        <TeamSwitcher teams={resolvedSidebarData.teams} />
 
         {/* Replace <TeamSwitch /> with the following <AppTitle />
          /* if you want to use the normal app title instead of TeamSwitch dropdown */}
         {/* <AppTitle /> */}
       </SidebarHeader>
       <SidebarContent>
-        {sidebarData.navGroups.map((props) => (
+        {resolvedSidebarData.navGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={sidebarData.user} />
+        <NavUser user={resolvedSidebarData.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

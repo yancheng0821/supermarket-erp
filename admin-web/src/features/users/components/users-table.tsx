@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { type NavigateFn, useTableUrlState } from '@/hooks/use-table-url-state'
 import {
@@ -22,10 +23,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { roles } from '../data/data'
+import { getUserStatusLabel, roles } from '../data/data'
 import { type User } from '../data/schema'
 import { DataTableBulkActions } from './data-table-bulk-actions'
-import { usersColumns as columns } from './users-columns'
+import { useUsersColumns } from './users-columns'
 
 type DataTableProps = {
   data: User[]
@@ -34,6 +35,8 @@ type DataTableProps = {
 }
 
 export function UsersTable({ data, search, navigate }: DataTableProps) {
+  const { t } = useTranslation()
+  const columns = useUsersColumns()
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -101,23 +104,38 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Filter users...'
+        searchPlaceholder={t('users.searchByUsername')}
         searchKey='username'
         filters={[
           {
             columnId: 'status',
-            title: 'Status',
+            title: t('users.status'),
             options: [
-              { label: 'Active', value: 'active' },
-              { label: 'Inactive', value: 'inactive' },
-              { label: 'Invited', value: 'invited' },
-              { label: 'Suspended', value: 'suspended' },
+              {
+                label: getUserStatusLabel(t, 'active'),
+                value: 'active',
+              },
+              {
+                label: getUserStatusLabel(t, 'inactive'),
+                value: 'inactive',
+              },
+              {
+                label: getUserStatusLabel(t, 'invited'),
+                value: 'invited',
+              },
+              {
+                label: getUserStatusLabel(t, 'suspended'),
+                value: 'suspended',
+              },
             ],
           },
           {
             columnId: 'role',
-            title: 'Role',
-            options: roles.map((role) => ({ ...role })),
+            title: t('users.role'),
+            options: roles.map(({ labelKey, value }) => ({
+              label: t(labelKey),
+              value,
+            })),
           },
         ]}
       />
@@ -180,7 +198,7 @@ export function UsersTable({ data, search, navigate }: DataTableProps) {
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  {t('users.noResults')}
                 </TableCell>
               </TableRow>
             )}

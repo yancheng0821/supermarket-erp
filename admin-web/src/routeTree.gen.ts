@@ -25,7 +25,9 @@ import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as ClerkAuthenticatedRouteRouteImport } from './routes/clerk/_authenticated/route'
 import { Route as ClerkauthRouteRouteImport } from './routes/clerk/(auth)/route'
+import { Route as AuthenticatedSystemRouteRouteImport } from './routes/_authenticated/system/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedPlatformRouteRouteImport } from './routes/_authenticated/platform/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
@@ -40,8 +42,12 @@ import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_auth
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedSystemUsersIndexRouteImport } from './routes/_authenticated/system/users/index'
+import { Route as AuthenticatedSystemRolesIndexRouteImport } from './routes/_authenticated/system/roles/index'
 import { Route as AuthenticatedPurchaseReplenishIndexRouteImport } from './routes/_authenticated/purchase/replenish/index'
 import { Route as AuthenticatedPurchaseOrdersIndexRouteImport } from './routes/_authenticated/purchase/orders/index'
+import { Route as AuthenticatedPlatformTenantsIndexRouteImport } from './routes/_authenticated/platform/tenants/index'
+import { Route as AuthenticatedPlatformMenusIndexRouteImport } from './routes/_authenticated/platform/menus/index'
 import { Route as AuthenticatedOperationSalesIndexRouteImport } from './routes/_authenticated/operation/sales/index'
 import { Route as AuthenticatedOperationRefundsIndexRouteImport } from './routes/_authenticated/operation/refunds/index'
 import { Route as AuthenticatedOperationPaymentsIndexRouteImport } from './routes/_authenticated/operation/payments/index'
@@ -147,10 +153,22 @@ const ClerkauthRouteRoute = ClerkauthRouteRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => ClerkRouteRoute,
 } as any)
+const AuthenticatedSystemRouteRoute =
+  AuthenticatedSystemRouteRouteImport.update({
+    id: '/system',
+    path: '/system',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformRouteRoute =
+  AuthenticatedPlatformRouteRouteImport.update({
+    id: '/platform',
+    path: '/platform',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
@@ -231,6 +249,18 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSystemUsersIndexRoute =
+  AuthenticatedSystemUsersIndexRouteImport.update({
+    id: '/users/',
+    path: '/users/',
+    getParentRoute: () => AuthenticatedSystemRouteRoute,
+  } as any)
+const AuthenticatedSystemRolesIndexRoute =
+  AuthenticatedSystemRolesIndexRouteImport.update({
+    id: '/roles/',
+    path: '/roles/',
+    getParentRoute: () => AuthenticatedSystemRouteRoute,
+  } as any)
 const AuthenticatedPurchaseReplenishIndexRoute =
   AuthenticatedPurchaseReplenishIndexRouteImport.update({
     id: '/purchase/replenish/',
@@ -242,6 +272,18 @@ const AuthenticatedPurchaseOrdersIndexRoute =
     id: '/purchase/orders/',
     path: '/purchase/orders/',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformTenantsIndexRoute =
+  AuthenticatedPlatformTenantsIndexRouteImport.update({
+    id: '/tenants/',
+    path: '/tenants/',
+    getParentRoute: () => AuthenticatedPlatformRouteRoute,
+  } as any)
+const AuthenticatedPlatformMenusIndexRoute =
+  AuthenticatedPlatformMenusIndexRouteImport.update({
+    id: '/menus/',
+    path: '/menus/',
+    getParentRoute: () => AuthenticatedPlatformRouteRoute,
   } as any)
 const AuthenticatedOperationSalesIndexRoute =
   AuthenticatedOperationSalesIndexRouteImport.update({
@@ -409,7 +451,9 @@ const AuthenticatedAnalyticsDailySalesIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/platform': typeof AuthenticatedPlatformRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/system': typeof AuthenticatedSystemRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
@@ -462,11 +506,17 @@ export interface FileRoutesByFullPath {
   '/operation/payments/': typeof AuthenticatedOperationPaymentsIndexRoute
   '/operation/refunds/': typeof AuthenticatedOperationRefundsIndexRoute
   '/operation/sales/': typeof AuthenticatedOperationSalesIndexRoute
+  '/platform/menus/': typeof AuthenticatedPlatformMenusIndexRoute
+  '/platform/tenants/': typeof AuthenticatedPlatformTenantsIndexRoute
   '/purchase/orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/purchase/replenish/': typeof AuthenticatedPurchaseReplenishIndexRoute
+  '/system/roles/': typeof AuthenticatedSystemRolesIndexRoute
+  '/system/users/': typeof AuthenticatedSystemUsersIndexRoute
 }
 export interface FileRoutesByTo {
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/platform': typeof AuthenticatedPlatformRouteRouteWithChildren
+  '/system': typeof AuthenticatedSystemRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
@@ -520,14 +570,20 @@ export interface FileRoutesByTo {
   '/operation/payments': typeof AuthenticatedOperationPaymentsIndexRoute
   '/operation/refunds': typeof AuthenticatedOperationRefundsIndexRoute
   '/operation/sales': typeof AuthenticatedOperationSalesIndexRoute
+  '/platform/menus': typeof AuthenticatedPlatformMenusIndexRoute
+  '/platform/tenants': typeof AuthenticatedPlatformTenantsIndexRoute
   '/purchase/orders': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/purchase/replenish': typeof AuthenticatedPurchaseReplenishIndexRoute
+  '/system/roles': typeof AuthenticatedSystemRolesIndexRoute
+  '/system/users': typeof AuthenticatedSystemUsersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/clerk': typeof ClerkRouteRouteWithChildren
+  '/_authenticated/platform': typeof AuthenticatedPlatformRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
+  '/_authenticated/system': typeof AuthenticatedSystemRouteRouteWithChildren
   '/clerk/(auth)': typeof ClerkauthRouteRouteWithChildren
   '/clerk/_authenticated': typeof ClerkAuthenticatedRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
@@ -583,15 +639,21 @@ export interface FileRoutesById {
   '/_authenticated/operation/payments/': typeof AuthenticatedOperationPaymentsIndexRoute
   '/_authenticated/operation/refunds/': typeof AuthenticatedOperationRefundsIndexRoute
   '/_authenticated/operation/sales/': typeof AuthenticatedOperationSalesIndexRoute
+  '/_authenticated/platform/menus/': typeof AuthenticatedPlatformMenusIndexRoute
+  '/_authenticated/platform/tenants/': typeof AuthenticatedPlatformTenantsIndexRoute
   '/_authenticated/purchase/orders/': typeof AuthenticatedPurchaseOrdersIndexRoute
   '/_authenticated/purchase/replenish/': typeof AuthenticatedPurchaseReplenishIndexRoute
+  '/_authenticated/system/roles/': typeof AuthenticatedSystemRolesIndexRoute
+  '/_authenticated/system/users/': typeof AuthenticatedSystemUsersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/clerk'
+    | '/platform'
     | '/settings'
+    | '/system'
     | '/forgot-password'
     | '/otp'
     | '/sign-in'
@@ -644,11 +706,17 @@ export interface FileRouteTypes {
     | '/operation/payments/'
     | '/operation/refunds/'
     | '/operation/sales/'
+    | '/platform/menus/'
+    | '/platform/tenants/'
     | '/purchase/orders/'
     | '/purchase/replenish/'
+    | '/system/roles/'
+    | '/system/users/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/clerk'
+    | '/platform'
+    | '/system'
     | '/forgot-password'
     | '/otp'
     | '/sign-in'
@@ -702,13 +770,19 @@ export interface FileRouteTypes {
     | '/operation/payments'
     | '/operation/refunds'
     | '/operation/sales'
+    | '/platform/menus'
+    | '/platform/tenants'
     | '/purchase/orders'
     | '/purchase/replenish'
+    | '/system/roles'
+    | '/system/users'
   id:
     | '__root__'
     | '/_authenticated'
     | '/clerk'
+    | '/_authenticated/platform'
     | '/_authenticated/settings'
+    | '/_authenticated/system'
     | '/clerk/(auth)'
     | '/clerk/_authenticated'
     | '/(auth)/forgot-password'
@@ -764,8 +838,12 @@ export interface FileRouteTypes {
     | '/_authenticated/operation/payments/'
     | '/_authenticated/operation/refunds/'
     | '/_authenticated/operation/sales/'
+    | '/_authenticated/platform/menus/'
+    | '/_authenticated/platform/tenants/'
     | '/_authenticated/purchase/orders/'
     | '/_authenticated/purchase/replenish/'
+    | '/_authenticated/system/roles/'
+    | '/_authenticated/system/users/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -897,11 +975,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClerkauthRouteRouteImport
       parentRoute: typeof ClerkRouteRoute
     }
+    '/_authenticated/system': {
+      id: '/_authenticated/system'
+      path: '/system'
+      fullPath: '/system'
+      preLoaderRoute: typeof AuthenticatedSystemRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform': {
+      id: '/_authenticated/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof AuthenticatedPlatformRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/users/': {
@@ -1002,6 +1094,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/system/users/': {
+      id: '/_authenticated/system/users/'
+      path: '/users'
+      fullPath: '/system/users/'
+      preLoaderRoute: typeof AuthenticatedSystemUsersIndexRouteImport
+      parentRoute: typeof AuthenticatedSystemRouteRoute
+    }
+    '/_authenticated/system/roles/': {
+      id: '/_authenticated/system/roles/'
+      path: '/roles'
+      fullPath: '/system/roles/'
+      preLoaderRoute: typeof AuthenticatedSystemRolesIndexRouteImport
+      parentRoute: typeof AuthenticatedSystemRouteRoute
+    }
     '/_authenticated/purchase/replenish/': {
       id: '/_authenticated/purchase/replenish/'
       path: '/purchase/replenish'
@@ -1015,6 +1121,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/purchase/orders/'
       preLoaderRoute: typeof AuthenticatedPurchaseOrdersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform/tenants/': {
+      id: '/_authenticated/platform/tenants/'
+      path: '/tenants'
+      fullPath: '/platform/tenants/'
+      preLoaderRoute: typeof AuthenticatedPlatformTenantsIndexRouteImport
+      parentRoute: typeof AuthenticatedPlatformRouteRoute
+    }
+    '/_authenticated/platform/menus/': {
+      id: '/_authenticated/platform/menus/'
+      path: '/menus'
+      fullPath: '/platform/menus/'
+      preLoaderRoute: typeof AuthenticatedPlatformMenusIndexRouteImport
+      parentRoute: typeof AuthenticatedPlatformRouteRoute
     }
     '/_authenticated/operation/sales/': {
       id: '/_authenticated/operation/sales/'
@@ -1208,6 +1328,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedPlatformRouteRouteChildren {
+  AuthenticatedPlatformMenusIndexRoute: typeof AuthenticatedPlatformMenusIndexRoute
+  AuthenticatedPlatformTenantsIndexRoute: typeof AuthenticatedPlatformTenantsIndexRoute
+}
+
+const AuthenticatedPlatformRouteRouteChildren: AuthenticatedPlatformRouteRouteChildren =
+  {
+    AuthenticatedPlatformMenusIndexRoute: AuthenticatedPlatformMenusIndexRoute,
+    AuthenticatedPlatformTenantsIndexRoute:
+      AuthenticatedPlatformTenantsIndexRoute,
+  }
+
+const AuthenticatedPlatformRouteRouteWithChildren =
+  AuthenticatedPlatformRouteRoute._addFileChildren(
+    AuthenticatedPlatformRouteRouteChildren,
+  )
+
 interface AuthenticatedSettingsRouteRouteChildren {
   AuthenticatedSettingsAccountRoute: typeof AuthenticatedSettingsAccountRoute
   AuthenticatedSettingsAppearanceRoute: typeof AuthenticatedSettingsAppearanceRoute
@@ -1231,8 +1368,26 @@ const AuthenticatedSettingsRouteRouteWithChildren =
     AuthenticatedSettingsRouteRouteChildren,
   )
 
+interface AuthenticatedSystemRouteRouteChildren {
+  AuthenticatedSystemRolesIndexRoute: typeof AuthenticatedSystemRolesIndexRoute
+  AuthenticatedSystemUsersIndexRoute: typeof AuthenticatedSystemUsersIndexRoute
+}
+
+const AuthenticatedSystemRouteRouteChildren: AuthenticatedSystemRouteRouteChildren =
+  {
+    AuthenticatedSystemRolesIndexRoute: AuthenticatedSystemRolesIndexRoute,
+    AuthenticatedSystemUsersIndexRoute: AuthenticatedSystemUsersIndexRoute,
+  }
+
+const AuthenticatedSystemRouteRouteWithChildren =
+  AuthenticatedSystemRouteRoute._addFileChildren(
+    AuthenticatedSystemRouteRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPlatformRouteRoute: typeof AuthenticatedPlatformRouteRouteWithChildren
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
+  AuthenticatedSystemRouteRoute: typeof AuthenticatedSystemRouteRouteWithChildren
   AuthenticatedSplatRoute: typeof AuthenticatedSplatRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
@@ -1273,7 +1428,9 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPlatformRouteRoute: AuthenticatedPlatformRouteRouteWithChildren,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
+  AuthenticatedSystemRouteRoute: AuthenticatedSystemRouteRouteWithChildren,
   AuthenticatedSplatRoute: AuthenticatedSplatRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,

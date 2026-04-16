@@ -518,13 +518,696 @@
   "auth": {
     "signIn": "Sign In",
     "signUp": "Sign Up",
+    "signUpTitle": "Create an account",
+    "signUpDescription": "Enter your email and password to create an account.",
+    "alreadyHaveAccount": "Already have an account?",
+    "createAccountAgreement": "By creating an account, you agree to our",
+    "createAccount": "Create Account",
+    "continueWith": "Or continue with",
     "username": "Username",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Please enter a valid email address",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "tenantCode": "Tenant Code",
+    "tenantAdmin": "Tenant Admin",
+    "platformAdmin": "Platform Admin",
+    "platformConsole": "Platform Console",
     "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordDescription": "Enter your registered email and we will send you a link to reset your password.",
+    "noAccount": "Don't have an account?",
+    "sendResetLink": "Send reset link",
+    "sendingResetEmail": "Sending email...",
+    "resetEmailSent": "Email sent to {{email}}",
+    "otpTitle": "Two-factor Authentication",
+    "otpDescription": "Please enter the authentication code. We have sent the authentication code to your email.",
+    "otpResendPrompt": "Haven't received it?",
+    "otpResendLink": "Resend a new code",
+    "otpCodeLabel": "One-Time Password",
+    "otpCodeRequired": "Please enter the 6-digit code.",
+    "otpSubmittedSummary": "You submitted the following verification code:",
+    "verifyCode": "Verify",
     "welcomeBack": "Welcome back",
+    "welcomeBackUser": "Welcome back, {{name}}!",
     "enterCredentials": "Enter your credentials to sign in",
+    "signInDescription": "Choose platform or tenant mode, then enter your credentials to continue.",
+    "tenantCodeRequired": "Please enter your tenant code",
+    "usernameRequired": "Please enter your username",
+    "passwordRequired": "Please enter your password",
+    "passwordMinLength": "Password must be at least 7 characters long",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "agreePrefix": "By clicking sign in, you agree to our",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy",
+    "agreeJoiner": "and",
+    "agreeSuffix": ".",
     "signOut": "Sign Out",
     "signOutDescription": "Are you sure you want to sign out? You will need to sign in again to access your account."
+  },
+  "clerk": {
+    "missingKeyTitle": "No Publishable Key Found!",
+    "missingKeyDescription": "You need to generate a publishable key from Clerk and put it inside the <code>.env</code> file.",
+    "setupKeyTitle": "Set your Clerk API key",
+    "apiKeysPageStep": "In the <link>Clerk</link> Dashboard, navigate to the API keys page.",
+    "quickCopyStep": "In the <strong>Quick Copy</strong> section, copy your Clerk Publishable Key.",
+    "renameEnvStep": "Rename <code>.env.example</code> to <code>.env</code>.",
+    "pasteKeyStep": "Paste your key into your <code>.env</code> file.",
+    "finalResultLabel": "The final result should resemble the following:",
+    "optionalTitle": "Clerk Integration is Optional",
+    "optionalDescription": "The Clerk integration lives entirely inside <code>src/routes/clerk</code>. If you plan to use Clerk as your auth service, you might want to place <code>ClerkProvider</code> at the root route.",
+    "optionalRemovalDescription": "If you don't plan to use Clerk, you can safely remove this directory and the related dependency <code>@clerk/clerk-react</code>.",
+    "optionalNote": "This setup is modular by design and won't affect the rest of the application.",
+    "authLayoutIntro": "Welcome to the example Clerk auth page.",
+    "backToDashboard": "Back to Dashboard",
+    "authLayoutQuote": "This isolated Clerk area lets you evaluate hosted authentication without affecting the main ERP login flow.",
+    "authLayoutQuoteAuthor": "Supermarket ERP",
+    "sameAsUsersRoute": "This page is the same as",
+    "userManagementProfileHint": "You can sign out, manage your account, or delete it from the user profile menu in the top-right corner.",
+    "unauthorizedHint": "You must first sign in using Clerk to access this route.",
+    "unauthorizedDetails": "After signing in, you'll be able to sign out or delete your account via the user profile menu on this page.",
+    "redirectingToSignIn": "Redirecting to the sign-in page in {{count}}s",
+    "redirecting": "Redirecting...",
+    "cancelRedirect": "Cancel Redirect"
+  },
+  "users": {
+    "title": "User List",
+    "description": "Manage your users and their roles here.",
+    "inviteUser": "Invite User",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "createUser": "Add New User",
+    "createDescription": "Create new user here. Click save when you're done.",
+    "editDescription": "Update the user here. Click save when you're done.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "fullName": "Name",
+    "username": "Username",
+    "email": "Email",
+    "phoneNumber": "Phone Number",
+    "role": "Role",
+    "status": "Status",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstNamePlaceholder": "Enter first name",
+    "lastNamePlaceholder": "Enter last name",
+    "usernamePlaceholder": "Enter username",
+    "emailPlaceholder": "Enter email",
+    "phoneNumberPlaceholder": "Enter phone number",
+    "passwordPlaceholder": "Enter password",
+    "inviteEmailPlaceholder": "Enter invitation email",
+    "searchByUsername": "Filter users...",
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "noResults": "No results.",
+    "deleteUser": "Delete User",
+    "deleteDescription": "Are you sure you want to delete {{username}}? This action will permanently remove the user with the role {{role}} from the system. This cannot be undone.",
+    "deleteUsernamePrompt": "Username:",
+    "deleteUsernamePlaceholder": "Enter username to confirm deletion.",
+    "deletedSummary": "The following user has been deleted:",
+    "multiDeleteTitle": "Delete {{count}} user(s)",
+    "multiDeleteDescription": "Are you sure you want to delete the selected users? This action cannot be undone.",
+    "multiDeleteConfirmPrompt": "Confirm by typing \"{{word}}\":",
+    "multiDeletePlaceholder": "Type \"{{word}}\" to confirm.",
+    "multiDeleteConfirmError": "Please type \"{{word}}\" to confirm.",
+    "warning": "Warning!",
+    "warningDescription": "Please be careful, this operation cannot be rolled back.",
+    "inviteDescription": "Invite a new user to join your team by sending them an email invitation. Assign a role to define their access level.",
+    "inviteOptionalDescription": "Description (optional)",
+    "inviteOptionalPlaceholder": "Add a personal note to your invitation (optional)",
+    "inviteSummary": "The following invitation has been prepared:",
+    "saveSummary": "The following user values have been submitted:",
+    "invitingUsers": "Inviting users...",
+    "inviteUsersSuccess": "Invited {{count}} user(s)",
+    "inviteUsersError": "Error inviting users",
+    "activatingUsers": "Activating users...",
+    "activateUsersSuccess": "Activated {{count}} user(s)",
+    "activateUsersError": "Error activating users",
+    "deactivatingUsers": "Deactivating users...",
+    "deactivateUsersSuccess": "Deactivated {{count}} user(s)",
+    "deactivateUsersError": "Error deactivating users",
+    "deletingUsers": "Deleting users...",
+    "deleteUsersSuccess": "Deleted {{count}} user(s)",
+    "deleteUsersError": "Error deleting users",
+    "inviteSelectedUsers": "Invite selected users",
+    "activateSelectedUsers": "Activate selected users",
+    "deactivateSelectedUsers": "Deactivate selected users",
+    "deleteSelectedUsers": "Delete selected users",
+    "bulkEntity": "user",
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required.",
+    "usernameRequired": "Username is required.",
+    "phoneNumberRequired": "Phone number is required.",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Please enter a valid email address.",
+    "roleRequired": "Role is required.",
+    "passwordRequired": "Password is required.",
+    "passwordMinLength": "Password must be at least 8 characters long.",
+    "passwordLowercase": "Password must contain at least one lowercase letter.",
+    "passwordNumber": "Password must contain at least one number.",
+    "passwordsDoNotMatch": "Passwords don't match.",
+    "roles": {
+      "superadmin": "Superadmin",
+      "admin": "Admin",
+      "manager": "Manager",
+      "cashier": "Cashier"
+    },
+    "statuses": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "invited": "Invited",
+      "suspended": "Suspended"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings and set e-mail preferences.",
+    "selectSection": "Select section",
+    "nav": {
+      "profile": "Profile",
+      "account": "Account",
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "display": "Display"
+    },
+    "profile": {
+      "title": "Profile",
+      "description": "This is how others will see you on the site.",
+      "username": "Username",
+      "usernamePlaceholder": "Enter username",
+      "usernameDescription": "This is your public display name. It can be your real name or a pseudonym. You can only change this once every 30 days.",
+      "email": "Email",
+      "selectVerifiedEmail": "Select a verified email to display",
+      "emailDescriptionPrefix": "You can manage verified email addresses in your ",
+      "emailSettingsLink": "email settings",
+      "emailDescriptionSuffix": ".",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us a little bit about yourself",
+      "bioDescriptionPrefix": "You can ",
+      "bioDescriptionSuffix": " other users and organizations to link to them.",
+      "urls": "URLs",
+      "urlsDescription": "Add links to your website, blog, or social media profiles.",
+      "addUrl": "Add URL",
+      "updateProfile": "Update profile",
+      "defaultBio": "I own a computer.",
+      "validation": {
+        "usernameRequired": "Please enter your username.",
+        "usernameMinLength": "Username must be at least 2 characters.",
+        "usernameMaxLength": "Username must not be longer than 30 characters.",
+        "emailRequired": "Please select an email to display.",
+        "bioMinLength": "Bio must be at least 4 characters.",
+        "bioMaxLength": "Bio must not be longer than 160 characters.",
+        "urlInvalid": "Please enter a valid URL."
+      }
+    },
+    "account": {
+      "title": "Account",
+      "description": "Update your account settings. Set your preferred language and timezone.",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "nameDescription": "This is the name that will be displayed on your profile and in emails.",
+      "dob": "Date of birth",
+      "dobDescription": "Your date of birth is used to calculate your age.",
+      "language": "Language",
+      "selectLanguage": "Select language",
+      "searchLanguage": "Search language...",
+      "noLanguageFound": "No language found.",
+      "languageDescription": "This is the language that will be used in the dashboard.",
+      "updateAccount": "Update account",
+      "languages": {
+        "en": "English",
+        "fr": "French",
+        "de": "German",
+        "es": "Spanish",
+        "pt": "Portuguese",
+        "ru": "Russian",
+        "ja": "Japanese",
+        "ko": "Korean",
+        "zh": "Chinese"
+      },
+      "validation": {
+        "nameRequired": "Please enter your name.",
+        "nameMinLength": "Name must be at least 2 characters.",
+        "nameMaxLength": "Name must not be longer than 30 characters.",
+        "dobRequired": "Please select your date of birth.",
+        "languageRequired": "Please select a language."
+      }
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize the appearance of the app. Automatically switch between day and night themes.",
+      "font": "Font",
+      "fontDescription": "Set the font you want to use in the dashboard.",
+      "theme": "Theme",
+      "themeDescription": "Select the theme for the dashboard.",
+      "light": "Light",
+      "dark": "Dark",
+      "updatePreferences": "Update preferences"
+    },
+    "display": {
+      "title": "Display",
+      "description": "Turn items on or off to control what's displayed in the app.",
+      "sidebar": "Sidebar",
+      "sidebarDescription": "Select the items you want to display in the sidebar.",
+      "items": {
+        "recents": "Recents",
+        "home": "Home",
+        "applications": "Applications",
+        "desktop": "Desktop",
+        "downloads": "Downloads",
+        "documents": "Documents"
+      },
+      "updateDisplay": "Update display settings",
+      "validation": {
+        "itemsRequired": "You have to select at least one item."
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "description": "Configure how you receive notifications.",
+      "notifyMeAbout": "Notify me about...",
+      "options": {
+        "all": "All new messages",
+        "mentions": "Direct messages and mentions",
+        "none": "Nothing"
+      },
+      "emailNotifications": "Email Notifications",
+      "communicationEmails": "Communication emails",
+      "communicationEmailsDescription": "Receive emails about your account activity.",
+      "marketingEmails": "Marketing emails",
+      "marketingEmailsDescription": "Receive emails about new products, features, and more.",
+      "socialEmails": "Social emails",
+      "socialEmailsDescription": "Receive emails for friend requests, follows, and more.",
+      "securityEmails": "Security emails",
+      "securityEmailsDescription": "Receive emails about your account activity and security.",
+      "mobile": "Use different settings for my mobile devices",
+      "mobileDescriptionPrefix": "You can manage your mobile notifications in the ",
+      "mobileSettingsLink": "mobile settings",
+      "mobileDescriptionSuffix": " page.",
+      "updateNotifications": "Update notification settings",
+      "validation": {
+        "typeRequired": "Please select a notification type."
+      }
+    }
+  },
+  "apps": {
+    "title": "App Integrations",
+    "description": "Here's a list of your apps for the integration!",
+    "filterPlaceholder": "Filter apps...",
+    "types": {
+      "all": "All Apps",
+      "connected": "Connected",
+      "notConnected": "Not Connected"
+    },
+    "sort": {
+      "ascending": "Ascending",
+      "descending": "Descending"
+    },
+    "connect": "Connect",
+    "connected": "Connected",
+    "items": {
+      "telegram": "Connect with Telegram for real-time communication.",
+      "notion": "Effortlessly sync Notion pages for seamless collaboration.",
+      "figma": "View and collaborate on Figma designs in one place.",
+      "trello": "Sync Trello cards for streamlined project management.",
+      "slack": "Integrate Slack for efficient team communication.",
+      "zoom": "Host Zoom meetings directly from the dashboard.",
+      "stripe": "Easily manage Stripe transactions and payments.",
+      "gmail": "Access and manage Gmail messages effortlessly.",
+      "medium": "Explore and share Medium stories on your dashboard.",
+      "skype": "Connect with Skype contacts seamlessly.",
+      "docker": "Effortlessly manage Docker containers on your dashboard.",
+      "github": "Streamline code management with GitHub integration.",
+      "gitlab": "Efficiently manage code projects with GitLab integration.",
+      "discord": "Connect with Discord for seamless team communication.",
+      "whatsapp": "Easily integrate WhatsApp for direct messaging."
+    }
+  },
+  "platformMenus": {
+    "title": "Platform Menus",
+    "description": "Manage the platform navigation tree and permission bindings.",
+    "newMenu": "New Menu",
+    "permission": "Permission",
+    "type": "Type",
+    "path": "Path",
+    "loading": "Loading menus...",
+    "empty": "No menus found.",
+    "types": {
+      "directory": "Directory",
+      "menu": "Menu",
+      "button": "Button"
+    },
+    "editMenu": "Edit Menu",
+    "createMenu": "Create Menu",
+    "dialogDescription": "Review menu details and save your changes.",
+    "root": "Root",
+    "form": {
+      "name": "Menu Name",
+      "permission": "Permission",
+      "type": "Menu Type",
+      "parentMenu": "Parent Menu",
+      "routePath": "Path",
+      "component": "Component",
+      "icon": "Icon",
+      "sort": "Sort"
+    },
+    "messages": {
+      "updated": "Menu updated",
+      "created": "Menu created",
+      "loadError": "Failed to load menus",
+      "saveError": "Failed to save menu"
+    }
+  },
+  "systemUsers": {
+    "title": "System Users",
+    "description": "Manage tenant administrators and system access accounts.",
+    "newUser": "New User",
+    "nickname": "Nickname",
+    "searchByUsername": "Search by username",
+    "searchByNickname": "Search by nickname",
+    "loading": "Loading users...",
+    "empty": "No users found.",
+    "enable": "Enable",
+    "disable": "Disable",
+    "paginationSummary": "Total {{total}} items | Page {{page}} / {{totalPages}}",
+    "editUser": "Edit User",
+    "createUser": "Create User",
+    "dialogDescription": "Configure the user account fields and save your changes.",
+    "passwordOptional": "Password (leave blank to keep current)",
+    "messages": {
+      "updated": "User updated",
+      "created": "User created",
+      "loadError": "Failed to load users",
+      "saveError": "Failed to save user",
+      "statusUpdated": "User status updated",
+      "updateError": "Failed to update user"
+    }
+  },
+  "systemRoles": {
+    "title": "System Roles",
+    "description": "Manage role identities and activation state inside the tenant.",
+    "newRole": "New Role",
+    "searchByName": "Search by role name",
+    "searchByCode": "Search by role code",
+    "sort": "Sort",
+    "loading": "Loading roles...",
+    "empty": "No roles found.",
+    "enable": "Enable",
+    "disable": "Disable",
+    "paginationSummary": "Total {{total}} items | Page {{page}} / {{totalPages}}",
+    "editRole": "Edit Role",
+    "createRole": "Create Role",
+    "dialogDescription": "Configure the role fields and save your changes.",
+    "form": {
+      "name": "Role Name",
+      "code": "Role Code",
+      "sort": "Sort",
+      "remark": "Remark"
+    },
+    "messages": {
+      "updated": "Role updated",
+      "created": "Role created",
+      "loadError": "Failed to load roles",
+      "saveError": "Failed to save role",
+      "statusUpdated": "Role status updated",
+      "updateError": "Failed to update role"
+    }
+  },
+  "platformTenants": {
+    "title": "Tenant Management",
+    "description": "Manage tenant identities and lifecycle status for the platform.",
+    "newTenant": "New Tenant",
+    "searchByCode": "Search by tenant code",
+    "searchByName": "Search by tenant name",
+    "tenant": "Tenant",
+    "contact": "Contact",
+    "expireDate": "Expire Date",
+    "loading": "Loading tenants...",
+    "empty": "No tenants found.",
+    "enable": "Enable",
+    "disable": "Disable",
+    "paginationSummary": "Total {{total}} items | Page {{page}} / {{totalPages}}",
+    "editTenant": "Edit Tenant",
+    "createTenant": "Create Tenant",
+    "dialogDescription": "Configure the tenant fields and save your changes.",
+    "form": {
+      "code": "Tenant Code",
+      "name": "Tenant Name",
+      "contactName": "Contact Name",
+      "contactPhone": "Contact Phone",
+      "status": "Tenant Status"
+    },
+    "messages": {
+      "updated": "Tenant updated",
+      "created": "Tenant created",
+      "loadError": "Failed to load tenants",
+      "saveError": "Failed to save tenant",
+      "statusUpdated": "Tenant status updated",
+      "updateError": "Failed to update tenant status"
+    }
+  },
+  "tasks": {
+    "title": "Tasks",
+    "description": "Review and process your task list for this month.",
+    "newTask": "New Task",
+    "importTasks": "Import Tasks",
+    "importAction": "Import",
+    "createTask": "Create Task",
+    "editTask": "Edit Task",
+    "dialogDescriptionCreate": "Fill in the task details and save your changes.",
+    "dialogDescriptionUpdate": "Update the task details and save your changes.",
+    "importDescription": "Import tasks quickly from a CSV file.",
+    "bulkEntity": "tasks",
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "empty": "No results.",
+    "columns": {
+      "taskId": "Task ID",
+      "title": "Title",
+      "status": "Status",
+      "priority": "Priority"
+    },
+    "filters": {
+      "searchPlaceholder": "Filter by task title or ID",
+      "status": "Status",
+      "priority": "Priority"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter task title",
+      "status": "Status",
+      "label": "Label",
+      "priority": "Priority",
+      "file": "File",
+      "selectPlaceholder": "Select"
+    },
+    "validation": {
+      "titleRequired": "Title is required.",
+      "statusRequired": "Please select a status.",
+      "labelRequired": "Please select a label.",
+      "priorityRequired": "Please choose a priority.",
+      "fileRequired": "Please upload a file.",
+      "csvOnly": "Please upload a CSV file."
+    },
+    "options": {
+      "labels": {
+        "bug": "Bug",
+        "feature": "Feature",
+        "documentation": "Documentation"
+      },
+      "statuses": {
+        "backlog": "Backlog",
+        "todo": "Todo",
+        "inProgress": "In Progress",
+        "done": "Done",
+        "canceled": "Canceled"
+      },
+      "priorities": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "critical": "Critical"
+      }
+    },
+    "rowActions": {
+      "copy": "Copy",
+      "favorite": "Favorite",
+      "labels": "Labels"
+    },
+    "bulkActions": {
+      "updateStatus": "Update status",
+      "updatePriority": "Update priority",
+      "exportTasks": "Export tasks",
+      "deleteSelectedTasks": "Delete selected tasks"
+    },
+    "messages": {
+      "submittedSummary": "You submitted the following task values:",
+      "importedFileSummary": "You imported the following file:",
+      "deletedSummary": "The following task has been deleted:",
+      "updatingStatus": "Updating status...",
+      "statusUpdated_one": "Updated status to \"{{status}}\" for {{count}} task.",
+      "statusUpdated_other": "Updated status to \"{{status}}\" for {{count}} tasks.",
+      "updatingPriority": "Updating priority...",
+      "priorityUpdated_one": "Updated priority to \"{{priority}}\" for {{count}} task.",
+      "priorityUpdated_other": "Updated priority to \"{{priority}}\" for {{count}} tasks.",
+      "exporting": "Exporting tasks...",
+      "exported_one": "Exported {{count}} task to CSV.",
+      "exported_other": "Exported {{count}} tasks to CSV.",
+      "error": "Error"
+    },
+    "deleteDialog": {
+      "title": "Delete task {{id}}?",
+      "description": "You are about to delete task ID {{id}}.",
+      "irreversible": "This action cannot be undone."
+    },
+    "multiDelete": {
+      "confirmWord": "DELETE",
+      "title_one": "Delete {{count}} task",
+      "title_other": "Delete {{count}} tasks",
+      "description": "Are you sure you want to delete the selected tasks?",
+      "irreversible": "This action cannot be undone.",
+      "confirmPrompt": "Confirm by typing \"{{word}}\":",
+      "confirmPlaceholder": "Type \"{{word}}\" to confirm",
+      "confirmError": "Please type \"{{word}}\" to confirm.",
+      "warningTitle": "Warning",
+      "warningDescription": "Please be careful, this operation cannot be rolled back.",
+      "loading": "Deleting tasks...",
+      "success_one": "Deleted {{count}} task",
+      "success_other": "Deleted {{count}} tasks"
+    }
+  },
+  "chats": {
+    "title": "Inbox",
+    "compose": "New message",
+    "searchLabel": "Search chats",
+    "searchPlaceholder": "Search chat...",
+    "youPrefix": "You: ",
+    "selfName": "You",
+    "goBack": "Go back",
+    "videoCall": "Start video call",
+    "phoneCall": "Start voice call",
+    "moreActions": "More actions",
+    "addAction": "Open quick actions",
+    "addImage": "Add image",
+    "attachFile": "Attach file",
+    "messageInputLabel": "Chat text box",
+    "messageInputPlaceholder": "Type your messages...",
+    "send": "Send",
+    "sendMessage": "Send message",
+    "emptyTitle": "Your messages",
+    "emptyDescription": "Send a message to start a chat.",
+    "formats": {
+      "dateGroup": "MMM d, yyyy",
+      "time": "h:mm a"
+    },
+    "newChat": {
+      "title": "New message",
+      "description": "Select one or more people to start a new conversation.",
+      "to": "To:",
+      "searchPeoplePlaceholder": "Search people...",
+      "empty": "No people found.",
+      "chat": "Chat",
+      "removeUser": "Remove {{name}}",
+      "submittedSummary": "You selected the following people:"
+    },
+    "data": {
+      "conv1": {
+        "title": "Senior Backend Dev",
+        "messages": {
+          "m1": "See you later, Alex!",
+          "m2": "Alright, talk to you later!",
+          "m3": "For sure. Anyway, I should get back to reviewing the project.",
+          "m4": "Yeah, let me know what you think.",
+          "m5": "Oh, nice! I've been waiting for that. I'll check it out later.",
+          "m6": "They've added a dark mode option! It looks really sleek.",
+          "m7": "No, not yet. What's new?",
+          "m8": "By the way, have you seen the new feature update?",
+          "m9": "Will do! Thanks, Alex.",
+          "m10": "Great! Let me know if you need any help.",
+          "m11": "Almost done. Just need to review a few things.",
+          "m12": "I'm good, thanks! Did you finish the project?",
+          "m13": "Hey Alex, I'm doing well! How about you?",
+          "m14": "Hey Bob, how are you doing?"
+        }
+      },
+      "conv2": {
+        "title": "Tech Lead",
+        "messages": {
+          "m1": "Yeah, it's really well-explained. You should give it a try.",
+          "m2": "Not yet, is it good?",
+          "m3": "Hey, did you check out that new tutorial?"
+        }
+      },
+      "conv3": {
+        "title": "QA",
+        "messages": {
+          "m1": "Yep, see you.",
+          "m2": "Great, see you then!",
+          "m3": "Yes, same time as usual. I'll send the invite shortly.",
+          "m4": "Are we still on for the meeting tomorrow?"
+        }
+      },
+      "conv4": {
+        "title": "Jr Developer",
+        "messages": {
+          "m1": "Sure, no problem.",
+          "m2": "Thanks, appreciate it!",
+          "m3": "Sure thing! I'll take a look in the next hour.",
+          "m4": "Hey! Do you have time to review my PR today?"
+        }
+      },
+      "conv5": {
+        "title": "Senior UI/UX Designer",
+        "messages": {
+          "m1": "Great, I'll review them now!",
+          "m2": "Just sent you the files. Let me know if you need any changes.",
+          "m3": "I finished the design for the dashboard. Thoughts?"
+        }
+      },
+      "conv6": {
+        "title": "Product Designer",
+        "messages": {
+          "m1": "Same here! It's coming together nicely.",
+          "m2": "I'm really excited to see the final product!",
+          "m3": "How's the project looking on your end?"
+        }
+      },
+      "conv7": {
+        "title": "CEO",
+        "messages": {
+          "m1": "Got it! Thanks for the update.",
+          "m2": "The release has been delayed to next week.",
+          "m3": "Hey, any news on the release?"
+        }
+      },
+      "conv8": {
+        "title": "QA",
+        "messages": {
+          "m1": "I'll join the call in a few minutes.",
+          "m2": "Perfect! We'll start as soon as you're in.",
+          "m3": "Is the meeting still on?"
+        }
+      },
+      "conv9": {
+        "title": "Full-stack Dev",
+        "messages": {
+          "m1": "Sure thing, I'll send over the updates shortly.",
+          "m2": "Could you update the backend as well?",
+          "m3": "The frontend updates are done. How does it look?"
+        }
+      },
+      "conv10": {
+        "title": "Jr. Frontend Dev",
+        "messages": {
+          "m1": "Thanks! I'll review your code and get back to you.",
+          "m2": "Let me know if you need anything else.",
+          "m3": "The feature is implemented. Can you review it?"
+        }
+      }
+    }
   },
   "app": {
     "name": "Supermarket ERP",
@@ -627,7 +1310,101 @@
     "download": "Download",
     "fromLastMonth": "from last month",
     "salesThisMonth": "You made 265 sales this month.",
-    "sinceLastHour": "+201 since last hour"
+    "sinceLastHour": "+201 since last hour",
+    "analyticsPanel": {
+      "trafficTitle": "Traffic Overview",
+      "trafficDescription": "Weekly clicks and unique visitors",
+      "stats": {
+        "totalClicks": {
+          "title": "Total Clicks",
+          "delta": "+12.4% vs last week"
+        },
+        "uniqueVisitors": {
+          "title": "Unique Visitors",
+          "delta": "+5.8% vs last week"
+        },
+        "bounceRate": {
+          "title": "Bounce Rate",
+          "delta": "-3.2% vs last week"
+        },
+        "avgSession": {
+          "title": "Avg. Session",
+          "delta": "+18s vs last week"
+        }
+      },
+      "referrers": {
+        "title": "Referrers",
+        "description": "Top sources driving traffic",
+        "items": {
+          "direct": "Direct",
+          "productHunt": "Product Hunt",
+          "twitter": "X / Twitter",
+          "blog": "Blog"
+        }
+      },
+      "devices": {
+        "title": "Devices",
+        "description": "How users access your app",
+        "items": {
+          "desktop": "Desktop",
+          "mobile": "Mobile",
+          "tablet": "Tablet"
+        }
+      },
+      "chart": {
+        "days": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri",
+          "sat": "Sat",
+          "sun": "Sun"
+        }
+      }
+    },
+    "overviewChart": {
+      "currencyPrefix": "¥",
+      "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Aug",
+        "sep": "Sep",
+        "oct": "Oct",
+        "nov": "Nov",
+        "dec": "Dec"
+      }
+    },
+    "recentSalesPanel": {
+      "avatarAlt": "{{name}} avatar",
+      "items": {
+        "customer1": {
+          "name": "Olivia Martin",
+          "email": "olivia.martin@email.com"
+        },
+        "customer2": {
+          "name": "Jackson Lee",
+          "email": "jackson.lee@email.com"
+        },
+        "customer3": {
+          "name": "Isabella Nguyen",
+          "email": "isabella.nguyen@email.com"
+        },
+        "customer4": {
+          "name": "William Kim",
+          "email": "will@email.com"
+        },
+        "customer5": {
+          "name": "Sofia Davis",
+          "email": "sofia.davis@email.com"
+        }
+      }
+    }
   },
   "archive": {
     "products": {

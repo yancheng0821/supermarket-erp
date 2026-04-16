@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { type Table } from '@tanstack/react-table'
 import { AlertTriangle } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { sleep } from '@/lib/utils'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -24,27 +25,26 @@ export function UsersMultiDeleteDialog<TData>({
   table,
 }: UserMultiDeleteDialogProps<TData>) {
   const [value, setValue] = useState('')
+  const { t } = useTranslation()
 
   const selectedRows = table.getFilteredSelectedRowModel().rows
 
   const handleDelete = () => {
     if (value.trim() !== CONFIRM_WORD) {
-      toast.error(`Please type "${CONFIRM_WORD}" to confirm.`)
+      toast.error(t('users.multiDeleteConfirmError', { word: CONFIRM_WORD }))
       return
     }
 
     onOpenChange(false)
 
     toast.promise(sleep(2000), {
-      loading: 'Deleting users...',
+      loading: t('users.deletingUsers'),
       success: () => {
         setValue('')
         table.resetRowSelection()
-        return `Deleted ${selectedRows.length} ${
-          selectedRows.length > 1 ? 'users' : 'user'
-        }`
+        return t('users.deleteUsersSuccess', { count: selectedRows.length })
       },
-      error: 'Error',
+      error: t('users.deleteUsersError'),
     })
   }
 
@@ -60,8 +60,7 @@ export function UsersMultiDeleteDialog<TData>({
             className='me-1 inline-block stroke-destructive'
             size={18}
           />{' '}
-          Delete {selectedRows.length}{' '}
-          {selectedRows.length > 1 ? 'users' : 'user'}
+          {t('users.multiDeleteTitle', { count: selectedRows.length })}
         </span>
       }
       desc={
@@ -73,30 +72,29 @@ export function UsersMultiDeleteDialog<TData>({
           }}
           className='space-y-4'
         >
-          <p className='mb-2'>
-            Are you sure you want to delete the selected users? <br />
-            This action cannot be undone.
-          </p>
+          <p className='mb-2'>{t('users.multiDeleteDescription')}</p>
 
           <Label className='my-4 flex flex-col items-start gap-1.5'>
-            <span className=''>Confirm by typing "{CONFIRM_WORD}":</span>
+            <span className=''>
+              {t('users.multiDeleteConfirmPrompt', { word: CONFIRM_WORD })}
+            </span>
             <Input
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              placeholder={`Type "${CONFIRM_WORD}" to confirm.`}
+              placeholder={t('users.multiDeletePlaceholder', {
+                word: CONFIRM_WORD,
+              })}
               autoFocus
             />
           </Label>
 
           <Alert variant='destructive'>
-            <AlertTitle>Warning!</AlertTitle>
-            <AlertDescription>
-              Please be careful, this operation can not be rolled back.
-            </AlertDescription>
+            <AlertTitle>{t('users.warning')}</AlertTitle>
+            <AlertDescription>{t('users.warningDescription')}</AlertDescription>
           </Alert>
         </form>
       }
-      confirmText='Delete'
+      confirmText={t('common.delete')}
       destructive
     />
   )

@@ -1,18 +1,18 @@
 server:
   port: 9000
+
 spring:
   application:
     name: erp-gateway
+  profiles:
+    default: local
   cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
     gateway:
       routes:
         - id: erp-system
           uri: lb://erp-system
           predicates:
-            - Path=/api/v1/admin/auth/**, /api/v1/admin/user/**, /api/v1/admin/role/**, /api/v1/admin/menu/**, /api/v1/admin/tenant/**
+            - Path=/api/v1/admin/auth/**,/api/v1/admin/user/**,/api/v1/admin/role/**,/api/v1/admin/menu/**,/api/v1/admin/tenant/**
         - id: erp-archive
           uri: lb://erp-archive
           predicates:
@@ -49,3 +49,18 @@ spring:
           uri: lb://erp-finance
           predicates:
             - Path=/api/v1/admin/finance/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+logging:
+  file:
+    path: ${ERP_GATEWAY_LOG_PATH:./logs/erp-gateway}

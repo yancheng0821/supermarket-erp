@@ -1,5 +1,7 @@
 import { Shield, UserCheck, Users, CreditCard } from 'lucide-react'
-import { type UserStatus } from './schema'
+import { type User, type UserStatus } from './schema'
+
+type TranslateFn = (key: string, options?: Record<string, unknown>) => string
 
 export const callTypes = new Map<UserStatus, string>([
   ['active', 'bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200'],
@@ -11,25 +13,41 @@ export const callTypes = new Map<UserStatus, string>([
   ],
 ])
 
+export const userStatusLabelKeys: Record<UserStatus, string> = {
+  active: 'users.statuses.active',
+  inactive: 'users.statuses.inactive',
+  invited: 'users.statuses.invited',
+  suspended: 'users.statuses.suspended',
+}
+
 export const roles = [
   {
-    label: 'Superadmin',
+    labelKey: 'users.roles.superadmin',
     value: 'superadmin',
     icon: Shield,
   },
   {
-    label: 'Admin',
+    labelKey: 'users.roles.admin',
     value: 'admin',
     icon: UserCheck,
   },
   {
-    label: 'Manager',
+    labelKey: 'users.roles.manager',
     value: 'manager',
     icon: Users,
   },
   {
-    label: 'Cashier',
+    labelKey: 'users.roles.cashier',
     value: 'cashier',
     icon: CreditCard,
   },
 ] as const
+
+export function getUserRoleLabel(t: TranslateFn, role: User['role']) {
+  const option = roles.find(({ value }) => value === role)
+  return option ? t(option.labelKey) : role
+}
+
+export function getUserStatusLabel(t: TranslateFn, status: UserStatus) {
+  return t(userStatusLabelKeys[status])
+}

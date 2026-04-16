@@ -13,6 +13,7 @@ public class MenuDO extends BaseDO {
 
     @TableId
     private Long id;
+    private String scope;
     private String name;
     private String permission;
     private Integer type;

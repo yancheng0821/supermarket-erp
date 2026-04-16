@@ -859,3 +859,7 @@ export const sidebarData: SidebarData = {
     },
   ],
 }
+
+export const sidebarUser = sidebarData.user
+export const sidebarTeams = sidebarData.teams
+export const tenantFallbackNavGroups = sidebarData.navGroups

@@ -4,11 +4,8 @@ server:
 spring:
   application:
     name: erp-system
-  datasource:
-    url: jdbc:mysql://localhost:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: root123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    default: local
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
@@ -20,9 +17,30 @@ mybatis-plus:
 
 erp:
   security:
+    jwt-secret: ${ERP_JWT_SECRET:}
     permit-all-urls:
       - /api/v1/admin/auth/login
+      - /api/v1/admin/auth/platform-login
+      - /api/v1/admin/auth/tenant-login
+      - /actuator/health
+      - /actuator/info
   tenant:
     ignore-tables:
       - sys_menu
+      - sys_platform_user
       - sys_tenant
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+logging:
+  file:
+    path: ${ERP_SYSTEM_LOG_PATH:./logs/erp-system}

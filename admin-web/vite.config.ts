@@ -1,15 +1,21 @@
 import path from 'path'
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
+import type { InlineConfig as VitestInlineConfig } from 'vitest/node'
+import { defineConfig, type UserConfig } from 'vite'
+
+type TestableViteConfig = UserConfig & {
+  test: VitestInlineConfig
+}
 
 // https://vite.dev/config/
-export default defineConfig({
+const config: TestableViteConfig = {
   plugins: [
     tanstackRouter({
       target: 'react',
       autoCodeSplitting: true,
+      routeFileIgnorePattern: '\\.(test|spec)\\.(ts|tsx)$',
     }),
     react(),
     tailwindcss(),
@@ -28,4 +34,11 @@ export default defineConfig({
       },
     },
   },
-})
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+  },
+}
+
+export default defineConfig(config)

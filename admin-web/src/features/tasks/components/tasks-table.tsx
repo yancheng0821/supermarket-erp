@@ -12,6 +12,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useTableUrlState } from '@/hooks/use-table-url-state'
 import {
@@ -23,10 +24,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { priorities, statuses } from '../data/data'
+import { getTaskPriorities, getTaskStatuses } from '../data/data'
 import { type Task } from '../data/schema'
 import { DataTableBulkActions } from './data-table-bulk-actions'
-import { tasksColumns as columns } from './tasks-columns'
+import { getTasksColumns } from './tasks-columns'
 
 const route = getRouteApi('/_authenticated/tasks/')
 
@@ -35,6 +36,11 @@ type DataTableProps = {
 }
 
 export function TasksTable({ data }: DataTableProps) {
+  const { t } = useTranslation()
+  const columns = getTasksColumns(t)
+  const statuses = getTaskStatuses(t)
+  const priorities = getTaskPriorities(t)
+
   // Local UI-only states
   const [rowSelection, setRowSelection] = useState({})
   const [sorting, setSorting] = useState<SortingState>([])
@@ -113,16 +119,16 @@ export function TasksTable({ data }: DataTableProps) {
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder='Filter by title or ID...'
+        searchPlaceholder={t('tasks.filters.searchPlaceholder')}
         filters={[
           {
             columnId: 'status',
-            title: 'Status',
+            title: t('tasks.filters.status'),
             options: statuses,
           },
           {
             columnId: 'priority',
-            title: 'Priority',
+            title: t('tasks.filters.priority'),
             options: priorities,
           },
         ]}
@@ -183,7 +189,7 @@ export function TasksTable({ data }: DataTableProps) {
                   colSpan={columns.length}
                   className='h-24 text-center'
                 >
-                  No results.
+                  {t('tasks.empty')}
                 </TableCell>
               </TableRow>
             )}
