@@ -1,29 +1,10 @@
 import {
   LayoutDashboard,
   Store,
-  Warehouse,
-  Package,
   ShoppingCart,
-  ClipboardList,
-  Boxes,
-  ArrowRightLeft,
-  Users,
-  CreditCard,
-  Gift,
-  Ticket,
   Globe,
   Truck,
-  DollarSign,
-  Receipt,
-  FileText,
-  BarChart3,
-  TrendingUp,
   Settings,
-  UserCog,
-  Wrench,
-  Palette,
-  Bell,
-  Monitor,
   HelpCircle,
   FolderOpen,
   PackageSearch,
@@ -34,11 +15,6 @@ import {
   Megaphone,
   Building2,
   Handshake,
-  Smartphone,
-  Scale,
-  Tag,
-  Cpu,
-  UtensilsCrossed,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -69,139 +45,157 @@ export const sidebarData: SidebarData = {
     {
       title: 'sidebar.businessModules',
       items: [
-        // ===== Phase 1: Core Modules =====
+        // 1. 档案 Archive
         {
           title: 'sidebar.archive',
           icon: FolderOpen,
           items: [
-            { title: 'sidebar.stores', url: '/archive/stores', icon: Store },
-            { title: 'sidebar.warehouses', url: '/archive/warehouses', icon: Warehouse },
-            { title: 'sidebar.products', url: '/archive/products', icon: Package },
-            { title: 'sidebar.categories', url: '/archive/categories', icon: ClipboardList },
-            { title: 'sidebar.suppliers', url: '/archive/suppliers', icon: Truck },
+            { title: 'sidebar.productMaster', url: '/archive/product-master' },
+            { title: 'sidebar.categories', url: '/archive/categories' },
+            { title: 'sidebar.brands', url: '/archive/brands' },
+            { title: 'sidebar.suppliers', url: '/archive/suppliers' },
+            { title: 'sidebar.storeManagement', url: '/archive/stores' },
+            { title: 'sidebar.warehouseManagement', url: '/archive/warehouses' },
+            { title: 'sidebar.priceManagement', url: '/archive/price-management' },
+            { title: 'sidebar.productQuery', url: '/archive/product-query' },
           ],
         },
+        // 2. 采购 Purchase
         {
           title: 'sidebar.purchase',
           icon: ShoppingCart,
           items: [
-            { title: 'sidebar.purchaseOrders', url: '/purchase/orders', icon: ShoppingCart },
-            { title: 'sidebar.replenishPlans', url: '/purchase/replenish', icon: ClipboardList },
+            { title: 'sidebar.purchaseOrders', url: '/purchase/orders' },
+            { title: 'sidebar.requisition', url: '/purchase/requisition' },
+            { title: 'sidebar.purchasePlan', url: '/purchase/plan' },
+            { title: 'sidebar.orderQuery', url: '/purchase/order-query' },
+            { title: 'sidebar.autoReplenish', url: '/purchase/auto-replenish' },
+            { title: 'sidebar.costAdjustment', url: '/purchase/cost-adjustment' },
           ],
         },
+        // 3. 库存 Inventory
         {
           title: 'sidebar.inventory',
           icon: PackageSearch,
           items: [
-            { title: 'sidebar.stockOverview', url: '/inventory/stock', icon: Boxes },
-            { title: 'sidebar.receiptOrders', url: '/inventory/receipts', icon: ClipboardList },
-            { title: 'sidebar.issueOrders', url: '/inventory/issues', icon: ClipboardList },
-            { title: 'sidebar.transfers', url: '/inventory/transfers', icon: ArrowRightLeft },
-            { title: 'sidebar.stockTakes', url: '/inventory/checks', icon: ClipboardList },
+            { title: 'sidebar.productStock', url: '/inventory/stock' },
+            { title: 'sidebar.receiptOrders', url: '/inventory/receipts' },
+            { title: 'sidebar.issueOrders', url: '/inventory/issues' },
+            { title: 'sidebar.transfers', url: '/inventory/transfers' },
+            { title: 'sidebar.stockTakes', url: '/inventory/checks' },
+            { title: 'sidebar.inventoryReports', url: '/inventory/reports' },
+            { title: 'sidebar.inventoryWarning', url: '/inventory/warning' },
+            { title: 'sidebar.damageOverflow', url: '/inventory/damage-overflow' },
           ],
         },
-        {
-          title: 'sidebar.operation',
-          icon: ShoppingBag,
-          items: [
-            { title: 'sidebar.salesOrders', url: '/operation/sales', icon: CreditCard },
-            { title: 'sidebar.payments', url: '/operation/payments', icon: DollarSign },
-            { title: 'sidebar.cashierShifts', url: '/operation/cashier-shifts', icon: Receipt },
-            { title: 'sidebar.refunds', url: '/operation/refunds', icon: ArrowRightLeft },
-          ],
-        },
-        {
-          title: 'sidebar.member',
-          icon: UserCheck,
-          items: [
-            { title: 'sidebar.members', url: '/member/members', icon: Users },
-            { title: 'sidebar.points', url: '/member/points', icon: Gift },
-            { title: 'sidebar.coupons', url: '/member/coupons', icon: Ticket },
-          ],
-        },
-        {
-          title: 'sidebar.online',
-          icon: Globe,
-          items: [
-            { title: 'sidebar.onlineProducts', url: '/online/products', icon: Globe },
-            { title: 'sidebar.deliveryOrders', url: '/online/deliveries', icon: Truck },
-            { title: 'sidebar.storeConfig', url: '/online/store-config', icon: Settings },
-          ],
-        },
-        {
-          title: 'sidebar.finance',
-          icon: Wallet,
-          items: [
-            { title: 'sidebar.supplierSettlement', url: '/finance/supplier-settlement', icon: FileText },
-            { title: 'sidebar.storeSettlement', url: '/finance/store-settlement', icon: FileText },
-            { title: 'sidebar.feeRecords', url: '/finance/fees', icon: Receipt },
-            { title: 'sidebar.vouchers', url: '/finance/vouchers', icon: FileText },
-          ],
-        },
-        {
-          title: 'sidebar.analytics',
-          icon: LineChart,
-          items: [
-            { title: 'sidebar.dailySales', url: '/analytics/daily-sales', icon: BarChart3 },
-            { title: 'sidebar.productSales', url: '/analytics/product-sales', icon: TrendingUp },
-            { title: 'sidebar.inventorySnapshot', url: '/analytics/inventory', icon: Boxes },
-          ],
-        },
-        // ===== Phase 2: Extended Modules =====
-        {
-          title: 'sidebar.marketing',
-          icon: Megaphone,
-          items: [
-            { title: 'sidebar.promotionActivities', url: '/marketing/activities', icon: Megaphone },
-            { title: 'sidebar.scheduledPromotions', url: '/marketing/scheduled', icon: ClipboardList },
-            { title: 'sidebar.discountCodes', url: '/marketing/discount-codes', icon: Tag },
-            { title: 'sidebar.marketingReports', url: '/marketing/reports', icon: BarChart3 },
-          ],
-        },
+        // 4. 配送 Distribution
         {
           title: 'sidebar.distribution',
           icon: Truck,
           items: [
-            { title: 'sidebar.pickingManagement', url: '/distribution/picking', icon: ClipboardList },
-            { title: 'sidebar.vehicleDispatch', url: '/distribution/dispatch', icon: Truck },
-            { title: 'sidebar.distributionReports', url: '/distribution/reports', icon: BarChart3 },
+            { title: 'sidebar.pickingProcess', url: '/distribution/picking' },
+            { title: 'sidebar.vehicleDispatch', url: '/distribution/dispatch' },
+            { title: 'sidebar.vehicleManagement', url: '/distribution/vehicles' },
+            { title: 'sidebar.routeManagement', url: '/distribution/routes' },
+            { title: 'sidebar.distributionReports', url: '/distribution/reports' },
           ],
         },
-        // ===== Phase 3: Expansion Modules =====
+        // 5. 营运 Operation
+        {
+          title: 'sidebar.operation',
+          icon: ShoppingBag,
+          items: [
+            { title: 'sidebar.posManagement', url: '/operation/pos' },
+            { title: 'sidebar.salesOrders', url: '/operation/sales' },
+            { title: 'sidebar.cashierShifts', url: '/operation/cashier-shifts' },
+            { title: 'sidebar.afterSalesRefund', url: '/operation/refunds' },
+            { title: 'sidebar.paymentManagement', url: '/operation/payments' },
+            { title: 'sidebar.salesReports', url: '/operation/sales-reports' },
+            { title: 'sidebar.priceTagPrinting', url: '/operation/price-tags' },
+          ],
+        },
+        // 6. 线上 Online
+        {
+          title: 'sidebar.online',
+          icon: Globe,
+          items: [
+            { title: 'sidebar.wechatMiniApp', url: '/online/wechat-mini' },
+            { title: 'sidebar.onlineProducts', url: '/online/products' },
+            { title: 'sidebar.deliveryOrders', url: '/online/deliveries' },
+            { title: 'sidebar.storeConfig', url: '/online/store-config' },
+            { title: 'sidebar.aggregatedTakeout', url: '/online/takeout' },
+          ],
+        },
+        // 7. 会员 Member
+        {
+          title: 'sidebar.member',
+          icon: UserCheck,
+          items: [
+            { title: 'sidebar.memberManagement', url: '/member/management' },
+            { title: 'sidebar.cardRecharge', url: '/member/card-recharge' },
+            { title: 'sidebar.pointsManagement', url: '/member/points' },
+            { title: 'sidebar.coupons', url: '/member/coupons' },
+            { title: 'sidebar.memberReports', url: '/member/reports' },
+            { title: 'sidebar.storedValueCard', url: '/member/stored-value' },
+          ],
+        },
+        // 8. 营销 Marketing
+        {
+          title: 'sidebar.marketing',
+          icon: Megaphone,
+          items: [
+            { title: 'sidebar.promotionActivities', url: '/marketing/activities' },
+            { title: 'sidebar.scheduledPromotions', url: '/marketing/scheduled' },
+            { title: 'sidebar.discountCodes', url: '/marketing/discount-codes' },
+            { title: 'sidebar.couponManagement', url: '/marketing/coupons' },
+            { title: 'sidebar.marketingReports', url: '/marketing/reports' },
+          ],
+        },
+        // 9. 批发 Wholesale
         {
           title: 'sidebar.wholesale',
           icon: Building2,
           items: [
-            { title: 'sidebar.wholesaleCustomers', url: '/wholesale/customers', icon: Users },
-            { title: 'sidebar.wholesalePricing', url: '/wholesale/pricing', icon: DollarSign },
-            { title: 'sidebar.wholesaleOrders', url: '/wholesale/orders', icon: ShoppingCart },
-            { title: 'sidebar.wholesaleReports', url: '/wholesale/reports', icon: BarChart3 },
+            { title: 'sidebar.customerManagement', url: '/wholesale/customers' },
+            { title: 'sidebar.wholesalePricing', url: '/wholesale/pricing' },
+            { title: 'sidebar.wholesaleOrders', url: '/wholesale/orders' },
+            { title: 'sidebar.wholesaleReports', url: '/wholesale/reports' },
           ],
         },
+        // 10. 加盟 Franchise
         {
           title: 'sidebar.franchise',
           icon: Handshake,
           items: [
-            { title: 'sidebar.franchiseeManagement', url: '/franchise/management', icon: Building2 },
-            { title: 'sidebar.franchiseeSettlement', url: '/franchise/settlement', icon: Wallet },
+            { title: 'sidebar.franchiseeManagement', url: '/franchise/management' },
+            { title: 'sidebar.franchiseeSettlement', url: '/franchise/settlement' },
           ],
         },
+        // 11. 财务 Finance
         {
-          title: 'sidebar.aggregatedTakeout',
-          icon: UtensilsCrossed,
+          title: 'sidebar.finance',
+          icon: Wallet,
           items: [
-            { title: 'sidebar.takeoutPlatforms', url: '/takeout/platforms', icon: Smartphone },
-            { title: 'sidebar.takeoutOrders', url: '/takeout/orders', icon: ShoppingBag },
+            { title: 'sidebar.supplierSettlement', url: '/finance/supplier-settlement' },
+            { title: 'sidebar.storeSettlement', url: '/finance/store-settlement' },
+            { title: 'sidebar.feeManagement', url: '/finance/fees' },
+            { title: 'sidebar.voucherManagement', url: '/finance/vouchers' },
+            { title: 'sidebar.wholesaleSettlement', url: '/finance/wholesale-settlement' },
+            { title: 'sidebar.financeReports', url: '/finance/reports' },
           ],
         },
-        // ===== Phase 4: Hardware Integration =====
+        // 12. 数据 Analytics
         {
-          title: 'sidebar.devices',
-          icon: Cpu,
+          title: 'sidebar.analytics',
+          icon: LineChart,
           items: [
-            { title: 'sidebar.scaleManagement', url: '/devices/scales', icon: Scale },
-            { title: 'sidebar.priceTagPrinting', url: '/devices/price-tags', icon: Tag },
-            { title: 'sidebar.deviceManagement', url: '/devices/management', icon: Cpu },
+            { title: 'sidebar.storeDailyReport', url: '/analytics/daily-report' },
+            { title: 'sidebar.salesAnalysis', url: '/analytics/sales-analysis' },
+            { title: 'sidebar.productAnalysis', url: '/analytics/product-analysis' },
+            { title: 'sidebar.supplierReports', url: '/analytics/supplier-reports' },
+            { title: 'sidebar.digitalScreen', url: '/analytics/digital-screen' },
+            { title: 'sidebar.budgetManagement', url: '/analytics/budget' },
+            { title: 'sidebar.marketingAnalytics', url: '/analytics/marketing' },
           ],
         },
       ],
@@ -213,11 +207,11 @@ export const sidebarData: SidebarData = {
           title: 'sidebar.settings',
           icon: Settings,
           items: [
-            { title: 'sidebar.profile', url: '/settings', icon: UserCog },
-            { title: 'sidebar.account', url: '/settings/account', icon: Wrench },
-            { title: 'sidebar.appearance', url: '/settings/appearance', icon: Palette },
-            { title: 'sidebar.notifications', url: '/settings/notifications', icon: Bell },
-            { title: 'sidebar.display', url: '/settings/display', icon: Monitor },
+            { title: 'sidebar.profile', url: '/settings' },
+            { title: 'sidebar.account', url: '/settings/account' },
+            { title: 'sidebar.appearance', url: '/settings/appearance' },
+            { title: 'sidebar.notifications', url: '/settings/notifications' },
+            { title: 'sidebar.display', url: '/settings/display' },
           ],
         },
         {
