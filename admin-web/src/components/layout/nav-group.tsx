@@ -220,14 +220,14 @@ function SidebarNestedCollapsible({
       defaultOpen={checkIsActive(href, item, true)}
       className='group/nested'
     >
-      <CollapsibleTrigger className='flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'>
-        {item.icon && <item.icon className='size-3.5' />}
-        <span className='text-xs font-medium'>{t(item.title)}</span>
+      <CollapsibleTrigger className='flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'>
+        {item.icon && <item.icon className='size-4' />}
+        <span className='font-medium'>{t(item.title)}</span>
         {item.badge && <NavBadge>{item.badge}</NavBadge>}
         <ChevronRight className='ms-auto size-3.5 transition-transform duration-200 group-data-[state=open]/nested:rotate-90 rtl:rotate-180' />
       </CollapsibleTrigger>
       <CollapsibleContent className='CollapsibleContent'>
-        <SidebarMenuSub className='pl-4'>
+        <SidebarMenuSub className='pl-3'>
           {item.items.map((subItem) =>
             subItem.items ? (
               <SidebarMenuSubItem key={subItem.title}>
