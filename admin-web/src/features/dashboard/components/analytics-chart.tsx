@@ -2,13 +2,22 @@ import { useTranslation } from 'react-i18next'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 
 const weekdayKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const
+const analyticsSeries = [
+  { clicks: 540, uniques: 380 },
+  { clicks: 620, uniques: 410 },
+  { clicks: 710, uniques: 470 },
+  { clicks: 680, uniques: 460 },
+  { clicks: 760, uniques: 520 },
+  { clicks: 590, uniques: 430 },
+  { clicks: 640, uniques: 450 },
+] as const
 
 export function AnalyticsChart() {
   const { t } = useTranslation()
-  const data = weekdayKeys.map((day) => ({
+  const data = weekdayKeys.map((day, index) => ({
     name: t(`dashboard.analyticsPanel.chart.days.${day}`),
-    clicks: Math.floor(Math.random() * 900) + 100,
-    uniques: Math.floor(Math.random() * 700) + 80,
+    clicks: analyticsSeries[index].clicks,
+    uniques: analyticsSeries[index].uniques,
   }))
 
   return (

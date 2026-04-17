@@ -64,7 +64,99 @@ const tenantSession: AuthSessionResponse = {
           component: 'system/users/index',
           icon: 'users',
           permission: 'system:user:page',
-          children: [],
+          children: [
+            {
+              id: 103,
+              name: 'Create User',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:user:create',
+              children: [],
+            },
+            {
+              id: 104,
+              name: 'Update User',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:user:update',
+              children: [],
+            },
+            {
+              id: 105,
+              name: 'Update User Status',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:user:update-status',
+              children: [],
+            },
+            {
+              id: 106,
+              name: 'Reset User Password',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:user:reset-password',
+              children: [],
+            },
+            {
+              id: 107,
+              name: 'Assign User Roles',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:user:assign-role',
+              children: [],
+            },
+          ],
+        },
+        {
+          id: 108,
+          name: 'Role Management',
+          path: '/system/roles',
+          component: 'system/roles/index',
+          icon: 'settings',
+          permission: 'system:role:page',
+          children: [
+            {
+              id: 109,
+              name: 'Create Role',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:role:create',
+              children: [],
+            },
+            {
+              id: 110,
+              name: 'Update Role',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:role:update',
+              children: [],
+            },
+            {
+              id: 111,
+              name: 'Update Role Status',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:role:update-status',
+              children: [],
+            },
+            {
+              id: 112,
+              name: 'Assign Role Menus',
+              path: '',
+              component: null,
+              icon: null,
+              permission: 'system:role:assign-menu',
+              children: [],
+            },
+          ],
         },
       ],
     },
@@ -95,7 +187,8 @@ describe('buildSidebarData', () => {
     const sidebar = buildSidebarData(platformSession)
     const titles = flattenTitles(sidebar.navGroups)
 
-    expect(titles).toContain('Tenant Management')
+    expect(titles).toContain('平台管理')
+    expect(titles).toContain('租户管理')
     expect(titles).not.toContain('sidebar.businessModules')
     expect(sidebar.teams[0]?.name).toBe('平台控制台')
     expect(sidebar.teams[0]?.plan).toBe('平台管理员')
@@ -105,7 +198,18 @@ describe('buildSidebarData', () => {
     const sidebar = buildSidebarData(tenantSession)
     const titles = flattenTitles(sidebar.navGroups)
 
-    expect(titles).toContain('User Management')
+    expect(titles).toContain('系统管理')
+    expect(titles).toContain('用户管理')
+    expect(titles).toContain('创建用户')
+    expect(titles).toContain('编辑用户')
+    expect(titles).toContain('更新用户状态')
+    expect(titles).toContain('重置用户密码')
+    expect(titles).toContain('分配用户角色')
+    expect(titles).toContain('角色管理')
+    expect(titles).toContain('创建角色')
+    expect(titles).toContain('编辑角色')
+    expect(titles).toContain('更新角色状态')
+    expect(titles).toContain('分配角色菜单')
     expect(titles).toContain('sidebar.businessModules')
   })
 })

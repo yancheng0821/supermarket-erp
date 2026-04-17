@@ -15,6 +15,42 @@ spring:
     gateway:
       routes:
         - id: erp-system-local
-          uri: http://localhost:8080
+          uri: http://localhost:${SYSTEM_PORT:8080}
           predicates:
             - Path=/api/v1/admin/auth/**,/api/v1/admin/user/**,/api/v1/admin/role/**,/api/v1/admin/menu/**,/api/v1/admin/tenant/**
+        - id: erp-archive-local
+          uri: http://localhost:${ARCHIVE_PORT:8081}
+          predicates:
+            - Path=/api/v1/admin/archive/**
+        - id: erp-inventory-local
+          uri: http://localhost:${INVENTORY_PORT:8082}
+          predicates:
+            - Path=/api/v1/admin/inventory/**
+        - id: erp-purchase-local
+          uri: http://localhost:${PURCHASE_PORT:8083}
+          predicates:
+            - Path=/api/v1/admin/purchase/**
+        - id: erp-operation-local
+          uri: http://localhost:${OPERATION_PORT:8084}
+          predicates:
+            - Path=/api/v1/admin/operation/**
+        - id: erp-member-local
+          uri: http://localhost:${MEMBER_PORT:8085}
+          predicates:
+            - Path=/api/v1/admin/member/**
+        - id: erp-online-admin-local
+          uri: http://localhost:${ONLINE_PORT:8086}
+          predicates:
+            - Path=/api/v1/admin/online/**
+        - id: erp-online-app-local
+          uri: http://localhost:${ONLINE_PORT:8086}
+          predicates:
+            - Path=/api/v1/app/online/**
+        - id: erp-finance-local
+          uri: http://localhost:${FINANCE_PORT:8087}
+          predicates:
+            - Path=/api/v1/admin/finance/**
+        - id: erp-analytics-local
+          uri: http://localhost:${ANALYTICS_PORT:8088}
+          predicates:
+            - Path=/api/v1/admin/analytics/**

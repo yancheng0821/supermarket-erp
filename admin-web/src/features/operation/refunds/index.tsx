@@ -40,17 +40,47 @@ export function RefundsPage() {
     try {
       const res = await api.get<PageResult<Refund>>('/admin/operation/refund/page', { page, size: 10, keyword })
       setData(res.list); setTotal(res.total)
-    } catch (e: any) { toast.error(e.message) }
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+    }
   }
 
-  useEffect(() => { fetchData() }, [page, keyword])
+  useEffect(() => {
+    let active = true
+
+    const loadData = async () => {
+      try {
+        const res = await api.get<PageResult<Refund>>('/admin/operation/refund/page', { page, size: 10, keyword })
+        if (!active) {
+          return
+        }
+
+        setData(res.list)
+        setTotal(res.total)
+      } catch (error: unknown) {
+        if (!active) {
+          return
+        }
+
+        toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [keyword, page, t])
 
   const handleAction = async (id: number, action: string) => {
     try {
       await api.put(`/admin/operation/refund/${id}/${action}`)
       toast.success(t('common.operationSuccess'))
       fetchData()
-    } catch (e: any) { toast.error(e.message) }
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+    }
   }
 
   return (

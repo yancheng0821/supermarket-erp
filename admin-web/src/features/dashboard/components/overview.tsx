@@ -15,12 +15,26 @@ const monthKeys = [
   'nov',
   'dec',
 ] as const
+const monthlyTotals = [
+  1800,
+  2200,
+  2600,
+  3100,
+  3550,
+  3900,
+  4200,
+  4380,
+  4010,
+  4450,
+  4720,
+  4980,
+] as const
 
 export function Overview() {
   const { t } = useTranslation()
-  const data = monthKeys.map((month) => ({
+  const data = monthKeys.map((month, index) => ({
     name: t(`dashboard.overviewChart.months.${month}`),
-    total: Math.floor(Math.random() * 5000) + 1000,
+    total: monthlyTotals[index],
   }))
 
   return (

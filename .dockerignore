@@ -1,0 +1,13 @@
+.git
+.github
+.idea
+.vscode
+.DS_Store
+**/target
+**/logs
+logs
+.runtime
+admin-web/node_modules
+admin-web/dist
+docker/mysql/data
+docs/superpowers/plans

@@ -1,0 +1,273 @@
+services:
+  erp-system:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-system/erp-module-system-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_SYSTEM_LOG_PATH: /var/log/erp-system
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${SYSTEM_PORT:-8080}:8080"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-system:/var/log/erp-system
+
+  erp-archive:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-archive/erp-module-archive-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_ARCHIVE_LOG_PATH: /var/log/erp-archive
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${ARCHIVE_PORT:-8081}:8081"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-archive:/var/log/erp-archive
+
+  erp-inventory:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-inventory/erp-module-inventory-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_INVENTORY_LOG_PATH: /var/log/erp-inventory
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${INVENTORY_PORT:-8082}:8082"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-inventory:/var/log/erp-inventory
+
+  erp-purchase:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-purchase/erp-module-purchase-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_PURCHASE_LOG_PATH: /var/log/erp-purchase
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${PURCHASE_PORT:-8083}:8083"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-purchase:/var/log/erp-purchase
+
+  erp-operation:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-operation/erp-module-operation-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_OPERATION_LOG_PATH: /var/log/erp-operation
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${OPERATION_PORT:-8084}:8084"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-operation:/var/log/erp-operation
+
+  erp-member:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-member/erp-module-member-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_MEMBER_LOG_PATH: /var/log/erp-member
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${MEMBER_PORT:-8085}:8085"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-member:/var/log/erp-member
+
+  erp-online:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-online/erp-module-online-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_ONLINE_LOG_PATH: /var/log/erp-online
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${ONLINE_PORT:-8086}:8086"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-online:/var/log/erp-online
+
+  erp-finance:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-finance/erp-module-finance-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_FINANCE_LOG_PATH: /var/log/erp-finance
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${FINANCE_PORT:-8087}:8087"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-finance:/var/log/erp-finance
+
+  erp-analytics:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-module-analytics/erp-module-analytics-biz
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      ERP_DB_URL: ${ERP_DB_URL:-jdbc:mysql://mysql:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      ERP_DB_USERNAME: ${ERP_DB_USERNAME:-root}
+      ERP_DB_PASSWORD: ${ERP_DB_PASSWORD:?set ERP_DB_PASSWORD}
+      ERP_JWT_SECRET: ${ERP_JWT_SECRET:?set ERP_JWT_SECRET}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      SPRING_DATA_REDIS_HOST: ${ERP_REDIS_HOST:-redis}
+      SPRING_DATA_REDIS_PORT: ${ERP_REDIS_PORT:-6379}
+      ERP_ANALYTICS_LOG_PATH: /var/log/erp-analytics
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    ports:
+      - "${ANALYTICS_PORT:-8088}:8088"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-analytics:/var/log/erp-analytics
+
+  erp-gateway:
+    build:
+      context: ..
+      dockerfile: docker/backend-service.Dockerfile
+      args:
+        MODULE_PATH: erp-gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ERP_RUNTIME_PROFILE:-prod}
+      NACOS_SERVER_ADDR: ${NACOS_SERVER_ADDR:-nacos:8848}
+      ERP_GATEWAY_LOG_PATH: /var/log/erp-gateway
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+      - erp-system
+      - erp-archive
+      - erp-inventory
+      - erp-purchase
+      - erp-operation
+      - erp-member
+      - erp-online
+      - erp-finance
+      - erp-analytics
+    ports:
+      - "${GATEWAY_PORT:-9000}:9000"
+    restart: unless-stopped
+    volumes:
+      - ../logs/erp-gateway:/var/log/erp-gateway
+
+  admin-web:
+    build:
+      context: ..
+      dockerfile: docker/frontend.Dockerfile
+    depends_on:
+      - erp-gateway
+    ports:
+      - "${ADMIN_WEB_PORT:-3000}:80"
+    restart: unless-stopped

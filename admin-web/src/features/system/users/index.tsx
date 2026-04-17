@@ -95,8 +95,43 @@ export function SystemUsersPage() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [pageNo])
+    let active = true
+
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<PageResult<UserItem>>('/admin/user/page', {
+          pageNo,
+          pageSize,
+          username: searchUsername || undefined,
+          nickname: searchNickname || undefined,
+        })
+        if (!active) {
+          return
+        }
+
+        setData(result)
+      } catch (error) {
+        if (!active) {
+          return
+        }
+
+        toast.error(
+          error instanceof Error ? error.message : t('systemUsers.messages.loadError')
+        )
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [pageNo, pageSize, searchNickname, searchUsername, t])
 
   const handleSearch = () => {
     setPageNo(1)

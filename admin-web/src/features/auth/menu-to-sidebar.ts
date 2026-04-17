@@ -14,6 +14,36 @@ const iconMap: Record<string, LucideIcon> = {
   users: UserCheck,
 }
 
+const menuTranslationKeysByPath: Record<string, string> = {
+  '/platform': 'authMenu.platformManagement',
+  '/platform/tenants': 'authMenu.tenantManagement',
+  '/platform/menus': 'authMenu.menuManagement',
+  '/system': 'authMenu.systemManagement',
+  '/system/users': 'authMenu.userManagement',
+  '/system/roles': 'authMenu.roleManagement',
+}
+
+const menuTranslationKeysByPermission: Record<string, string> = {
+  'platform:tenant:page': 'authMenu.tenantManagement',
+  'platform:tenant:create': 'authMenu.createTenant',
+  'platform:tenant:update': 'authMenu.updateTenant',
+  'platform:tenant:update-status': 'authMenu.updateTenantStatus',
+  'platform:menu:tree': 'authMenu.menuManagement',
+  'platform:menu:create': 'authMenu.createMenu',
+  'platform:menu:update': 'authMenu.updateMenu',
+  'system:user:page': 'authMenu.userManagement',
+  'system:user:create': 'authMenu.createUser',
+  'system:user:update': 'authMenu.updateUser',
+  'system:user:update-status': 'authMenu.updateUserStatus',
+  'system:user:reset-password': 'authMenu.resetUserPassword',
+  'system:user:assign-role': 'authMenu.assignUserRoles',
+  'system:role:page': 'authMenu.roleManagement',
+  'system:role:create': 'authMenu.createRole',
+  'system:role:update': 'authMenu.updateRole',
+  'system:role:update-status': 'authMenu.updateRoleStatus',
+  'system:role:assign-menu': 'authMenu.assignRoleMenus',
+}
+
 function resolveIcon(icon?: string | null) {
   if (!icon) {
     return Settings
@@ -28,17 +58,30 @@ function normalizePath(path?: string | null) {
   return path.startsWith('/') ? path : `/${path}`
 }
 
+function resolveMenuTitle(menu: AuthMenuItem) {
+  const translationKey =
+    (menu.permission && menuTranslationKeysByPermission[menu.permission]) ||
+    menuTranslationKeysByPath[normalizePath(menu.path)]
+
+  if (!translationKey) {
+    return menu.name
+  }
+
+  return i18n.t(translationKey, { defaultValue: menu.name })
+}
+
 function mapMenuItem(menu: AuthMenuItem): NavItem {
   if (menu.children.length > 0) {
     return {
-      title: menu.name,
+      title: resolveMenuTitle(menu),
       icon: resolveIcon(menu.icon),
+      matchUrl: normalizePath(menu.path),
       items: menu.children.map(mapMenuItem),
     }
   }
 
   return {
-    title: menu.name,
+    title: resolveMenuTitle(menu),
     url: normalizePath(menu.path),
     icon: resolveIcon(menu.icon),
   }
@@ -48,7 +91,7 @@ type SessionLike = AuthSessionResponse | AuthSessionSnapshot
 
 export function buildSidebarData(session: SessionLike): SidebarData {
   const dynamicGroups = session.menuTree.map((menu) => ({
-    title: menu.name,
+    title: resolveMenuTitle(menu),
     items: (menu.children.length > 0 ? menu.children : [menu]).map(mapMenuItem),
   }))
 

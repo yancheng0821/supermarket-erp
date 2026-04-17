@@ -9,6 +9,8 @@ target/
 Thumbs.db
 *.log
 logs/
+.runtime/
+.superpowers/
 docker/**/data/
 .pnpm-store/
 docs/superpowers/plans/

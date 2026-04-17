@@ -89,10 +89,11 @@ describe('secondary auth pages i18n', () => {
   it('renders localized copy on the alternate sign in page', () => {
     render(<SignIn2 />)
 
-    expect(screen.getByRole('heading', { name: '登录' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '租户管理员' })).toBeInTheDocument()
     expect(
-      screen.getByText('请选择平台或租户模式，然后输入账号密码继续。')
+      screen.getByText('使用租户编码和账号密码进入业务控制台，处理门店经营、库存、采购、会员和财务执行。')
     ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '返回角色选择' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '服务条款' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '隐私政策' })).toBeInTheDocument()
   })

@@ -128,7 +128,37 @@ export function CategoriesPage() {
     }
   }
 
-  useEffect(() => { fetchData() }, [])
+  useEffect(() => {
+    let active = true
+
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<Category[]>('/admin/archive/category/tree')
+        if (!active) {
+          return
+        }
+
+        setList(result)
+      } catch (e: unknown) {
+        if (!active) {
+          return
+        }
+
+        toast.error(e instanceof Error ? e.message : t('common.operationFailed'))
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [t])
 
   const onToggle = (id: number) => {
     setExpanded((prev) => {

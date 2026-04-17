@@ -97,8 +97,43 @@ export function PlatformTenantsPage() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [pageNo])
+    let active = true
+
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<PageResult<TenantItem>>('/admin/tenant/page', {
+          pageNo,
+          pageSize,
+          code: searchCode || undefined,
+          name: searchName || undefined,
+        })
+        if (!active) {
+          return
+        }
+
+        setData(result)
+      } catch (error) {
+        if (!active) {
+          return
+        }
+
+        toast.error(
+          error instanceof Error ? error.message : t('platformTenants.messages.loadError')
+        )
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [pageNo, pageSize, searchCode, searchName, t])
 
   const handleSearch = () => {
     setPageNo(1)

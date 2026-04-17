@@ -52,10 +52,38 @@ export function CouponsPage() {
     try {
       const res = await api.get<PageResult<Coupon>>('/admin/member/coupon/page', { page, size: 10, keyword })
       setData(res.list); setTotal(res.total)
-    } catch (e: any) { toast.error(e.message) }
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+    }
   }
 
-  useEffect(() => { fetchData() }, [page, keyword])
+  useEffect(() => {
+    let active = true
+
+    const loadData = async () => {
+      try {
+        const res = await api.get<PageResult<Coupon>>('/admin/member/coupon/page', { page, size: 10, keyword })
+        if (!active) {
+          return
+        }
+
+        setData(res.list)
+        setTotal(res.total)
+      } catch (error: unknown) {
+        if (!active) {
+          return
+        }
+
+        toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [keyword, page, t])
 
   const handleSave = async () => {
     try {
@@ -67,7 +95,9 @@ export function CouponsPage() {
         toast.success(t('common.operationSuccess'))
       }
       setOpen(false); setEditing(null); fetchData()
-    } catch (e: any) { toast.error(e.message) }
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+    }
   }
 
   const openEdit = (item: Coupon) => {

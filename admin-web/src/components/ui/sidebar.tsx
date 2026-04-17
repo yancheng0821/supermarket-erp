@@ -29,6 +29,12 @@ const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b'
+const sidebarMenuInteractiveStates =
+  'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50'
+const sidebarMenuActiveStates =
+  'data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground'
+const sidebarMenuCurrentStates =
+  'data-[current=true]:font-medium data-[current=true]:text-sidebar-accent-foreground'
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed'
@@ -482,7 +488,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  'peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pe-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0',
+  `peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-start text-sm outline-hidden ring-sidebar-ring transition-[width,height,padding] ${sidebarMenuInteractiveStates} ${sidebarMenuActiveStates} ${sidebarMenuCurrentStates} data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-has-data-[sidebar=menu-action]/menu-item:pe-8 group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-2! [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0`,
   {
     variants: {
       variant: {
@@ -506,6 +512,7 @@ const sidebarMenuButtonVariants = cva(
 function SidebarMenuButton({
   asChild = false,
   isActive = false,
+  isCurrent = false,
   variant = 'default',
   size = 'default',
   tooltip,
@@ -514,6 +521,7 @@ function SidebarMenuButton({
 }: React.ComponentProps<'button'> & {
   asChild?: boolean
   isActive?: boolean
+  isCurrent?: boolean
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot : 'button'
@@ -525,6 +533,7 @@ function SidebarMenuButton({
       data-sidebar='menu-button'
       data-size={size}
       data-active={isActive}
+      data-current={isCurrent}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       {...props}
     />
@@ -678,12 +687,14 @@ function SidebarMenuSubButton({
   asChild = false,
   size = 'md',
   isActive = false,
+  isCurrent = false,
   className,
   ...props
 }: React.ComponentProps<'a'> & {
   asChild?: boolean
   size?: 'sm' | 'md'
   isActive?: boolean
+  isCurrent?: boolean
 }) {
   const Comp = asChild ? Slot : 'a'
 
@@ -693,9 +704,9 @@ function SidebarMenuSubButton({
       data-sidebar='menu-sub-button'
       data-size={size}
       data-active={isActive}
+      data-current={isCurrent}
       className={cn(
-        'flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground ring-sidebar-ring outline-hidden hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-inherit',
-        'data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground',
+        `flex h-7 w-full min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-start text-sidebar-foreground ring-sidebar-ring outline-hidden transition-colors ${sidebarMenuInteractiveStates} ${sidebarMenuActiveStates} ${sidebarMenuCurrentStates}`,
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
         'group-data-[collapsible=icon]:hidden',

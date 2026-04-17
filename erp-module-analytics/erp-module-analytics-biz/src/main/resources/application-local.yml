@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    discovery:
+      enabled: false
+    service-registry:
+      auto-registration:
+        enabled: false
+    nacos:
+      config:
+        enabled: false
+      discovery:
+        enabled: false
+        register-enabled: false
+        server-addr: localhost:8848
+  datasource:
+    url: jdbc:mysql://localhost:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: ${ERP_DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver

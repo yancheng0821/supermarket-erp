@@ -93,8 +93,43 @@ export function SystemRolesPage() {
   }
 
   useEffect(() => {
-    fetchData()
-  }, [pageNo])
+    let active = true
+
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<PageResult<RoleItem>>('/admin/role/page', {
+          pageNo,
+          pageSize,
+          name: searchName || undefined,
+          code: searchCode || undefined,
+        })
+        if (!active) {
+          return
+        }
+
+        setData(result)
+      } catch (error) {
+        if (!active) {
+          return
+        }
+
+        toast.error(
+          error instanceof Error ? error.message : t('systemRoles.messages.loadError')
+        )
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [pageNo, pageSize, searchCode, searchName, t])
 
   const handleSearch = () => {
     setPageNo(1)

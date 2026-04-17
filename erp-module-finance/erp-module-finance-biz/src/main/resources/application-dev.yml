@@ -1,0 +1,16 @@
+spring:
+  config:
+    import: "optional:nacos:erp-finance-dev.yml"
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR:localhost:8848}
+  datasource:
+    url: ${ERP_DB_URL:jdbc:mysql://localhost:3306/supermarket_erp?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${ERP_DB_USERNAME:root}
+    password: ${ERP_DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver

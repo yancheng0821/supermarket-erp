@@ -37,7 +37,12 @@
 - 本地开发脚本：
   - `erp-system`
   - `erp-gateway`
-  - smoke 测试脚本
+  - 8 个业务服务本地启动脚本
+  - 一键启动 / 停止 / 查看本地后端联调栈
+  - `system/gateway` 认证链路 smoke 脚本
+  - 全服务健康检查 smoke 脚本
+- GitHub Actions CI 骨架
+- Dockerfile 与 compose 叠加部署骨架
 - 前端后台页面骨架
 - 前端中英文国际化基础与静态文案治理
 
@@ -92,6 +97,7 @@
 
 ```text
 supermarket-erp/
+├── .github/workflows/          # CI 工作流
 ├── admin-web/                  # React 管理后台
 ├── docker/                     # 本地基础设施与数据库初始化脚本
 ├── erp-dependencies/           # 统一依赖管理
@@ -194,14 +200,35 @@ supermarket-erp/
 
 ### 1. 准备环境变量
 
-启动前，请先在当前 shell 中导出本地开发需要的变量：
+建议先复制根目录环境样例：
+
+```bash
+cp .env.example .env
+```
+
+根目录启动脚本会自动加载 `.env`。如果你不想使用 `.env`，也可以直接在当前 shell 中导出本地开发变量：
 
 ```bash
 export ERP_DB_PASSWORD='替换成你的本地数据库密码'
 export ERP_JWT_SECRET='替换成长度至少 32 位的 JWT 密钥'
 ```
 
-如果你习惯使用根目录 `.env` 文件，`docker compose` 可以读取它；但 `scripts/` 里的启动脚本仍然依赖你当前 shell 环境中的变量。
+注意：因为启动脚本会直接 `source .env`，所以 `.env` 内容要保持 shell 赋值语法；像 JDBC URL 这类带 `&` 的值请用引号包起来。
+
+如果你还需要调整本地联调端口，可以一并修改：
+
+```bash
+SYSTEM_PORT=8080
+ARCHIVE_PORT=8081
+INVENTORY_PORT=8082
+PURCHASE_PORT=8083
+OPERATION_PORT=8084
+MEMBER_PORT=8085
+ONLINE_PORT=8086
+FINANCE_PORT=8087
+ANALYTICS_PORT=8088
+GATEWAY_PORT=9000
+```
 
 ### 2. 启动基础设施
 
@@ -235,32 +262,61 @@ mvn clean package -DskipTests
 
 ### 5. 启动后端服务
 
-启动系统服务：
+最小认证链路：
 
 ```bash
 ./scripts/run-local-system.sh
+./scripts/run-local-gateway.sh
 ```
 
-启动网关服务：
+如果要联调具体业务模块，可以按需启动对应服务：
 
 ```bash
-./scripts/run-local-gateway.sh
+./scripts/run-local-archive.sh
+./scripts/run-local-inventory.sh
+./scripts/run-local-purchase.sh
+./scripts/run-local-operation.sh
+./scripts/run-local-member.sh
+./scripts/run-local-online.sh
+./scripts/run-local-finance.sh
+./scripts/run-local-analytics.sh
 ```
 
 常用自定义方式：
 
 ```bash
 SYSTEM_PORT=18080 ./scripts/run-local-system.sh
-SYSTEM_PORT=18080 GATEWAY_PORT=19000 ./scripts/run-local-gateway.sh
-SYSTEM_BASE_URL=http://127.0.0.1:18080 ./scripts/run-local-gateway.sh
+ARCHIVE_PORT=18081 ./scripts/run-local-archive.sh
+SYSTEM_PORT=18080 ARCHIVE_PORT=18081 GATEWAY_PORT=19000 ./scripts/run-local-gateway.sh
+./scripts/run-local-online.sh --logging.level.root=DEBUG
 ```
+
+如果希望一键拉起最小后端联调栈，可以直接执行：
+
+```bash
+./scripts/start-local-stack.sh
+./scripts/status-local-stack.sh
+./scripts/stop-local-stack.sh
+```
+
+如果要一次性拉起全部后端服务：
+
+```bash
+./scripts/start-local-stack.sh all
+```
+
+这些脚本会把运行时状态写到：
+
+- `.runtime/pids/`
+- `.runtime/logs/`
 
 ### 6. 启动前端
 
 ```bash
 cd admin-web
-npm install
-npm run dev
+corepack enable
+pnpm install
+pnpm dev
 ```
 
 前端默认地址：
@@ -275,18 +331,72 @@ Vite 已经把 `/api` 代理到：
 
 `admin-web(3000) -> erp-gateway(9000) -> erp-system(8080)`
 
+如果要联调某个业务模块，请额外启动对应服务，默认链路为：
+
+`admin-web(3000) -> erp-gateway(9000) -> 目标业务服务(8081~8088)`
+
 ### 7. 运行本地 smoke 验证
 
 ```bash
 ./scripts/smoke-local-auth.sh
+./scripts/smoke-local-services.sh
 ```
 
-这个脚本会依次验证：
+`smoke-local-auth.sh` 会依次验证：
 
 - `erp-system` 健康检查
 - `erp-system` 未登录会话响应
 - `erp-gateway` 健康检查
 - `erp-gateway` 未登录会话响应
+
+`smoke-local-services.sh` 会依次验证：
+
+- `erp-system`
+- `erp-archive`
+- `erp-inventory`
+- `erp-purchase`
+- `erp-operation`
+- `erp-member`
+- `erp-online`
+- `erp-finance`
+- `erp-analytics`
+
+### 8. 容器化联调 / 部署骨架
+
+如果你想直接用容器把基础设施、后端服务和前端一起拉起来，可以使用 compose 叠加文件：
+
+```bash
+docker compose \
+  -f docker/docker-compose.yml \
+  -f docker/docker-compose.apps.yml \
+  up -d --build
+```
+
+停止整套容器：
+
+```bash
+docker compose \
+  -f docker/docker-compose.yml \
+  -f docker/docker-compose.apps.yml \
+  down
+```
+
+这套 compose 骨架默认包含：
+
+- MySQL / Redis / Nacos
+- `erp-system`
+- `erp-archive`
+- `erp-inventory`
+- `erp-purchase`
+- `erp-operation`
+- `erp-member`
+- `erp-online`
+- `erp-finance`
+- `erp-analytics`
+- `erp-gateway`
+- `admin-web`
+
+默认日志会映射到仓库根目录下的 `logs/`。
 
 ## 默认本地账号
 
@@ -327,21 +437,64 @@ Vite 已经把 `/api` 代理到：
 | `ERP_DB_PASSWORD` | 数据库密码 |
 | `ERP_JWT_SECRET` | JWT 签名密钥，至少 32 位 |
 | `NACOS_SERVER_ADDR` | Nacos 地址 |
+| `ERP_RUNTIME_PROFILE` | 容器化运行时使用的 Spring profile，默认 `prod` |
+| `ERP_REDIS_HOST` | Redis 主机，容器化默认 `redis` |
+| `ERP_REDIS_PORT` | Redis 端口，容器化默认 `6379` |
+| `ARCHIVE_PORT` | 本地档案服务端口 |
+| `INVENTORY_PORT` | 本地库存服务端口 |
+| `PURCHASE_PORT` | 本地采购服务端口 |
+| `OPERATION_PORT` | 本地运营服务端口 |
+| `MEMBER_PORT` | 本地会员服务端口 |
+| `ONLINE_PORT` | 本地线上服务端口 |
+| `FINANCE_PORT` | 本地财务服务端口 |
+| `ANALYTICS_PORT` | 本地分析服务端口 |
 | `ERP_SYSTEM_LOG_PATH` | `erp-system` 日志目录 |
+| `ERP_ARCHIVE_LOG_PATH` | `erp-archive` 日志目录 |
+| `ERP_INVENTORY_LOG_PATH` | `erp-inventory` 日志目录 |
+| `ERP_PURCHASE_LOG_PATH` | `erp-purchase` 日志目录 |
+| `ERP_OPERATION_LOG_PATH` | `erp-operation` 日志目录 |
+| `ERP_MEMBER_LOG_PATH` | `erp-member` 日志目录 |
+| `ERP_ONLINE_LOG_PATH` | `erp-online` 日志目录 |
+| `ERP_FINANCE_LOG_PATH` | `erp-finance` 日志目录 |
+| `ERP_ANALYTICS_LOG_PATH` | `erp-analytics` 日志目录 |
 | `ERP_GATEWAY_LOG_PATH` | `erp-gateway` 日志目录 |
 | `SYSTEM_PORT` | 本地 system 服务端口 |
 | `GATEWAY_PORT` | 本地 gateway 服务端口 |
+| `ADMIN_WEB_PORT` | 容器化前端映射端口 |
 
 ## 健康检查与日志
 
 ### 健康检查
 
-- `erp-system`: `GET /actuator/health`
-- `erp-gateway`: `GET /actuator/health`
+所有后端服务都已暴露：
+
+- `GET /actuator/health`
+- `GET /actuator/info`
+
+默认直连端口如下：
+
+- `erp-system`: `8080`
+- `erp-archive`: `8081`
+- `erp-inventory`: `8082`
+- `erp-purchase`: `8083`
+- `erp-operation`: `8084`
+- `erp-member`: `8085`
+- `erp-online`: `8086`
+- `erp-finance`: `8087`
+- `erp-analytics`: `8088`
+- `erp-gateway`: `9000`
 
 ### 默认日志路径
 
 - `erp-system`: `${ERP_SYSTEM_LOG_PATH:-./logs/erp-system}`
+- `erp-archive`: `${ERP_ARCHIVE_LOG_PATH:-./logs/erp-archive}`
+- `erp-inventory`: `${ERP_INVENTORY_LOG_PATH:-./logs/erp-inventory}`
+- `erp-purchase`: `${ERP_PURCHASE_LOG_PATH:-./logs/erp-purchase}`
+- `erp-operation`: `${ERP_OPERATION_LOG_PATH:-./logs/erp-operation}`
+- `erp-member`: `${ERP_MEMBER_LOG_PATH:-./logs/erp-member}`
+- `erp-online`: `${ERP_ONLINE_LOG_PATH:-./logs/erp-online}`
+- `erp-finance`: `${ERP_FINANCE_LOG_PATH:-./logs/erp-finance}`
+- `erp-analytics`: `${ERP_ANALYTICS_LOG_PATH:-./logs/erp-analytics}`
 - `erp-gateway`: `${ERP_GATEWAY_LOG_PATH:-./logs/erp-gateway}`
 
 通过启动脚本运行时，默认实际落盘位置通常为：
@@ -360,28 +513,63 @@ Vite 已经把 `/api` 代理到：
 
 ```bash
 cd admin-web
-npm test -- --run
+pnpm lint
+pnpm test -- --run
+pnpm build
 ```
+
+说明：当前前端 lint 已恢复为 CI 阻断项，提交前建议至少执行一次 `pnpm lint && pnpm test -- --run && pnpm build`。
 
 ### 后端
 
 ```bash
 java -version
-mvn -pl erp-framework/erp-spring-boot-starter-security,erp-module-system/erp-module-system-biz,erp-gateway -am test
+mvn -pl erp-gateway,erp-module-archive/erp-module-archive-biz,erp-module-inventory/erp-module-inventory-biz,erp-module-purchase/erp-module-purchase-biz,erp-module-operation/erp-module-operation-biz,erp-module-member/erp-module-member-biz,erp-module-online/erp-module-online-biz,erp-module-analytics/erp-module-analytics-biz,erp-module-finance/erp-module-finance-biz -am test -Dsurefire.failIfNoSpecifiedTests=false -Dtest=LocalGatewayConfigTest,ArchiveProductionBaselineConfigTest,InventoryProductionBaselineConfigTest,PurchaseProductionBaselineConfigTest,OperationProductionBaselineConfigTest,MemberProductionBaselineConfigTest,OnlineProductionBaselineConfigTest,AnalyticsProductionBaselineConfigTest,FinanceProductionBaselineConfigTest
 ```
 
 执行前请确认 `java -version` 输出为 `17` 或更高版本。
+
+### 脚本校验
+
+```bash
+bash -n scripts/*.sh scripts/lib/*.sh
+./scripts/run-local-system.sh --help
+./scripts/run-local-gateway.sh --help
+./scripts/run-local-archive.sh --help
+./scripts/start-local-stack.sh --help
+./scripts/status-local-stack.sh --help
+./scripts/stop-local-stack.sh --help
+./scripts/smoke-local-services.sh --help
+```
+
+### Compose 配置校验
+
+```bash
+ERP_DB_PASSWORD='replace-me' \
+ERP_JWT_SECRET='replace-with-at-least-32-characters' \
+docker compose -f docker/docker-compose.yml -f docker/docker-compose.apps.yml config >/dev/null
+```
+
+## CI 说明
+
+仓库已内置 [`.github/workflows/ci.yml`](.github/workflows/ci.yml)，默认在 `push main` 和 `pull_request` 时执行：
+
+- 后端基线测试
+- 前端依赖安装、Vitest、build
+- Shell 脚本语法校验
+- compose 配置语法校验
 
 ## 开发建议
 
 ### 推荐联调顺序
 
-1. 启动 MySQL / Redis
+1. 启动 MySQL / Redis / Nacos
 2. 启动 `erp-system`
-3. 启动 `erp-gateway`
-4. 启动 `admin-web`
-5. 运行 `smoke-local-auth.sh`
-6. 再开始做页面或接口联调
+3. 按需启动目标业务服务
+4. 启动 `erp-gateway`
+5. 启动 `admin-web`
+6. 运行 `smoke-local-auth.sh` 和 `smoke-local-services.sh`
+7. 再开始做页面或接口联调
 
 ### 当前文档定位
 

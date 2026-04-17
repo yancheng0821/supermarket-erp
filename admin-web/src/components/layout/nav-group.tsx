@@ -71,7 +71,7 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        isActive={checkIsActive(href, item)}
+        isActive={isItemActive(href, item)}
         tooltip={t(item.title)}
       >
         <Link to={item.url} onClick={() => setOpenMobile(false)}>
@@ -94,14 +94,13 @@ function SidebarMenuCollapsible({
   const { t } = useTranslation()
   const { setOpenMobile } = useSidebar()
   return (
-    <Collapsible
-      asChild
-      defaultOpen={checkIsActive(href, item, true)}
-      className='group/collapsible'
-    >
+    <Collapsible asChild className='group/collapsible'>
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={t(item.title)}>
+          <SidebarMenuButton
+            tooltip={t(item.title)}
+            isCurrent={isCurrentBranch(href, item)}
+          >
             {item.icon && <item.icon />}
             <span>{t(item.title)}</span>
             {item.badge && <NavBadge>{item.badge}</NavBadge>}
@@ -119,10 +118,9 @@ function SidebarMenuCollapsible({
                 <SidebarMenuSubItem key={subItem.title}>
                   <SidebarMenuSubButton
                     asChild
-                    isActive={checkIsActive(href, subItem)}
+                    isActive={isItemActive(href, subItem)}
                   >
                     <Link to={subItem.url} onClick={() => setOpenMobile(false)}>
-                      {subItem.icon && <subItem.icon />}
                       <span>{t(subItem.title)}</span>
                       {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
                     </Link>
@@ -151,7 +149,7 @@ function SidebarMenuCollapsedDropdown({
         <DropdownMenuTrigger asChild>
           <SidebarMenuButton
             tooltip={t(item.title)}
-            isActive={checkIsActive(href, item)}
+            isCurrent={isCurrentBranch(href, item)}
           >
             {item.icon && <item.icon />}
             <span>{t(item.title)}</span>
@@ -174,9 +172,12 @@ function SidebarMenuCollapsedDropdown({
                     <DropdownMenuItem key={`${leaf.title}-${leaf.url}`} asChild>
                       <Link
                         to={leaf.url!}
-                        className={`${checkIsActive(href, leaf) ? 'bg-secondary' : ''}`}
+                        className={
+                          isItemActive(href, leaf)
+                            ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                            : ''
+                        }
                       >
-                        {leaf.icon && <leaf.icon />}
                         <span className='max-w-52 text-wrap'>{t(leaf.title)}</span>
                         {leaf.badge && (
                           <span className='ms-auto text-xs'>{leaf.badge}</span>
@@ -189,9 +190,12 @@ function SidebarMenuCollapsedDropdown({
                   <DropdownMenuItem key={`${sub.title}-${sub.url}`} asChild>
                     <Link
                       to={sub.url!}
-                      className={`${checkIsActive(href, sub) ? 'bg-secondary' : ''}`}
+                      className={
+                        isItemActive(href, sub)
+                          ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                          : ''
+                      }
                     >
-                      {sub.icon && <sub.icon />}
                       <span className='max-w-52 text-wrap'>{t(sub.title)}</span>
                       {sub.badge && (
                         <span className='ms-auto text-xs'>{sub.badge}</span>
@@ -216,16 +220,14 @@ function SidebarNestedCollapsible({
   const { t } = useTranslation()
   const { setOpenMobile } = useSidebar()
   return (
-    <Collapsible
-      defaultOpen={checkIsActive(href, item, true)}
-      className='group/nested'
-    >
-      <CollapsibleTrigger className='flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-[13px] text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'>
-        {item.icon && <item.icon className='size-4' />}
-        <span className='font-medium'>{t(item.title)}</span>
-        {item.badge && <NavBadge>{item.badge}</NavBadge>}
-        <ChevronRight className='ms-auto size-3.5 transition-transform duration-200 group-data-[state=open]/nested:rotate-90 rtl:rotate-180' />
-      </CollapsibleTrigger>
+    <Collapsible className='group/nested'>
+      <SidebarMenuSubButton asChild isCurrent={isCurrentBranch(href, item)}>
+        <CollapsibleTrigger>
+          <span>{t(item.title)}</span>
+          {item.badge && <NavBadge>{item.badge}</NavBadge>}
+          <ChevronRight className='ms-auto size-3.5 transition-transform duration-200 group-data-[state=open]/nested:rotate-90 rtl:rotate-180' />
+        </CollapsibleTrigger>
+      </SidebarMenuSubButton>
       <CollapsibleContent className='CollapsibleContent'>
         <SidebarMenuSub className='pl-3'>
           {item.items.map((subItem) =>
@@ -237,10 +239,9 @@ function SidebarNestedCollapsible({
               <SidebarMenuSubItem key={subItem.title}>
                 <SidebarMenuSubButton
                   asChild
-                  isActive={checkIsActive(href, subItem)}
+                  isActive={isItemActive(href, subItem)}
                 >
                   <Link to={subItem.url} onClick={() => setOpenMobile(false)}>
-                    {subItem.icon && <subItem.icon />}
                     <span>{t(subItem.title)}</span>
                     {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
                   </Link>
@@ -254,13 +255,21 @@ function SidebarNestedCollapsible({
   )
 }
 
-function checkIsActive(href: string, item: NavItem, mainNav = false): boolean {
-  return (
-    href === item.url || // /endpint?search=param
-    href.split('?')[0] === item.url || // endpoint
-    !!item?.items?.some((i) => checkIsActive(href, i)) || // if child nav is active (recursive)
-    (mainNav &&
-      href.split('/')[1] !== '' &&
-      href.split('/')[1] === item?.url?.split('/')[1])
+function normalizeHref(href: string) {
+  return href.split('?')[0] ?? href
+}
+
+function matchesItemUrl(href: string, item: NavItem) {
+  const currentHref = normalizeHref(href)
+  return [item.url, item.matchUrl].some(
+    (candidate) => !!candidate && currentHref === candidate
   )
+}
+
+function isItemActive(href: string, item: NavItem): boolean {
+  return !item.items && matchesItemUrl(href, item)
+}
+
+function isCurrentBranch(href: string, item: NavItem): boolean {
+  return matchesItemUrl(href, item) || !!item.items?.some((i) => isCurrentBranch(href, i))
 }

@@ -1,0 +1,16 @@
+spring:
+  config:
+    import: "optional:nacos:erp-operation-prod.yml"
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR}
+      discovery:
+        enabled: true
+        server-addr: ${NACOS_SERVER_ADDR}
+  datasource:
+    url: ${ERP_DB_URL}
+    username: ${ERP_DB_USERNAME}
+    password: ${ERP_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver

@@ -22,9 +22,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-type LoginMode = 'tenant' | 'platform'
+export type LoginMode = 'tenant' | 'platform'
 type UserAuthFormValues = {
   tenantCode?: string
   username: string
@@ -32,16 +31,17 @@ type UserAuthFormValues = {
 }
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
+  mode: LoginMode
   redirectTo?: string
 }
 
 export function UserAuthForm({
+  mode,
   className,
   redirectTo,
   ...props
 }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
-  const [mode, setMode] = useState<LoginMode>('tenant')
   const { t } = useTranslation()
   const navigate = useNavigate()
   const setToken = useAuthStore((state) => state.setToken)
@@ -103,21 +103,9 @@ export function UserAuthForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn('grid gap-3', className)}
+        className={cn('grid gap-4', className)}
         {...props}
       >
-        <Tabs
-          value={mode}
-          onValueChange={(value) => {
-            setMode(value as LoginMode)
-            form.clearErrors()
-          }}
-        >
-          <TabsList className='grid w-full grid-cols-2'>
-            <TabsTrigger value='tenant'>{t('auth.tenantAdmin')}</TabsTrigger>
-            <TabsTrigger value='platform'>{t('auth.platformAdmin')}</TabsTrigger>
-          </TabsList>
-        </Tabs>
         {mode === 'tenant' && (
           <FormField
             control={form.control}
@@ -165,7 +153,10 @@ export function UserAuthForm({
             </FormItem>
           )}
         />
-        <Button className='mt-2' disabled={isLoading}>
+        <Button
+          className='mt-2 h-11 rounded-xl bg-[#173324] text-white hover:bg-[#122a1d]'
+          disabled={isLoading}
+        >
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           {t('auth.signIn')}
         </Button>

@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=lib/common.sh
+source "${SCRIPT_DIR}/lib/common.sh"
+load_env_file
+
 SYSTEM_PORT="${SYSTEM_PORT:-8080}"
 GATEWAY_PORT="${GATEWAY_PORT:-9000}"
 SYSTEM_BASE_URL="${SYSTEM_BASE_URL:-http://127.0.0.1:${SYSTEM_PORT}}"

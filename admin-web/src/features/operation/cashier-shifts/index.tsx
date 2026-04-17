@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -35,14 +35,33 @@ export function CashierShiftsPage() {
   const [page, setPage] = useState(1)
   const [keyword, setKeyword] = useState('')
 
-  const fetchData = async () => {
-    try {
-      const res = await api.get<PageResult<CashierShift>>('/admin/operation/cashier-shift/page', { page, size: 10, keyword })
-      setData(res.list); setTotal(res.total)
-    } catch (e: any) { toast.error(e.message) }
-  }
+  useEffect(() => {
+    let active = true
 
-  useEffect(() => { fetchData() }, [page, keyword])
+    const loadData = async () => {
+      try {
+        const res = await api.get<PageResult<CashierShift>>('/admin/operation/cashier-shift/page', { page, size: 10, keyword })
+        if (!active) {
+          return
+        }
+
+        setData(res.list)
+        setTotal(res.total)
+      } catch (error: unknown) {
+        if (!active) {
+          return
+        }
+
+        toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [keyword, page, t])
 
   return (
     <>

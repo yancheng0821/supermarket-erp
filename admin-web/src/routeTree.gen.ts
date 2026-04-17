@@ -20,7 +20,6 @@ import { Route as errors403RouteImport } from './routes/(errors)/403'
 import { Route as errors401RouteImport } from './routes/(errors)/401'
 import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignIn2RouteImport } from './routes/(auth)/sign-in-2'
-import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as ClerkAuthenticatedRouteRouteImport } from './routes/clerk/_authenticated/route'
@@ -28,12 +27,14 @@ import { Route as ClerkauthRouteRouteImport } from './routes/clerk/(auth)/route'
 import { Route as AuthenticatedSystemRouteRouteImport } from './routes/_authenticated/system/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedPlatformRouteRouteImport } from './routes/_authenticated/platform/route'
+import { Route as authSignInRouteRouteImport } from './routes/(auth)/sign-in/route'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
+import { Route as authSignInIndexRouteImport } from './routes/(auth)/sign-in/index'
 import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/clerk/_authenticated/user-management'
 import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
 import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
@@ -42,6 +43,8 @@ import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_auth
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as authSignInTenantRouteImport } from './routes/(auth)/sign-in/tenant'
+import { Route as authSignInPlatformRouteImport } from './routes/(auth)/sign-in/platform'
 import { Route as AuthenticatedSystemUsersIndexRouteImport } from './routes/_authenticated/system/users/index'
 import { Route as AuthenticatedSystemRolesIndexRouteImport } from './routes/_authenticated/system/roles/index'
 import { Route as AuthenticatedPurchaseReplenishIndexRouteImport } from './routes/_authenticated/purchase/replenish/index'
@@ -130,11 +133,6 @@ const authSignIn2Route = authSignIn2RouteImport.update({
   path: '/sign-in-2',
   getParentRoute: () => rootRouteImport,
 } as any)
-const authSignInRoute = authSignInRouteImport.update({
-  id: '/(auth)/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const authOtpRoute = authOtpRouteImport.update({
   id: '/(auth)/otp',
   path: '/otp',
@@ -171,6 +169,11 @@ const AuthenticatedPlatformRouteRoute =
     path: '/platform',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const authSignInRouteRoute = authSignInRouteRouteImport.update({
+  id: '/(auth)/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   id: '/users/',
   path: '/users/',
@@ -202,6 +205,11 @@ const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
   id: '/apps/',
   path: '/apps/',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const authSignInIndexRoute = authSignInIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => authSignInRouteRoute,
 } as any)
 const ClerkAuthenticatedUserManagementRoute =
   ClerkAuthenticatedUserManagementRouteImport.update({
@@ -249,6 +257,16 @@ const AuthenticatedErrorsErrorRoute =
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const authSignInTenantRoute = authSignInTenantRouteImport.update({
+  id: '/tenant',
+  path: '/tenant',
+  getParentRoute: () => authSignInRouteRoute,
+} as any)
+const authSignInPlatformRoute = authSignInPlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => authSignInRouteRoute,
+} as any)
 const AuthenticatedSystemUsersIndexRoute =
   AuthenticatedSystemUsersIndexRouteImport.update({
     id: '/users/',
@@ -451,12 +469,12 @@ const AuthenticatedAnalyticsDailySalesIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/sign-in': typeof authSignInRouteRouteWithChildren
   '/platform': typeof AuthenticatedPlatformRouteRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/system': typeof AuthenticatedSystemRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
-  '/sign-in': typeof authSignInRoute
   '/sign-in-2': typeof authSignIn2Route
   '/sign-up': typeof authSignUpRoute
   '/401': typeof errors401Route
@@ -465,6 +483,8 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/$': typeof AuthenticatedSplatRoute
+  '/sign-in/platform': typeof authSignInPlatformRoute
+  '/sign-in/tenant': typeof authSignInTenantRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -473,6 +493,7 @@ export interface FileRoutesByFullPath {
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
+  '/sign-in/': typeof authSignInIndexRoute
   '/apps/': typeof AuthenticatedAppsIndexRoute
   '/chats/': typeof AuthenticatedChatsIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
@@ -519,7 +540,6 @@ export interface FileRoutesByTo {
   '/system': typeof AuthenticatedSystemRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
-  '/sign-in': typeof authSignInRoute
   '/sign-in-2': typeof authSignIn2Route
   '/sign-up': typeof authSignUpRoute
   '/401': typeof errors401Route
@@ -529,6 +549,8 @@ export interface FileRoutesByTo {
   '/503': typeof errors503Route
   '/$': typeof AuthenticatedSplatRoute
   '/': typeof AuthenticatedIndexRoute
+  '/sign-in/platform': typeof authSignInPlatformRoute
+  '/sign-in/tenant': typeof authSignInTenantRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -537,6 +559,7 @@ export interface FileRoutesByTo {
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
+  '/sign-in': typeof authSignInIndexRoute
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
@@ -581,6 +604,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/clerk': typeof ClerkRouteRouteWithChildren
+  '/(auth)/sign-in': typeof authSignInRouteRouteWithChildren
   '/_authenticated/platform': typeof AuthenticatedPlatformRouteRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/_authenticated/system': typeof AuthenticatedSystemRouteRouteWithChildren
@@ -588,7 +612,6 @@ export interface FileRoutesById {
   '/clerk/_authenticated': typeof ClerkAuthenticatedRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/otp': typeof authOtpRoute
-  '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-in-2': typeof authSignIn2Route
   '/(auth)/sign-up': typeof authSignUpRoute
   '/(errors)/401': typeof errors401Route
@@ -598,6 +621,8 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503Route
   '/_authenticated/$': typeof AuthenticatedSplatRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/(auth)/sign-in/platform': typeof authSignInPlatformRoute
+  '/(auth)/sign-in/tenant': typeof authSignInTenantRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
@@ -606,6 +631,7 @@ export interface FileRoutesById {
   '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
   '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/_authenticated/user-management': typeof ClerkAuthenticatedUserManagementRoute
+  '/(auth)/sign-in/': typeof authSignInIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
@@ -651,12 +677,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/clerk'
+    | '/sign-in'
     | '/platform'
     | '/settings'
     | '/system'
     | '/forgot-password'
     | '/otp'
-    | '/sign-in'
     | '/sign-in-2'
     | '/sign-up'
     | '/401'
@@ -665,6 +691,8 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/$'
+    | '/sign-in/platform'
+    | '/sign-in/tenant'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
@@ -673,6 +701,7 @@ export interface FileRouteTypes {
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
+    | '/sign-in/'
     | '/apps/'
     | '/chats/'
     | '/help-center/'
@@ -719,7 +748,6 @@ export interface FileRouteTypes {
     | '/system'
     | '/forgot-password'
     | '/otp'
-    | '/sign-in'
     | '/sign-in-2'
     | '/sign-up'
     | '/401'
@@ -729,6 +757,8 @@ export interface FileRouteTypes {
     | '/503'
     | '/$'
     | '/'
+    | '/sign-in/platform'
+    | '/sign-in/tenant'
     | '/errors/$error'
     | '/settings/account'
     | '/settings/appearance'
@@ -737,6 +767,7 @@ export interface FileRouteTypes {
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
+    | '/sign-in'
     | '/apps'
     | '/chats'
     | '/help-center'
@@ -780,6 +811,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/clerk'
+    | '/(auth)/sign-in'
     | '/_authenticated/platform'
     | '/_authenticated/settings'
     | '/_authenticated/system'
@@ -787,7 +819,6 @@ export interface FileRouteTypes {
     | '/clerk/_authenticated'
     | '/(auth)/forgot-password'
     | '/(auth)/otp'
-    | '/(auth)/sign-in'
     | '/(auth)/sign-in-2'
     | '/(auth)/sign-up'
     | '/(errors)/401'
@@ -797,6 +828,8 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/$'
     | '/_authenticated/'
+    | '/(auth)/sign-in/platform'
+    | '/(auth)/sign-in/tenant'
     | '/_authenticated/errors/$error'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
@@ -805,6 +838,7 @@ export interface FileRouteTypes {
     | '/clerk/(auth)/sign-in'
     | '/clerk/(auth)/sign-up'
     | '/clerk/_authenticated/user-management'
+    | '/(auth)/sign-in/'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
@@ -849,9 +883,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   ClerkRouteRoute: typeof ClerkRouteRouteWithChildren
+  authSignInRouteRoute: typeof authSignInRouteRouteWithChildren
   authForgotPasswordRoute: typeof authForgotPasswordRoute
   authOtpRoute: typeof authOtpRoute
-  authSignInRoute: typeof authSignInRoute
   authSignIn2Route: typeof authSignIn2Route
   authSignUpRoute: typeof authSignUpRoute
   errors401Route: typeof errors401Route
@@ -940,13 +974,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authSignIn2RouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(auth)/sign-in': {
-      id: '/(auth)/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof authSignInRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/(auth)/otp': {
       id: '/(auth)/otp'
       path: '/otp'
@@ -996,6 +1023,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/(auth)/sign-in': {
+      id: '/(auth)/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof authSignInRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -1037,6 +1071,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/apps/'
       preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/(auth)/sign-in/': {
+      id: '/(auth)/sign-in/'
+      path: '/'
+      fullPath: '/sign-in/'
+      preLoaderRoute: typeof authSignInIndexRouteImport
+      parentRoute: typeof authSignInRouteRoute
     }
     '/clerk/_authenticated/user-management': {
       id: '/clerk/_authenticated/user-management'
@@ -1093,6 +1134,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/errors/$error'
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/(auth)/sign-in/tenant': {
+      id: '/(auth)/sign-in/tenant'
+      path: '/tenant'
+      fullPath: '/sign-in/tenant'
+      preLoaderRoute: typeof authSignInTenantRouteImport
+      parentRoute: typeof authSignInRouteRoute
+    }
+    '/(auth)/sign-in/platform': {
+      id: '/(auth)/sign-in/platform'
+      path: '/platform'
+      fullPath: '/sign-in/platform'
+      preLoaderRoute: typeof authSignInPlatformRouteImport
+      parentRoute: typeof authSignInRouteRoute
     }
     '/_authenticated/system/users/': {
       id: '/_authenticated/system/users/'
@@ -1536,12 +1591,28 @@ const ClerkRouteRouteWithChildren = ClerkRouteRoute._addFileChildren(
   ClerkRouteRouteChildren,
 )
 
+interface authSignInRouteRouteChildren {
+  authSignInPlatformRoute: typeof authSignInPlatformRoute
+  authSignInTenantRoute: typeof authSignInTenantRoute
+  authSignInIndexRoute: typeof authSignInIndexRoute
+}
+
+const authSignInRouteRouteChildren: authSignInRouteRouteChildren = {
+  authSignInPlatformRoute: authSignInPlatformRoute,
+  authSignInTenantRoute: authSignInTenantRoute,
+  authSignInIndexRoute: authSignInIndexRoute,
+}
+
+const authSignInRouteRouteWithChildren = authSignInRouteRoute._addFileChildren(
+  authSignInRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   ClerkRouteRoute: ClerkRouteRouteWithChildren,
+  authSignInRouteRoute: authSignInRouteRouteWithChildren,
   authForgotPasswordRoute: authForgotPasswordRoute,
   authOtpRoute: authOtpRoute,
-  authSignInRoute: authSignInRoute,
   authSignIn2Route: authSignIn2Route,
   authSignUpRoute: authSignUpRoute,
   errors401Route: errors401Route,

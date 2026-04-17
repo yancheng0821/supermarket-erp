@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Run backend baseline tests
+        run: |
+          mvn -B -ntp \
+            -pl erp-gateway,erp-module-archive/erp-module-archive-biz,erp-module-inventory/erp-module-inventory-biz,erp-module-purchase/erp-module-purchase-biz,erp-module-operation/erp-module-operation-biz,erp-module-member/erp-module-member-biz,erp-module-online/erp-module-online-biz,erp-module-analytics/erp-module-analytics-biz,erp-module-finance/erp-module-finance-biz \
+            -am test \
+            -Dsurefire.failIfNoSpecifiedTests=false \
+            -Dtest=LocalGatewayConfigTest,ArchiveProductionBaselineConfigTest,InventoryProductionBaselineConfigTest,PurchaseProductionBaselineConfigTest,OperationProductionBaselineConfigTest,MemberProductionBaselineConfigTest,OnlineProductionBaselineConfigTest,AnalyticsProductionBaselineConfigTest,FinanceProductionBaselineConfigTest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: admin-web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: '9'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: pnpm
+          cache-dependency-path: admin-web/pnpm-lock.yaml
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Test
+        run: pnpm test -- --run
+      - name: Build
+        run: pnpm build
+
+  tooling:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate shell scripts
+        run: bash -n scripts/*.sh scripts/lib/*.sh
+      - name: Validate script help output
+        run: |
+          for file in scripts/run-local-*.sh; do
+            "$file" --help >/dev/null
+          done
+          ./scripts/start-local-stack.sh --help >/dev/null
+          ./scripts/stop-local-stack.sh --help >/dev/null
+          ./scripts/status-local-stack.sh --help >/dev/null
+          ./scripts/smoke-local-auth.sh --help >/dev/null
+          ./scripts/smoke-local-services.sh --help >/dev/null
+      - name: Validate compose files
+        env:
+          ERP_DB_PASSWORD: ci-db-password
+          ERP_JWT_SECRET: ci-jwt-secret-12345678901234567890123456789012
+        run: docker compose -f docker/docker-compose.yml -f docker/docker-compose.apps.yml config >/dev/null

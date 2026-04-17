@@ -101,8 +101,40 @@ export function PlatformMenusPage() {
   }
 
   useEffect(() => {
-    fetchMenus()
-  }, [])
+    let active = true
+
+    const loadMenus = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<MenuItem[]>('/admin/menu/tree', {
+          scope: 'platform',
+        })
+        if (!active) {
+          return
+        }
+
+        setMenus(result)
+      } catch (error) {
+        if (!active) {
+          return
+        }
+
+        toast.error(
+          error instanceof Error ? error.message : t('platformMenus.messages.loadError')
+        )
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadMenus()
+
+    return () => {
+      active = false
+    }
+  }, [t])
 
   const rows = flattenMenus(menus)
 

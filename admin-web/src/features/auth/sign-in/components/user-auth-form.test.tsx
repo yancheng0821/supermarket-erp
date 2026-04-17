@@ -39,20 +39,36 @@ describe('user auth form', () => {
     useAuthStore.getState().reset()
   })
 
-  it('renders localized labels for the default tenant login mode', () => {
-    render(<UserAuthForm />)
+  it('renders tenant mode fields without the old role tabs', () => {
+    render(
+      <UserAuthForm
+        {...({
+          mode: 'tenant',
+        } as unknown as React.ComponentProps<typeof UserAuthForm>)}
+      />
+    )
 
-    expect(screen.getByRole('tab', { name: '租户管理员' })).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: '平台管理员' })).toBeInTheDocument()
     expect(screen.getByLabelText('租户编码')).toBeInTheDocument()
     expect(screen.getByLabelText('用户名')).toBeInTheDocument()
     expect(screen.getByLabelText('密码')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '登录' })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('tab', { name: '租户管理员' })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('tab', { name: '平台管理员' })
+    ).not.toBeInTheDocument()
   })
 
   it('requires tenant code before submitting a tenant login', async () => {
     const user = userEvent.setup()
-    render(<UserAuthForm />)
+    render(
+      <UserAuthForm
+        {...({
+          mode: 'tenant',
+        } as unknown as React.ComponentProps<typeof UserAuthForm>)}
+      />
+    )
 
     await user.type(screen.getByLabelText('用户名'), 'admin')
     await user.type(screen.getByLabelText('密码'), 'admin1234')
@@ -82,9 +98,16 @@ describe('user auth form', () => {
       menuTree: [],
     })
 
-    render(<UserAuthForm redirectTo='/platform/menus' />)
+    render(
+      <UserAuthForm
+        {...({
+          mode: 'platform',
+          redirectTo: '/platform/menus',
+        } as unknown as React.ComponentProps<typeof UserAuthForm>)}
+      />
+    )
 
-    await user.click(screen.getByRole('tab', { name: '平台管理员' }))
+    expect(screen.queryByLabelText('租户编码')).not.toBeInTheDocument()
     await user.type(screen.getByLabelText('用户名'), 'platform-admin')
     await user.type(screen.getByLabelText('密码'), 'admin1234')
     await user.click(screen.getByRole('button', { name: '登录' }))
@@ -127,7 +150,14 @@ describe('user auth form', () => {
       menuTree: [],
     })
 
-    render(<UserAuthForm redirectTo='/system/users' />)
+    render(
+      <UserAuthForm
+        {...({
+          mode: 'tenant',
+          redirectTo: '/system/users',
+        } as unknown as React.ComponentProps<typeof UserAuthForm>)}
+      />
+    )
 
     await user.type(screen.getByLabelText('租户编码'), 'freshmart-sh')
     await user.type(screen.getByLabelText('用户名'), 'admin')

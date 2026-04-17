@@ -33,7 +33,9 @@ export function PointsLogPage() {
     try {
       const res = await api.get<PageResult<PointsLog>>('/admin/member/points/log', { page, size: 10, memberId })
       setData(res.list); setTotal(res.total)
-    } catch (e: any) { toast.error(e.message) }
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : t('common.operationFailed'))
+    }
   }
 
   return (

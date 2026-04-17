@@ -67,7 +67,39 @@ export function SuppliersPage() {
     }
   }
 
-  useEffect(() => { fetchData() }, [pageNo])
+  useEffect(() => {
+    let active = true
+
+    const loadData = async () => {
+      setLoading(true)
+      try {
+        const result = await api.get<PageResult<Supplier>>('/admin/archive/supplier/page', {
+          pageNo, pageSize, name: searchName || undefined,
+        })
+        if (!active) {
+          return
+        }
+
+        setData(result)
+      } catch (e: unknown) {
+        if (!active) {
+          return
+        }
+
+        toast.error(e instanceof Error ? e.message : t('common.operationFailed'))
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
+      }
+    }
+
+    void loadData()
+
+    return () => {
+      active = false
+    }
+  }, [pageNo, pageSize, searchName, t])
 
   const handleSearch = () => { setPageNo(1); fetchData() }
 
